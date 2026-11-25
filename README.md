@@ -3,6 +3,9 @@
 **Status: paper proof, not machine-checked. Conditional on twelve stated inputs (H1 to H12) taken from three OpenAI preprints of
 24 November 2026.**
 
+Archived at Zenodo: https://doi.org/10.5281/zenodo.24527297
+Repository: https://github.com/jackryan225/ntime-dtime-polylog
+
 ## The claim
 
 Assuming twelve stated inputs taken from three OpenAI preprints of 24 November 2026 (two of them in a characteristic-2 form that we
