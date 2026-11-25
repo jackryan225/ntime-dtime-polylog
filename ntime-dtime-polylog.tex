@@ -1,0 +1,1472 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{microtype}
+\usepackage{xurl}
+\urlstyle{tt}
+\emergencystretch=2.5em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hyp}{Hypothesis}
+\renewcommand{\thehyp}{H\arabic{hyp}}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\X}{\mathcal X}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\DTIME}{\mathrm{DTIME}}
+\newcommand{\NTIME}{\mathrm{NTIME}}
+\newcommand{\coNTIME}{\mathrm{coNTIME}}
+\newcommand{\parTIME}{\oplus\mathrm{TIME}}
+\newcommand{\TRANS}{\mathrm{TRANS}}
+\newcommand{\Ball}{\mathrm{Ball}}
+\newcommand{\acc}{\#\mathrm{acc}}
+\newcommand{\src}[1]{\url{#1}}
+\title{Linear time with logarithmically many guesses is not in\\ deterministic time $n(\log n)^{\sigma}$\\[4pt]
+\large (conditional on twelve stated inputs from the OpenAI preprints of 24 November 2026)}
+\author{Research driven, orchestrated and reviewed by Jack Ryan.\\
+Claude (by Anthropic), GPT-6.2 Astra (by OpenAI) and Gemini 4 Neon (by Google)\\
+collaborated in finding and writing the proofs.\\
+No professional mathematician has refereed this repository.\\
+The proof is not machine-checked.}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give a complete paper proof, relative to twelve explicitly stated hypotheses (H1--H12) that restate, or transfer to
+characteristic $2$, results of three OpenAI preprints dated 24 November 2026, of the following statement about multitape Turing
+machines: there is a constant $\sigma>0$ such that
+\[
+  \NTIME[n;\,2\log n]\ \not\subseteq\ \DTIME\bigl(n(\log n)^{\sigma}\bigr),
+\]
+where $\NTIME[n;g]$ is linear nondeterministic time with $g$ nondeterministic bits. In particular
+$\NTIME(n)\not\subseteq\DTIME(n(\log n)^{\sigma})$. The constant $\sigma$ is not effective: the proof is a dichotomy on whether
+characteristic $2$ ``has ports'' in the sense of the spectral geometry of tensors. If it has no ports, a char-$2$ form of the
+OpenAI transposition lower bound gives $\Omega(n\sqrt{\log n})$ for deciding matrix transposition, whose complement uses
+$\lfloor\log n\rfloor+1$ guess bits. If it has ports, the OpenAI iterated compressor, applied to a network whose base graph is the
+coarse head-movement skeleton of a parity machine running in time $n^2$ and whose lanes are $\operatorname{polylog}$ many sub-blocks,
+gives $\parTIME(n^2)\subseteq\oplus\cdot\forall\cdot\DTIME(n^2(\log n)^{-s}\operatorname{polyloglog}n)$ with a short
+universal quantifier; together with the hypothesis to be refuted this contradicts the parity time hierarchy.
+The proof of the second case contains a one-substep locality lemma for the compressor records (radius $7$ in the old base
+graph), written out in full. From the same hypotheses we also prove the stronger statement
+$\coNTIME[n;2\log n]\not\subseteq\NTIME(n(\log n)^{\sigma})\cap\parTIME(n(\log n)^{\sigma})$, so in particular
+$\coNTIME[n;2\log n]\not\subseteq\mathrm{UTIME}(n(\log n)^{\sigma})$ (Section~\ref{sec:utime}). Under Weak ETH the first case alone
+already gives the main statement, by a short argument from the OpenAI transposition lower bound (Section~\ref{sec:prior}); the
+new part is the second case, which removes Weak ETH. This is a paper proof; it is not machine-checked.
+\end{abstract}
+
+\paragraph{Status.}
+Every step that is not one of the hypotheses H1--H12 is proved here. The hypotheses restate, with file and line, theorems and
+constructions of the preprints \emph{Euclidean geometry in the asymptotic spectrum of tensors} (cited as EG~\cite{EG}), \emph{Circuit
+lower bounds for Hamiltonian cycle and the permanent} (CL~\cite{CL}) and \emph{The logarithmic exponent of integer multiplication on tapes}
+(T~\cite{T}), whose sources are in the public repository \src{github.com/openai/math}, folder \src{preprints/}. We restate them in our own words and copy only their formulas;
+the reader must compare each restatement with the cited lines. H4 is used in a characteristic-$2$ form that the preprints do not
+state (we derived it from T's proof); H5 is stated in T for the rationals and for every field in OpenAI's Lean library; the price
+comparison in H2 is stated in T for the rationals and for every field in CL and in OpenAI's Lean library; H3 is field-free; H1(d) is stated in EG's text for every field but formalized in OpenAI's Lean library
+only in characteristic $0$. Section~\ref{sec:hyp} says exactly which change is made and
+where it was audited. Earlier versions of the argument were checked by blind re-derivations, a line-by-line check of
+the port case, an adversarial reading and an independent reading of the whole paper; every repair they found is built in (the list
+is in the file \src{CHECKS.md} that accompanies this paper). In particular the tag rule uses the full forbidden set (``Fixed
+choices'' in Section~\ref{subsec:witness}), the degree is regularized as in EG (Section~\ref{subsec:network}(f)), head offsets ride on
+the state wire, every padding field is checked to be zero, and the base-record cost is counted with the remaining lanes
+(Lemma~\ref{lem:space}). That ports over $\F_2$ and the parameter solution in $\F_2$ follow from ports in characteristic $2$ was
+checked separately (EG \texttt{lem:comparison}).
+
+\tableofcontents
+
+%======================================================================
+\section{Introduction}\label{sec:intro}
+
+Paul, Pippenger, Szemer\'edi and Trotter proved that linear nondeterministic time is strictly larger than linear
+deterministic time for multitape Turing machines. The known separations have the form $\NTIME(n)\not\subseteq\DTIME(n\,f(n))$
+with $f$ of iterated-logarithm type (see Section~\ref{sec:prior}). We prove a polylogarithmic separation, conditional on
+stated inputs.
+
+\begin{theorem}[Main theorem]\label{thm:main}
+Assume Hypotheses H1--H12 of Section~\ref{sec:hyp}. There is $\sigma>0$ such that
+\[
+  \NTIME[n;\,2\log n]\not\subseteq\DTIME\bigl(n(\log n)^{\sigma}\bigr)
+\]
+for multitape Turing machines. Consequently $\NTIME(n)\not\subseteq\DTIME(n(\log n)^{\sigma})$.
+\end{theorem}
+
+Here $\NTIME[n;g]$ is the class of languages accepted in linear time by multitape machines that make at most $g(n)$ binary
+guesses (Definition~\ref{def:classes}). Every such language is in $\DTIME(n^{3})$, so the separation is inside $\mathrm P$.
+
+\paragraph{The dichotomy.} A field \emph{has ports} (H1) if bounded-degree regular graphs of unbounded order satisfy one
+uniform nonlinear Poincar\'e inequality in all spectral wire metrics over that field. This depends only on the characteristic.
+The proof splits on characteristic~$2$.
+\begin{enumerate}
+\item[\textbf{Case 1.}] \emph{Characteristic $2$ has no ports.} Then every deterministic multitape machine that decides matrix
+transposition $\TRANS$ uses $\Omega(n\sqrt{\log n})$ steps on some input of each large length $n=2N^2$
+(Proposition~\ref{prop:trans}). The complement of $\TRANS$ is in $\NTIME[n;\lfloor\log n\rfloor+1]$. Any $\sigma<1/2$ works
+(Section~\ref{sec:case1}).
+\item[\textbf{Case 2.}] \emph{Characteristic $2$ has ports.} Then there is $s>0$ with
+$\parTIME(n^2)\subseteq\oplus[m]\cdot\forall[k]\cdot\DTIME(m\log\log n)$ for $m=n^2(\log n)^{-s+o(1)}$ and
+$k=\log(n^2)+O(1)$ (Lemma~P, Section~\ref{sec:case2}). If $\NTIME[n;2\log n]\subseteq\DTIME(n(\log n)^{\sigma})$ with
+$\sigma<s$, then the universal part collapses to deterministic time $o(n^2)$ after padding, so
+$\parTIME(n^2)\subseteq\parTIME(o(n^2))$, contradicting the parity time hierarchy (Theorem~\ref{thm:hier}). Any
+$\sigma<s$ works (Section~\ref{sec:wrapper}).
+\end{enumerate}
+Since we do not know which case holds, and $s$ depends on constants whose existence H8 asserts in Case~2 only, $\sigma$ is
+not effective.
+
+\paragraph{Why Case 2 does not lose a factor $\log t$.} A direct use of the compressor would route the data-dependent
+head-movement skeleton through the lanes of a fixed lifted graph, at a cost of a factor $\Theta(\log t)$ in wire volume, which
+the saving $2^{-T}\le(\log t)^{-s}$ of the compressor cannot pay. Here the skeleton enters only the \emph{base graph}, which the
+compressor allows to be arbitrary (H8). Lanes are $N=(\log t)^{\Theta(1)}$ sub-blocks of a big tape block, which are also the
+$N$ small time intervals of a big time interval; only inside a big interval are the lanes permuted, by a Bene\v{s} network of
+depth $O(\log N)=O(\log\log t)$. The records that the compressor schedules (colours, tags, layouts, slot orders) are
+functions of the summation variables and are checked locally with $o(t(\log t)^{-s})$ guessed bits, by the locality lemma
+(Lemma~\ref{lem:locality}).
+
+\paragraph{Organisation.} Section~\ref{sec:prior} compares with prior work. Section~\ref{sec:models} fixes machine
+models, classes, the parity hierarchy and a batched-lookup lemma. Section~\ref{sec:hyp} states H1--H12. Sections
+\ref{sec:case1}, \ref{sec:case2} and \ref{sec:wrapper} prove the theorem. Section~\ref{sec:utime} proves the stronger form for
+nondeterministic, parity and unambiguous machines. Section~\ref{sec:remarks} discusses the range of the exponent, the weakest
+points and what is not claimed.
+
+%======================================================================
+\section{Prior work}\label{sec:prior}
+
+\paragraph{Linear nondeterministic versus deterministic time.} Paul, Pippenger, Szemer\'edi and Trotter~\cite{PPST} proved that
+some language is recognized in linear time by a nondeterministic machine with two work tapes and by no deterministic multitape
+machine in linear time: $\DTIME(n)\ne\NTIME(n)$. Santhanam~\cite{San} proved $\DTIME(n\sqrt{\log^*n})\ne\NTIME(n\sqrt{\log^*n})$,
+with the same time bound on both sides. The bound $\NTIME(n)\not\subseteq\DTIME(o(n(\log^*n)^{1/4}))$ is stated by Chen and
+Wang~\cite[footnote 3]{CW} as the best they know; they attribute it to~\cite{PPST} and to an answer of R.~Williams on MathOverflow
+(question 4953, 16 December 2009) that derives it from the proof of~\cite{PPST}. All these factors are of iterated-logarithm type. Theorem~\ref{thm:main} gives a polylogarithmic factor, but only
+relative to H1--H12. For simulations in small space much more is known, for example $\mathrm{NTIBI}[n,n^{\varepsilon}]\not\subseteq
+\mathrm{DTISP}[n^{c_\varepsilon},n^{o(1)}]$ (Williams~\cite[Theorem 1.6]{Wil}; in his notation $\mathrm{NTIBI}[t,b]$ is nondeterministic
+time $t$ with $b$ nondeterministic bits and $\mathrm{DTISP}[t,s]$ is deterministic time $t$ and space $s$ simultaneously); such bounds restrict the space of the deterministic
+machine, and Theorem~\ref{thm:main} does not.
+
+\paragraph{The same classes under fine-grained hypotheses.} Lingas~\cite{Lin} studies exactly the classes $\mathrm{NDTIME}(f(n),n)$
+of languages decided in time $O(n)$ by multitape machines with an $f(n)$-bit nondeterministic oracle, and proves separations from
+fine-grained hypotheses (arXiv version 5): for example, if unweighted triangle detection needs time $N^{\omega-o(1)}$ then
+$\mathrm{NDTIME}(\lceil\frac12\log n\rceil,n)\not\subseteq\DTIME(n^{\delta'/2})$ for every $\delta'<\omega$, and under the
+low-dimensional orthogonal vectors conjecture $\mathrm{NDTIME}(\lceil\log n\rceil,n)\not\subseteq\DTIME(n^{2-\epsilon})$ for every
+$\epsilon>0$; further forms use APSP, 3SUM, clique problems and ETH. Some of these premises have since
+been reported false in preprints: ETH~\cite{OAI-ETH}, and the polynomial-range forms of 3SUM and APSP~\cite{AVW}; the triangle and
+orthogonal-vectors premises and Lingas's large-weight forms are, as far as we know, open. Where his premises hold, his bounds are much
+stronger than ours. Theorem~\ref{thm:main} assumes no fine-grained hypothesis; its inputs H1--H12 are results stated in the OpenAI
+preprints, two of them (H4 and H5) in a characteristic-$2$ form that we derived from the proofs in T.
+
+\paragraph{What follows from the OpenAI preprints directly.} Under the variable-count Weak Exponential Time Hypothesis, T proves that
+a deterministic multitape machine that writes the transpose of an $N\times N$ binary matrix on a $2^{-\rho N^2}$ fraction of the
+inputs, for a fixed $0\le\rho<1-1/\sqrt2$, needs $\Omega(N^2\sqrt{\log N})$ steps (T Theorem \texttt{thm:transpose}, \src{T/lower.tex} l.236--250). Its network theorem
+(T Theorem \texttt{thm:table}) applies equally to a machine that decides $\TRANS$ (Proposition~\ref{prop:trans}), and the
+complement of $\TRANS$ is in $\NTIME[n;\lfloor\log n\rfloor+1]$ (Corollary~\ref{cor:case1}). So \emph{under Weak ETH}
+$\NTIME[n;\lfloor\log n\rfloor+1]\not\subseteq\DTIME(n(\log n)^{\sigma})$ for every $\sigma<1/2$ is a short corollary of T. Our Case~1 is this
+argument with Weak ETH replaced by ``characteristic $2$ has no ports''. (T uses Weak ETH to show that characteristic $0$ has no
+ports and runs its argument over the rationals; that implication says nothing about characteristic $2$.) The new content of Theorem~\ref{thm:main} is Case~2, which
+makes the combination free of Weak ETH. Likewise, OpenAI's Lean library proves its multiplication lower bound under Weak ETH also
+for sound nondeterministic machines (\src{OAI/Computability/MultitapeWeakETH/Main.lean}); Lemma~\ref{lem:A} below is the analogue
+for nondeterministic deciders of $\TRANS$ in characteristic~$2$. The dichotomy on ports is OpenAI's own template for circuits
+(CL \src{intro.tex} l.131--139); we found it applied to uniform time classes nowhere.
+
+\paragraph{Tightness of Case~1.} The reduction of Harvey and van der Hoeven~\cite[Corollary 6.2]{HvdH} decides transposition in
+time $O(M(m)+m\log\log m)$ for a matrix of $m$ bits, here $m=N^2=n/2$, where $M(m)$ is the time of a multitape multiplier on
+$m$-bit operands; T gives
+$M(m)=m(\log m)^{1/2+o(1)}$ and uses this reduction itself (\src{T/lower.tex} l.344--356). So
+$\TRANS\in\DTIME(n(\log n)^{1/2+o(1)})$, and Proposition~\ref{prop:trans} is tight up to a factor $(\log n)^{o(1)}$.
+(Tal~\cite{Tal} gives $o(N\log N)$ sorting and a transposition bound from the September 2026 OpenAI multiplication preprint; we do
+not need it.)
+
+\paragraph{Anthropic's VP $\ne$ VNP paper.} Anthropic~\cite{Ant} (hexagonmath.org 2611.00954v1, 23 November 2026, with Lean) proves
+arithmetic-circuit lower bounds $m^{c(\log m)^{r}}$ for $\mathrm{HC}_m$ over every field and for $\mathrm{PERM}_m$ when $p\ne2$
+(Thm.~\texttt{s:allfields}). It uses a different dichotomy, on prices over the parties $\mathrm{Mat}_\mu(\F_2)$: a
+\emph{contracting} hypothesis, which yields a Poincar\'e inequality for all prices on the unitriangular groups $U_h$ (whose
+generating sets grow with $h$), versus a \emph{flat} hypothesis, under which Euclidean metrics are prices (Def.~\texttt{s:cases},
+Thm.~\texttt{s:alt}). The paper does not show the two hypotheses exclusive. They are not ``ports'' versus ``no ports'': flatness
+does not by itself exclude ports: Euclidean placements satisfy the expander Poincar\'e inequality, so the Euclidean prices that
+flatness provides do not violate it.
+In its contracting case it cuts the weighted runs of a tape automaton (a queue-tape model) into pieces (Prop.~\texttt{prop:pieces},
+Thm.~\texttt{thm:cut}). This happens at a scale $v\ge2^{\sqrt{\log T}}$, with pieces of $\Theta(KT/k)$ bits, $k\le v^{64}$, that
+are evaluated by an \emph{accelerator} derived from a hypothetical small circuit; a self-referential program gives $V=1+V$
+(Thm.~\texttt{thm:noacc}). It contains no statement about multitape Turing time classes, no transposition bound, and no parity-time
+speed-up. We found that our Theorem~\ref{thm:main} and its strengthening in Section~\ref{sec:utime} are not contained in it,
+and we see no short derivation of them from it. The shared feature is the ``either case'' template followed by a diagonal over exact sums of weighted runs.
+(Full-text check of the TeX source, 25 November 2026.)
+
+\paragraph{Searches.} Three independent searches for earlier statements (25 November 2026, between 06:56 and 08:00 UTC; together
+they covered arXiv, ECCC, GitHub, Zenodo, vibemathed.com, hexagonmath.org in full text, nilradical.ai, proofatlas.ai, the Palomar
+registry, the Kourovka notebook, StackExchange, blogs, and the papers citing~\cite{PPST}, \cite{San} and the three OpenAI preprints)
+found no earlier statement of Theorem~\ref{thm:main}, or of any $\NTIME(n)\not\subseteq\DTIME(n\,g(n))$ with $g\gg\log^*n$ that
+does not assume a fine-grained hypothesis; the third search also covered Theorem~\ref{thm:Uplus} and found nothing. The closest
+recent work we found is a subexponential deterministic simulation of multitape nondeterminism~\cite{SS} (an upper bound, consistent
+with ours). This records searches; it is not a priority claim.
+
+\paragraph{Tools.} We use the two-tape simulation of Book, Greibach and Wegbreit~\cite{BGW} in its parsimonious form, the time
+hierarchy method~\cite{HS65,Cook73,SFM78,Zak83}, rearrangeable networks~\cite{Benes,Waksman}, and, for comparison only, the
+block-respecting simulation of Hopcroft, Paul and Valiant~\cite{HPV}, which we avoid. For a prime $p$, $\mathrm{Mod}_p$ classes
+are closed under complement~\cite[Lemma 6.6]{BG}; an oracle relative to which deterministic and nondeterministic linear time
+coincide is given by Hemmerling~\cite[Proposition 15]{Hem} (see also~\cite[Corollary 1]{Hem13}).
+
+%======================================================================
+\section{Models, classes and two tools}\label{sec:models}
+
+All logarithms are to base $2$. For a real $y$, $\lceil y\rceil$ and $\lfloor y\rfloor$ are the usual integer parts.
+
+\subsection{Machines}
+A \emph{$k$-tape machine} has $k\ge1$ tapes with cells $0,1,2,\dots$, one head per tape, a finite control and a finite tape
+alphabet $\Gamma$ containing a blank and a left endmarker $\vdash$. At the start every tape holds $\vdash$ in cell $0$ and blanks
+elsewhere, except tape $1$, which holds the input $x\in\{0,1\}^n$ in cells $1,\dots,n$; all heads are on cell $0$. A transition
+reads the $k$ scanned symbols and the state, writes $k$ symbols, moves each head by $-1,0,+1$ and changes the state. We use the
+syntactic convention that no transition writes $\vdash$ outside cell $0$, overwrites $\vdash$, or moves a head left while it
+scans $\vdash$. (Every machine is converted to this form with a constant factor in time and the same number of accepting
+computations.) Consequently no computation ever moves a head to a negative cell.
+
+A \emph{deterministic} machine has at most one transition for each state and scanned tuple; a \emph{nondeterministic} machine
+(NTM) has finitely many. A \emph{computation} on $x$ is a finite sequence of configurations, each obtained from the previous by
+one transition, ending in a halting state; it is \emph{accepting} if this state is accepting. We write $\acc(M,x)$ for the
+number of accepting computations. A machine \emph{runs in time} $f$ if on every input of length $n$ every computation halts
+within $\max(f(n),1)$ steps. A function $f$ is \emph{time constructible} if some deterministic machine on input $1^n$ writes $f(n)$ in
+binary in $O(f(n))$ steps; $n^2$ is time constructible.
+
+\begin{definition}[Classes]\label{def:classes}
+Let $f,g,m,k:\mathbb N\to\mathbb N$. In guess budgets, $\log n$ means $\log\max(n,2)$.
+\begin{enumerate}
+\item $\DTIME(f)$: languages decided by a deterministic multitape machine that halts within $C\max(f(n),1)$ steps on every input of length $n$, for a constant $C$ (this is time $O(f)$; the $\max$ with $1$ matters only where $f(n)=0$, e.g.\ $n\le1$ for $f(n)=n(\log n)^\sigma$, where the literal bound $0$ would allow only languages that are constant on these inputs).
+\item $\NTIME[f;g]$: languages $A$ for which there are a deterministic multitape machine $V$ and $c>0$ such that $V$, given
+  $x\in\{0,1\}^n$ on tape $1$ and $y\in\{0,1\}^{g(n)}$ on tape $2$, halts within $c\max(f(n),1)$ steps (for every $y$), and
+  $x\in A\iff\exists y\in\{0,1\}^{g(n)}:\ V(x,y)=1$. $\coNTIME[f;g]$ is the same with $\forall$ (equivalently, the
+  complements of the languages in $\NTIME[f;g]$).
+\item $\NTIME(f)$: languages $A$ for which some NTM $M$ runs in time $O(f)$ and $x\in A\iff\acc(M,x)\ge1$. If $g=O(f)$ and a machine that reads its
+  input $x$ can compute $g(|x|)$ within $O(f(|x|))$ steps (true for $f(n)=n$ and every budget used here), then $\NTIME[f;g]\subseteq\NTIME(f)$: the NTM
+  writes $g(n)$ guessed bits on tape $2$, one binary branching per bit, and runs $V$.
+\item $\parTIME(f)$: languages $A$ for which some NTM $M$ runs in time $O(f)$ and $x\in A\iff\acc(M,x)$ is odd.
+\item $\mathrm{UTIME}(f)$: languages $A$ for which some NTM $M$ runs in time $O(f)$, has $\acc(M,x)\le1$ on every input, and
+  $x\in A\iff\acc(M,x)=1$. Clearly $\DTIME(f)\subseteq\mathrm{UTIME}(f)\subseteq\NTIME(f)\cap\parTIME(f)$.
+\item $\oplus[m]\cdot\forall[k]\cdot\DTIME(f)$: languages $A$ for which there is a deterministic multitape machine $V$ that halts
+  within $O(f(n))$ steps on every triple $(x,u,\gamma)$ with $|x|=n$, $|u|=m(n)$, $|\gamma|=k(n)$ (written on three tapes), and
+  \[
+     x\in A\iff \#\{u\in\{0,1\}^{m(n)}:\ \forall\gamma\in\{0,1\}^{k(n)}\ V(x,u,\gamma)=1\}\ \text{is odd}.
+  \]
+\end{enumerate}
+\end{definition}
+$\DTIME(f)$ is closed under complement; hence $\NTIME[f;g]\subseteq\DTIME(h)$ implies $\coNTIME[f;g]\subseteq\DTIME(h)$.
+
+\subsection{Counters and batched lookup}
+\begin{lemma}[Countdown]\label{lem:countdown}
+A multitape machine can count down a binary counter from $g$ to underflow in $O(g+\log g)$ steps.
+\end{lemma}
+\begin{proof}
+Keep the counter on its own tape with the low bit under the head. A decrement flips the trailing zeros to ones and the next
+one to zero, then returns. A bit at position $i$ is touched in at most $\lceil g/2^{i}\rceil+1$ of the $g$ decrements, so the
+total head travel is $O(\sum_i (g2^{-i}+1))=O(g+\log g)$; underflow is the borrow running off the top bit.
+\end{proof}
+
+\begin{lemma}[Batched lookup]\label{lem:batch}
+Let a string $w$ of length $\mu$ be on a tape, and let a work tape hold $r$ requests $(a_i,\ell_i)$ with $a_i+\ell_i\le\mu$,
+written in canonical binary, one request per delimited record. A multitape machine writes the substrings $w[a_i,a_i+\ell_i)$, each tagged with its request number, in
+$O\bigl(\mu+(r(\log(\mu+2)+\log(r+2))+\sum_i\ell_i)\log(r+2)\bigr)$ steps.
+\end{lemma}
+\begin{proof}
+Tag each request with its number and sort the requests by $a_i$ (merge sort on two work tapes; a record has
+$O(\log(\mu+2)+\log(r+2))$ bits, so $O(r(\log(\mu+2)+\log(r+2))\log(r+2))$ steps). Then scan $w$ from the left: after request $i$
+has been copied the head on $w$ is at $a_i+\ell_i$, and it moves by $a_{i+1}-(a_i+\ell_i)$ to the next start, counting with
+Lemma~\ref{lem:countdown}; this move is negative only if request $i+1$ starts inside request $i$, and then it is at most $\ell_i$
+cells long. So the head on $w$ travels at most $\mu+2\sum_i\ell_i$ cells, and copying costs $O(\sum_i\ell_i)$ more. Sort the
+answers, tagged with their numbers, back by request number ($O((\sum_i\ell_i+r\log(r+2))\log(r+2))$ steps).
+\end{proof}
+
+\subsection{The parity time hierarchy}
+
+\begin{theorem}[Parity time hierarchy]\label{thm:hier}
+Let $t$ be time constructible with $t(n)\ge n$. There is a language in $\parTIME(t)$ that is not in $\parTIME(t')$ for any $t'$
+with $t'(n)=o(t(n))$.
+\end{theorem}
+\begin{proof}
+\emph{Transcripts.} Let $M$ be a $k$-tape NTM with transition set $\Delta$. A \emph{transcript} is a word over $\Delta$. Fix a
+machine $U$ with a fixed number of tapes that, given the code $\langle M\rangle$ and input $x$, (i) writes nondeterministically a
+transcript $\delta_1\delta_2\cdots\delta_\ell$, one transition at a time, each as a fixed-length binary code (invalid codes
+reject), stopping after the first transition that enters a halting state; (ii) checks that $\delta_1$ starts in the initial state
+of $M$ and that the states in consecutive transitions agree, and for $i=1,\dots,k$ deterministically checks tape $i$: it replays
+tape $i$ on a work tape, checking for every $j$ that $\delta_j$ reads the symbol currently under the replayed head; (iii) accepts
+iff all checks pass and $\delta_\ell$ enters an accepting state. Each computation of $M$ on $x$ has exactly one transcript, and a
+transcript passes all checks iff it is the transcript of a computation; the checks are deterministic. Hence the accepting
+computations of $U$ on $(\langle M\rangle,x)$ are in bijection with those of $M$ on $x$, and if $M$ runs in time $t_M$, then every
+computation of $U$ that writes the transcript of a computation of $M$ halts within $c_M\,t_M(n)$ steps, where $c_M$ depends only on
+$\langle M\rangle$ (this is the two-tape simulation of Book, Greibach and Wegbreit, which is parsimonious). A computation of $U$
+that writes an invalid transcript may run longer, but it never accepts.
+
+\emph{Diagonalisation.} Let $D$ be the NTM that on input $z$ of length $n$ first writes $t(n)$ on a clock tape and then branches
+into two computations. The first accepts at once. The second reads $z$ as $\langle M\rangle 0 1^j$ (rejecting if $z$ has no such
+form), runs $U$ on $(\langle M\rangle,z)$ and decrements the clock once per step of $U$ (Lemma~\ref{lem:countdown}); it rejects on
+underflow and otherwise accepts iff $U$ accepts. $D$ runs in time $O(t)$. Let $M$ run in time $t'=o(t)$. For all large $j$, on
+$z=\langle M\rangle01^j$ every computation of $U$ on a valid transcript ends before the clock, and every other one rejects (by a
+check of $U$ or by the clock), so $\acc(D,z)=1+\acc(M,z)$, which has the other parity.
+Thus $L_\oplus(D)$ differs from $L_\oplus(M)$ at $z$. Every language of $\parTIME(t')$ is $L_\oplus(M)$ for such an $M$.
+\end{proof}
+
+%======================================================================
+\section{The external inputs H1--H12}\label{sec:hyp}
+
+Paths are relative to the folder \src{preprints/} of the public repository \src{github.com/openai/math}; Lean paths are relative to its
+folder \src{lean/} (commit \texttt{3344da5}). Write
+\src{EG/} for \src{Euclidean-geometry-in-the-asymptotic-spectrum-of-tensors-November-24-2026/build/},
+\src{CL/} for \src{Circuit-lower-bounds-for-Hamiltonian-cycle-and-the-permanent-November-24-2026/build/} and
+\src{T/} for \src{The-logarithmic-exponent-of-integer-multiplication-on-tapes-November-24-2026/build/}.
+Each hypothesis is our restatement of the cited lines: formulas are copied, the prose is ours. Where the source says
+``rational'' or ``Weak ETH'' and we use characteristic $2$, the change is stated in the hypothesis itself.
+These are research inputs, not axioms: Theorem~\ref{thm:main} is exactly as strong as H1--H12.
+
+\subsection{Spectral prices and ports}
+
+\begin{hyp}[EG Definition \texttt{def:ports} and its discussion; \src{EG/port-graphs.tex} l.11--55]\label{H1}
+Let $G$ be a symmetric stochastic matrix on a finite set $V$, and $x=(x_i)_{i\in V}$ points of a spectral space over a field
+$\F$. Put
+\[
+ \mathcal E_G(x)=\frac1{|V|}\sum_{i,j\in V}G_{ij}d(x_i,x_j)^2,\qquad
+ \mathcal V(x)=\frac1{|V|^2}\sum_{i,j\in V}d(x_i,x_j)^2 .
+\]
+(a) \emph{Definition.} $\F$ \emph{has ports} if there are a family of regular symmetric multigraphs of unbounded order and
+bounded degree and a constant $\gamma$ such that $\mathcal V(x)\le\gamma\,\mathcal E_G(x)$ for every graph of the family (with
+$G$ its normalized adjacency matrix, a diagonal arc keeping the walk in place) and every assignment $x$ into a spectral space
+over $\F$ (l.20--29).
+(b) Whether $\F$ has ports depends only on the characteristic of $\F$ (l.30--31).
+(c) In (a) one may test either finite spectral points or complete $\mathrm{CAT}(0)$ spectral spaces (l.32--33).
+(d) If $\F$ has ports, the family may be taken connected, loop-free, of one fixed power-of-two degree and of arbitrarily large
+power-of-two orders (l.33--55).
+\end{hyp}
+We say \emph{characteristic $2$ has ports} if $\F_2$ has ports; by (b) this is the same for every field of characteristic $2$.
+
+\begin{hyp}[The class $\X_2$; \src{CL/prices.tex} l.107--113 and l.129--149, and \src{T/graphs.tex} l.14--50]\label{H2}
+Let $\X_2$ be the class of complete $\mathrm{CAT}(0)$ (Hadamard) spaces that carry compatible spectral prices for tensors over a
+field of characteristic $2$ on all finite subsets, with distance equal to the price of a one-bit wire; it depends only on the
+characteristic (CL l.129--141). A class of metric spaces \emph{admits ports} if regular multigraphs of a single positive degree
+and unbounded orders satisfy one inequality $\E\,d(x_U,x_V)^2\le C\,\E\,d(x_I,x_J)^2$ ($U,V$ independent uniform vertices,
+$(I,J)$ a uniform directed arc, diagonal arcs allowed) for all placements in all spaces of the class; for $\X_\chi$ this is
+precisely port admission by the characteristic $\chi$ in the sense of H1 (CL l.142--149). Moreover (CL l.107--113, where
+the comparison is stated without restriction on the field: applying the local coefficient tables of a network to the product of
+its wire tensors supplies the output by restriction; T l.40--50 states it for rational tensors; OpenAI's Lean library states it
+for every field as \texttt{wire\_cost\_le}, \src{OAI/Computability/MultitapeWeakETH/Geometry.lean} l.12): if the vertices of a
+tensor network over $\F_2$ with edge widths $q_e$ are placed at
+points $x_u$ of a member of $\X_2$, then any product of equality wires obtained from the network by local linear maps at the
+vertices has price at most $\sum_{e=uv}q_e\,d(x_u,x_v)$, and $r$ copies cost $r$ times this.
+\end{hyp}
+
+\begin{remark}\label{rem:noports}
+If characteristic $2$ has no ports, then $\X_2$ is a class of Hadamard spaces without ports: given any family of regular graphs
+of one degree and any $C$, H1(a) fails for it with $\gamma=C$ at some assignment into a spectral space over $\F_2$; by H1(c)
+this assignment can be taken in a complete $\mathrm{CAT}(0)$ spectral space, i.e.\ in a member of $\X_2$, and
+$\mathcal E_G=\E\,d(x_I,x_J)^2$, $\mathcal V=\E\,d(x_U,x_V)^2$.
+\end{remark}
+
+\subsection{Inputs for Case 1}
+
+\begin{hyp}[CL Theorem \texttt{thm:loggraph}; \src{CL/entropy.tex} l.54--66]\label{H3}
+Let $P$ be the walk on a $d$-regular multigraph with $n\ge2$ vertices, $d\ge1$, and uniform stationary law $\pi$. If
+$\mathcal V_\pi(x)\le\beta\,\mathcal E_P(x)$ for every placement $x$ in every member of a class of Hadamard spaces without ports,
+then $\beta\ge c\,\log n/\log(d+1)$ for an absolute constant $c>0$. (Here $\mathcal E_P(x)=\sum_{i,j}\pi_iP_{ij}d(x_i,x_j)^2$
+and $\mathcal V_\pi(x)=\sum_{i,j}\pi_i\pi_jd(x_i,x_j)^2$, l.14--19.)
+\end{hyp}
+
+\begin{hyp}[T Lemma \texttt{lem:geometry} in characteristic $2$; \src{T/lower.tex} l.42--116]\label{H4}
+Assume characteristic $2$ has no ports. Let a multigraph have $P_0$ vertices, maximum degree $D$ and edge widths at most $Db$;
+let $P$ be the least power of two $\ge P_0$. For all sufficiently large $P_0$ there are a placement $u\mapsto x_u$ in some
+$X\in\X_2$ and a point $o\in X$ such that, with $S=\sum_{e=uv}q_e\,d(x_u,x_v)$ and constants depending only on $D$,
+\begin{align}
+ S &\le C_D\,bP/\sqrt{\log P}, \label{eq:short}\\
+ \E_{a\in A,\,t\in B}\bigl(d(x_a,x_t)-1\bigr)^2 &\le C_D\,P/(N\log P), \label{eq:term}\\
+ \textstyle\sum_v h_v\,d(x_v,o) &\le \tfrac1{\sqrt2}\textstyle\sum_vh_v+C_D\bigl(\tfrac{P}{\log P}\sum_vh_v^2\bigr)^{1/2}, \label{eq:central}
+\end{align}
+for any two lists $A,B$ of $N$ vertices, distinct within each list (independent uniform draws), and all weights $h_v\ge0$.\\
+\emph{Change from the source:} T assumes Weak ETH and the class $\X$ for rational tensors. Its proof uses Weak ETH only to
+conclude, via T Theorem \texttt{thm:noports}, that $\X$ is a class of Hadamard spaces without ports (l.70--73), and then applies
+H3; everything else (expander padding, scalar Poincar\'e inequality, barycenter in a $\mathrm{CAT}(0)$ space, Cauchy--Schwarz)
+is field-free. We replace that step by Remark~\ref{rem:noports}. This transfer was audited by two independent readings of T's proof.
+\end{hyp}
+
+\begin{hyp}[T Lemma \texttt{lem:entropy} over $\F_2$; \src{T/lower.tex} l.130--202]\label{H5}
+Let a tensor network over $\F_2$ have pairs of vertices $(a_j,t_j)$, $1\le j\le L$, and let $W=(W_1,\dots,W_L)$ be a random
+binary vector. Suppose that for each $w$ in the support of $W$, pins $C_v(w)$ at the vertices make the contracted tensor over
+$\F_2$ equal to
+\[
+ \bigotimes_{j=1}^L\bigl((e_{w_j})_{a_j}\otimes(e_{w_j})_{t_j}\bigr).
+\]
+Then for every placement in $X\in\X_2$, every $o\in X$ and every ordering of the coordinates,
+\begin{equation}\label{eq:entropy}
+ \sum_{j=1}^{L}H(W_j\mid W_1,\dots,W_{j-1})\,d(x_{a_j},x_{t_j})\ \le\ S+\sum_vH(C_v(W))\,d(o,x_v).
+\end{equation}
+\emph{Change from the source:} ``over the rationals'' and ``nonzero scalar multiple'' become ``over $\F_2$'' and ``equal to''
+(the only nonzero scalar of $\F_2$ is $1$). In the proof (l.147--202) the field enters only through the price comparison of H2
+and the division by $c_*=\prod_wc(w)^{rp(w)}$, which is $1$; the tensor placed at $o$ is the $0/1$ indicator of the joint pin
+tuples of the selected arrays, and distinct colour tuples give distinct arrays and hence distinct joint pin tuples, so no
+coefficient is a sum of two ones. This transfer was audited by two independent readings of T's proof. Moreover OpenAI's Lean library states this lemma for every field: \texttt{paired\_entropy\_at\_placement} and
+\texttt{paired\_entropy} (\src{OAI/Computability/MultitapeWeakETH/EntropyPrice.lean} l.164 and l.125, under \texttt{[Field K]}); with
+$K=\F_2$ they give H5. This was compared at the level of statements; we did not build these files.
+\end{hyp}
+
+\subsection{Inputs for Case 2: the compressor of EG}
+
+Throughout this subsection $\F$ is a field; we shall use $\F=\F_2$.
+
+\begin{hyp}[EG Theorem \texttt{thm:conversion}; \src{EG/compressor.tex} l.16--31 and l.36--63]\label{H6}
+Fix a finite set of at least two parties, a multiset $D$ of demand edges and a connected spanning multigraph $S$ of supply edges,
+each edge with distinct endpoints. For integer widths $b=(b_e)_{e\in D}\ge0$ let $W_D(b)$ be the product of identity tensors of
+dimensions $2^{b_e}$ on the edges; define $W_S(c)$ likewise. Give the edges positive rational masses $p_e$ ($e\in D$), $q_e$
+($e\in S$), and put $\|b\|_p^2=\sum_{e\in D}b_e^2/p_e$, $\|c\|_q^2=\sum_{e\in S}c_e^2/q_e$. For a spectral point over $\F$ on the
+parties write $d_e$ for its wire distance on the endpoints of $e$. Let $H\ge0$ and assume that for every such spectral point
+\[
+ \textstyle\sum_{e\in D}p_ed_e^2\le H\sum_{e\in S}q_ed_e^2 .
+\]
+Then for every $H'>H$ and all $b$ there is an ordinary sum identity
+\[
+ W_D(b)=\sum_\alpha\Bigl(\bigotimes_vL_{v,\alpha}\Bigr)W_S(c_\alpha),\qquad \|c_\alpha\|_q^2\le H'\|b\|_p^2+O(1),
+\]
+with the constant independent of $b$. The identities use finitely many scalar parameters $\kappa$ subject to fixed integer
+polynomial equations with a solution in $\F$, and hold over every commutative unital ring with any assignment satisfying them.
+With $M=\max(\{0\}\cup\{b_e\})$, each index $\alpha$ is a fixed number of integers of magnitude $O(M+1)$; admission and supply
+widths are computable in $\mathrm{poly}(\log(2+M))$ bit operations; given $\alpha$ and its incident bit strings, an entry of
+$L_{v,\alpha}$ is zero or a monomial in $\kappa$ of degree $O(M+1)$, with a description computable in time polynomial in $M+2$.
+\end{hyp}
+
+\begin{hyp}[Wire networks and local identities; \src{EG/compressor.tex} l.267--312]\label{H7}
+A \emph{network of the stated form} is: a \emph{base}, a finite indexed directed multigraph with distinct endpoints on every arc
+and with $d$ incoming and $d$ outgoing arcs at every vertex, $d$ a power of two, the slots at each vertex numbered separately in
+each direction; a displacement $\tau_e$ for each base arc $e:x\to y$ in a binary vector space of \emph{lanes}; positions $(x,g)$
+($x$ a base vertex, $g$ a lane); actual arcs $(x,g)\to(y,g+\tau_e)$, each of an integer width $b\ge0$ that may vary with the
+lane; an actual arc of width $b$ equates two strings of $b$ bits; with $P$ positions there are $Pd$ actual arcs, each of mass
+$p=1/(Pd)$, and $\LL=\sum_{\text{actual}}b_e^2/p$, so $\sum b_e\le\sqrt\LL$. Arbitrary vertex factors sit at the positions.
+A \emph{substep} gives an identity
+\begin{equation}\label{eq:kernel}
+ W((a_u)_u)=\sum_\iota\sum_z\prod_vK_{v,\iota}\bigl((a_u)_{\pi_\iota(u)=v},\,z|_v\bigr),
+\end{equation}
+where $W$ is the product of the wire equalities, $a_u$ the incident half-wire indices at $u$, $\iota$ a list of admitted motif
+terms that determines the new topology, widths, the placement $\pi_\iota$ of old positions and the kernels, and $z$ one string
+per new actual arc, used at both of its ends. A kernel consists of local ties, sums over local indices and entries of the maps of
+H6. After multiplication by arbitrary old vertex factors and summation over the $a_u$, every whole old factor belongs to the new
+vertex $\pi_\iota(u)$, with its uncontracted indices. The identities hold in every commutative unital ring satisfying the fixed
+equations.
+\end{hyp}
+
+\begin{hyp}[EG Theorem \texttt{thm:compressor}; \src{EG/compressor.tex} l.314--340, with l.524--527 and l.548--551 of its proof]\label{H8}
+Suppose $\F$ has ports. There are a power-of-two degree $d_0$, an integer $b_0\ge1$, a constant $C_2\ge2$ and finitely many motif
+templates, all fixed, such that every network of the stated form (H7) with $P_0$ positions of degree $d_0$, maximum width $W_0$
+and at least $Tb_0$ lane coordinates, $T\ge1$, has an exact expansion by $T$ blocks of local identities \eqref{eq:kernel},
+ending at degree $d_0$. One finite system of parameter equations, satisfiable in $\F$, serves every network and every $T$. For
+every sequence of admitted terms,
+\begin{equation}\label{eq:compress}
+ \textstyle\sum_{e\ \mathrm{final}}b_e\le\sqrt{\LL_T}\le2^{-T}\bigl(\sqrt{\LL_0}+O(P_0)\bigr).
+\end{equation}
+All intermediate wire and kernel fields have length at most $C_2^T(W_0+1)$. At each final position the recursive expansion of
+its vertex tensor uses at most $C_2^T$ occurrences of vertices, map entries and fields (each initial factor and each map entry
+counted as one unevaluated operation, one occurrence shared by all values of its hidden indices); for fixed arguments a nonzero
+map entry is a monomial of parameter degree at most $C_2^T(W_0+1)$. Moreover (proof, l.524--527): each block consists of a fixed
+number $s_0$ of shrinking substeps (H10) followed by one refresh substep (H11); each shrinking substep divides the number of
+positions by its own fixed $K$, the refresh keeps it, and the product $\kappa_0>2$ of the $K$'s of a block gives
+$P_i=P_0/\kappa_0^{i}$ positions at the start of block $i$; and (proof, l.548--551) once final arc bits and term choices are fixed,
+each final vertex sums only its own hidden indices, because each substep sends each entire old vertex to one new position.
+\emph{Scope.} The expansion is the one built by H9--H11, and all of the above holds for every proper colouring in H9(i), every
+choice of tag offsets that satisfies H9(v), every division of payloads as evenly as possible and either tie rule of the layout:
+EG's proof uses only these properties of the choices.
+\end{hyp}
+
+\begin{hyp}[EG Lemma \texttt{lem:compressor-slots} and the construction in its proof; \src{EG/compressor-appendix.tex} l.9--105]\label{H9}
+Let the current base degree be $d$ (a power of two), $K=2^{2d+1}d$, $Q=3K/4$. A shrinking substep uses the following packing.
+\begin{enumerate}
+\item[(i)] Colour the base greedily in base order with $2d+1$ colours, so that the endpoints of every base arc get distinct
+  colours (l.29, l.99--100).
+\item[(ii)] Split the lane as $(U,h,j,g)$: $U\in\F_2^{2d+1}$ has one bit per colour, $h$ indexes the $d$ outgoing slots, $j$
+  is a tag in a binary vector space of order $J$, $g$ is the remaining lane (l.29--32). A position $(x,U,h,j,g)$ is
+  \emph{thick} if $U_{c(x)}=1$ and \emph{thin} otherwise (l.32--33).
+\item[(iii)] For given $x,j,g$ all thick positions are packed into one new position with base $(x,j)$ and lane $g$; there are
+  $P/K$ new positions. The $K/4$ thick--thick wires of each base arc, for fixed $j,g$ at its source, are concatenated in a common
+  order at both ends into a \emph{bundle} from a packed position $A$ to a packed position $B$. Every other wire has a thin end,
+  taken as $C$, and the other end as $D$; a thin--thin wire is taken in its old direction $C\to D$ (l.39--45).
+\item[(iv)] Each base vertex $x$ has a tag offset $\phi_x$. A thin position $(x,U,h,j,g)$ is assigned to the bundle with source
+  $(x,j+\phi_x,g)$ on the outgoing base arc of slot $h$ at $x$; every wire on which it plays $C$ is assigned to that bundle, as a
+  $CD$ demand, and each bundle receives exactly $Q$ of them (l.47--54).
+\item[(v)] With $L_x=\{0\}\cup\{\tau^{\rm tag}_f: f\text{ leaves }x\}$, the offsets satisfy, at every incidence of a base arc $e$
+  between $x$ (the base of $C$) and $y$ (the base of $D$, $e$ in either direction),
+  $\phi_x\notin\tau^{\rm tag}_e+L_x$ and $\phi_x+\phi_y\notin\tau_e^{\rm tag}+L_x+L_y$; they are chosen greedily in base order,
+  which works for every power of two $J>2d((d+1)+(d+1)^2)$ (l.56--72). Then $A,B$ and $D^*=\pi(D)$ have distinct new bases in each
+  motif, in either layout.
+\item[(vi)] Each of the roles $A,B,D^*$ occurs exactly $dQ$ times at every new position (l.74--85).
+\item[(vii)] Packing, assignment and both choices of image depend on the remaining lane only through the arc translations. The
+  parallel slots of a surviving occurrence are labelled by the original $CD$ arc identifying the motif, the surviving type and the
+  subdivision index; a common deficit is filled by zero-width arcs to the next tag cyclically at the same old base and remaining
+  lane; incoming and outgoing slots are numbered separately by sorting their identifiers, with all remaining lanes expressed
+  relative to the vertex being numbered; widths and term-dependent map entries never enter the identifiers (l.87--97).
+\end{enumerate}
+\end{hyp}
+
+\begin{hyp}[The shrinking substep; \src{EG/compressor.tex} l.344--445]\label{H10}
+With the packing of H9: the payload of each bundle is divided into $Q$ integral pieces as evenly as possible, and each piece is
+paired with one of the $Q$ demands $CD$ assigned to the bundle; the piece is the demand $AB$ of a six-party motif on
+$A,B,C,D,M,N$ (l.361--366). Each motif is expanded by H6 with fixed masses; one term index per motif is chosen (l.374--381). The
+supply groups are $G_1$ (the triangle on $A,C,M$ and the edge $DN$) and $G_2$ (the triangle on $B,C,N$ and the edge $DM$). A single
+layout is chosen for the whole list of terms, retaining the group of smaller total energy with deterministic tie breaking
+(l.388--392). In layout~1 a thick position goes to its packed site, a thin position to the $A$ of its assigned bundle, the $D$ map
+of every motif to $D^*=\pi(D)$, the fresh $M$ to $A$ and the fresh $N$ to $D^*$, so $G_1$ becomes local and the surviving edges
+$BC,BN,CN,DM$ join $B$--$A$, $B$--$D^*$, $A$--$D^*$, $A$--$D^*$; layout~2 interchanges $A,B$ and $M,N$ (l.392--404). Each
+surviving type $e$ gets $m_e=\lfloor pq_e/p'\rfloor$ parallel arcs per occurrence ($p,p'$ the old and new arc masses, $q_e$ the
+relative supply mass of $e$, the output degree taken large enough that $m_e>0$; l.410--412), oriented by its two roles in a fixed order, its payload split as evenly
+as possible among them, and the common deficit is filled with zero-width arcs as in H9(vii); the slots commute with translations of
+the remaining lane (l.405--422). The kernel at a new position concatenates and slices the thick--thick fields identically at both
+ends, puts the maps of $C,D$ at the images of these old endpoints and all other maps by the layout, and sums each absorbed wire
+inside its new position; a new vertex receives boundedly many old positions, maps and fields, each field of length
+$O_{d,d'}(W+1)$; concatenations and slices are bounded lists of field identifiers, offsets and lengths (l.431--445).
+\end{hyp}
+
+\begin{hyp}[The refresh substep; \src{EG/compressor.tex} l.447--509]\label{H11}
+The last shrinking substep of a block has output degree $D$, an order of the port family of H1(d), with port graph of degree $d_H$.
+The refresh consumes $\log_2D$ lane coordinates as a port index $j$, included in the new base label; for each old base vertex
+$x$ and remaining lane $g$ the $D$ ports form a block. An old base arc $e:x\to y$ maps the ports of a source block bijectively to
+those of one destination block, by translation of port and remaining lane; these $D$ wires are concatenated in source-port order
+into one external wire from the port numbered by the outgoing slot of $e$ at $x$ to the port numbered by its incoming slot at
+$y$; every port has exactly one outgoing and one incoming external arc. Inside each block every old half-wire is tied to its
+segment of the external wire at its designated port; the ties are supplied by the port-graph arcs of the block through one H6
+term per block. Deficits are padded by zero-width arcs from each port to the next in cyclic order; all slots commute with
+translations of the remaining lane; one old position stays at each new position.
+\end{hyp}
+
+\begin{hyp}[EG Lemma \texttt{lem:descriptors}; \src{EG/compressor.tex} l.561--666]\label{H12}
+Under the hypotheses of H8 (with $n\ge P_0$, $W_0\le n^{O(1)}$, $T=O(\log n)$) there is a nondeterministic RAM procedure whose
+successful paths are in bijection with the sequences of admissible term indices and which constructs at every level: for each
+actual incident slot its width and both endpoint slots (base slots give the lane displacements); for each new position the list
+of its immediate old positions, its local maps with their term data, and the slices, ties and summed fields of its kernel
+\eqref{eq:kernel}. In its proof (l.598--660): term indices are guessed in a fixed order with fixed-length binary encodings,
+out-of-range or inadmissible codes are rejected and every admitted index occurs once; the two candidate surviving energies are
+accumulated and the layout is chosen by the prescribed tie rule, the common mass cancelling and the scores being sums of squared
+integer widths with fixed rational coefficients; bounded lists are ordered by identifiers whose lane coordinates are written
+relative to the bundle's source lane or the numbered position (by xor), so that the base records computed at lane $0$ are the base
+records for every lane; a refresh lists, for each old base arc and source block, its $D$ actual arcs in source-port order.
+\end{hyp}
+
+\begin{remark}[Which hypotheses are used where]
+Case~1 uses H1(a)--(c), H2, H3 (through H4), H4 and H5. Case~2 uses H1(a),(b),(d) and H6--H12. Lemma~\ref{lem:locality} uses
+only the constructions in H9--H12, not their energy estimates. The energy estimate is used only through \eqref{eq:compress}.
+\end{remark}
+
+%======================================================================
+\section{Case 1: characteristic 2 has no ports}\label{sec:case1}
+
+Throughout this section assume that characteristic $2$ has no ports.
+
+\subsection{Partial transposition over $\F_2$}
+A \emph{tensor network over $\F_2$} is a multigraph whose edges carry bit strings of given widths, whose vertices carry tables
+($\F_2$-valued functions of the incident strings and of the external indices at the vertex); the contraction fixes the external
+indices, multiplies the tables and sums over all internal strings in $\F_2$. Edges between the same two vertices form a
+\emph{bundle}.
+
+\begin{proposition}[T Theorem \texttt{thm:table} over $\F_2$]\label{prop:table}
+Fix $0\le\rho<1-1/\sqrt2$ and $D\ge1$. Let a tensor network over $\F_2$ have maximum degree $D$ in edge bundles, each bundle of
+width at most $DN$, and $N$ distinct row terminals $A_1,\dots,A_N$ and $N$ distinct column terminals $B_1,\dots,B_N$, each
+carrying one external index in $\{0,1\}^N$, and no other external index. Suppose that for a set $\mathcal G$ of at least
+$2^{(1-\rho)N^2}$ matrices $X\in\{0,1\}^{N\times N}$, fixing the external index at $A_i$ to row $i$ of $X$ ($1\le i\le N$) makes
+the contraction, as a tensor in the column indices, equal to $\bigotimes_k e_{\mathrm{col}_k(X)}$ at $B_k$. Then the network has
+$P_0\ge c_{D,\rho}N\sqrt{\log N}$ vertices for all $N\ge N_{D,\rho}$.
+\end{proposition}
+\begin{proof}
+This is the proof of T (l.208--230), with H4 and H5 in place of their sources. Write $n=N^2$ and suppose $P_0\le N\sqrt{\log N}$;
+also $P_0\ge2N$. Modify each $A_i$: its table now takes a \emph{pin} $c\in\{0,1\}^N$, feeds $c$ into the network as the old external
+index, and exposes $c$ again on a fresh external index of $N$ one-bit slots at $A_i$. Let $W$ be uniform on $\mathcal G$, viewed as
+$L=n$ bits $W_{ik}$; pins are $C_{A_i}(W)=$ row $i$ of $W$, and no other vertex has a pin. For $w\in\mathcal G$ the pinned network
+contracts to $\bigotimes_{i,k}\bigl((e_{w_{ik}})_{A_i}\otimes(e_{w_{ik}})_{B_k}\bigr)$ (slot $k$ at $A_i$, slot $i$ at $B_k$),
+which is the hypothesis of H5 with pairs $(a_{(i,k)},t_{(i,k)})=(A_i,B_k)$. Take the placement and $o$ of H4 with $b=N$ and the
+lists $A=(A_i)$, $B=(B_k)$. Since $P\le2P_0=O(N\sqrt{\log N})$, \eqref{eq:term} and Cauchy--Schwarz give
+$\sum_{i,k}|d(x_{A_i},x_{B_k})-1|\le n\,(C_DP/(N\log P))^{1/2}=o(n)$; as conditional entropies lie in $[0,1]$, the left side of
+\eqref{eq:entropy} is at least $H(W)-o(n)\ge(1-\rho)n-o(n)$ by the chain rule. On the right, \eqref{eq:short} gives
+$S=O_D(NP/\sqrt{\log P})$, and \eqref{eq:central} with $h_{A_i}=H(\text{row }i)\le N$, $h_v=0$ otherwise
+($\sum h_v\le n$, $\sum h_v^2\le N^3$) gives at most $n/\sqrt2+C_D(N^4/\sqrt{\log N})^{1/2}=n/\sqrt2+o(n)$. Hence
+$(1-\rho-1/\sqrt2)\,n\le O_D(NP_0/\sqrt{\log P_0})+o(n)$, and since $1-\rho-1/\sqrt2>0$ this forces $P_0=\Omega_{D,\rho}(N\sqrt{\log N})$.
+\end{proof}
+
+\subsection{Transposition on tapes}
+Let $\TRANS$ be the set of strings $w\in\{0,1\}^{2N^2}$, $N\ge1$, such that $w=XY$ with $X,Y\in\{0,1\}^{N\times N}$ in row-major
+order and $Y=X^{T}$.
+
+\begin{proposition}\label{prop:trans}
+Assume characteristic $2$ has no ports. For every deterministic multitape machine $M$ deciding $\TRANS$ there are $c_M>0$ and
+$N_M$ such that for every $N\ge N_M$ some input $(X,X^T)$ makes $M$ run at least $c_M\,N^2\sqrt{\log N}$ steps.
+\end{proposition}
+\begin{proof}
+This follows T Theorem \texttt{thm:transpose} (\src{T/lower.tex} l.236--342) with two changes: the field is $\F_2$, and
+$M$ decides a language rather than writing an output. Fix $N$ and let $T$ be the maximum running time of $M$ on the inputs
+$(X,X^T)$; assume $T\le N^2\sqrt{\log N}$ (otherwise we are done). The input occupies cells $1,\dots,2N^2$ of tape $1$. Divide every
+tape into \emph{blocks} of $N$ cells, block $j$ being the cells $[1+jN,1+(j+1)N)$ (cell $0$ is a block of its own); so row $i$ of
+$X$ is block $i$ and row $k$ of $Y$ is block $N+k$ of tape $1$. Divide time into \emph{epochs} of $N$ steps, freezing a halted
+configuration, up to the first multiple of $N$ that is $\ge T$.
+
+\emph{Records.} The record of a run is the list of the blocks scanned by each head at each epoch boundary. A head moves at most
+one block per epoch, so there are at most $2^{O_M(1+T/N)}$ records. Let $R$ be the record of the largest number of runs on inputs
+$(X,X^T)$ and $\mathcal G_R$ the set of those $X$: $|\mathcal G_R|\ge2^{N^2-O_M(1+T/N)}\ge2^{(1-\rho)N^2}$ with $\rho=1/4$, for
+$N\ge N_M$, because $T/N\le N\sqrt{\log N}=o(N^2)$.
+
+\emph{Network.} One vertex per epoch. During an epoch a head reaches only its starting block and the two neighbours. For each such
+block carry its contents after the epoch to the next epoch whose window contains it; pass the state and the in-block offsets of
+all heads to the next epoch. Tables: the $0/1$ indicator that the epoch's incoming data, run for $N$ steps by $M$, give the outgoing
+data and the block changes prescribed by $R$. Feed each block its initial contents at its first use: blocks $i$ and $N+k$ of tape~1
+receive them from terminals $A_i$ and $B_k$; all other initial contents ($\vdash$, blanks) are fixed in the tables. At the last
+use, sum over the final contents. The last epoch's table also requires an accepting halted state. Block wires have width
+$O_M(N)$, state wires $O_M(\log N)$, the maximum degree in bundles is $O_M(1)$, and there are $O_M(N+1+T/N)$ vertices.
+
+\emph{Exactness over $\F_2$.} Fix $X$ at the $A_i$ and $Y$ at the $B_k$. A labelling of the internal edges with all tables
+equal to $1$ is a sequence of $N$-step runs whose boundary data agree; concatenated in time order they form a run of $M$ on
+$(X,Y)$ that follows $R$ and accepts by time $T$. Conversely the run of $M$ on $(X,Y)$, if it follows $R$ and accepts by $T$,
+gives such a labelling. Since $M$ is deterministic, each epoch table is a function of its inputs, and by induction over epochs in
+time order there is at most one such labelling. Hence the contraction equals $[M$ accepts $(X,Y)$ by $T$ with record $R]\in\{0,1\}$:
+no cancellation modulo~$2$ can occur. For $X\in\mathcal G_R$ it is $1$ at $Y=X^T$ and $0$ at every other $Y$ ($M$ rejects them).
+Since row $k$ of $X^T$ is column $k$ of $X$, the hypothesis of Proposition~\ref{prop:table} holds with $D=O_M(1)$. Therefore
+$O_M(N+1+T/N)\ge c\,N\sqrt{\log N}$, so $T\ge c'_MN^2\sqrt{\log N}$ for large $N$.
+\end{proof}
+
+\begin{corollary}\label{cor:case1}
+If characteristic $2$ has no ports, then $\NTIME[n;\lfloor\log n\rfloor+1]\not\subseteq\DTIME(n(\log n)^{\sigma})$ for every $\sigma<1/2$.
+\end{corollary}
+\begin{proof}
+The complement $\overline{\TRANS}$ is in $\NTIME[n;\lfloor\log n\rfloor+1]$: on input $w$ of length $n$, count $n$ in binary
+(Lemma~\ref{lem:countdown}), compute $N=\sqrt{n/2}$ if $n\ge2$ and it is an integer (otherwise accept; $\operatorname{poly}(\log n)$ steps of
+arithmetic), read the guess $y$ as a pair $(i,k)$ of $\lceil\log N\rceil$-bit numbers (reject if $i\ge N$ or $k\ge N$), compute
+the positions $iN+k$ and $N^2+kN+i$, fetch the two bits by one scan with countdowns (Lemma~\ref{lem:batch}), and accept iff they
+differ. This takes $O(n)$ steps and $2\lceil\log N\rceil\le\lfloor\log n\rfloor+1$ guess bits, and $w\notin\TRANS$ iff some guess accepts.
+If $\NTIME[n;\lfloor\log n\rfloor+1]\subseteq\DTIME(n(\log n)^\sigma)$ then $\TRANS\in\DTIME(n(\log n)^\sigma)$, and a machine running in time
+$O(n(\log n)^\sigma)=o(n\sqrt{\log n})$ contradicts Proposition~\ref{prop:trans} at $n=2N^2$.
+\end{proof}
+
+%======================================================================
+\section{Case 2: characteristic 2 has ports}\label{sec:case2}
+
+Throughout this section assume that characteristic $2$ has ports, i.e.\ $\F_2$ has ports. Apply H8 with $\F=\F_2$ and fix, once
+and for all, its constants $d_0,b_0,C_2$, the block structure ($s_0$, the degrees chosen in each block, $\kappa_0$), the port family
+of H1(d), the finitely many templates and a solution $\kappa\in\F_2$ of the parameter equations. These are finite data; the machine
+built below has them hardwired. Put $c_2=\lceil\log C_2\rceil$ and
+\[
+  s=2^{-\lceil\log(64(1+b_0+c_2))\rceil},\qquad\text{so}\qquad 0<s\le\frac{1}{64(1+b_0+c_2)}.
+\]
+
+\begin{lemma}[Lemma P]\label{lem:P}
+Let $A\in\parTIME(n^2)$. For $n\ge n_M$ (a constant fixed below) put $t=n^2$, $\lambda=\lceil\log t\rceil$,
+$p=\lfloor\log\lambda\rfloor$, $T=\lfloor sp\rfloor$,
+\[
+ m=(p+1)^6\,\lceil t/2^{T}\rceil\qquad\text{and}\qquad k=\lceil\log t\rceil ,
+\]
+and for $n<n_M$ put $m=k=1$ and $\lambda=2$. Then $A\in\oplus[m]\cdot\forall[k]\cdot\DTIME(m\log\lambda)$. Moreover
+$t\lambda^{-s}(\log\lambda)^6\le m\le2^9\,t\lambda^{-s}(\log\lambda)^6$ for large $n$.
+\end{lemma}
+(The bounds on $m$: $2^{-T}\ge2^{-sp}\ge\lambda^{-s}$ and $p+1>\log\lambda$; and $2^{-T}\le4\lambda^{-s}$ by \eqref{eq:p3} below,
+$p+1\le2\log\lambda$. We use this $m$ rather than $\lceil t\lambda^{-s}(\log\lambda)^6\rceil$ because it is an integer function of $n$
+computable by integer arithmetic.)
+
+The rest of this section proves Lemma~\ref{lem:P}. Fix an NTM $M$ with $r$ tapes and an integer $a_M$ such that $M$ runs in time
+$a_Mt$ and $x\in A\iff\acc(M,x)$ is odd. Constants written $O_M(\cdot)$ or $c_M$ may depend on $M$ and on the fixed data above. It
+suffices to treat $n\ge n_M$ for a constant $n_M$: for the finitely many shorter inputs the verifier accepts iff $u=0^m$ and
+$x\in A$ (a finite table), which gives the right parity.
+
+\subsection{Parameters}\label{subsec:params}
+Put $p=\lfloor\log\lambda\rfloor$ and
+\[
+ B=2^{\lfloor p/2\rfloor},\qquad h=\lfloor 19p/2\rfloor,\qquad N=2^h,\qquad b=BN,\qquad T=\lfloor sp\rfloor,\qquad
+ I=\lceil a_M2^{\lambda}/b\rceil .
+\]
+$B$ is the \emph{small block} length and the \emph{small interval} length, $N$ the number of lanes, $b$ the \emph{big block} and
+\emph{big interval} length, $T$ the number of compressor blocks and $I$ the number of big intervals. For $n\ge n_M$:
+\begin{align}
+ &T\ge1,\qquad \lambda^{1/2}/4\le B\le\lambda^{1/2},\qquad Ib\ge a_Mt,\qquad I\,b\le 4a_Mt, \label{eq:p1}\\
+ &h-b_0T\ \ge\ \tfrac{19}{2}p-1-\tfrac{p}{64}\ \ge\ 9p,\qquad\text{so}\quad 2^{h-b_0T}\ge(\lambda/2)^9, \label{eq:p2}\\
+ &C_2^{T}\le2^{c_2sp}\le\lambda^{c_2s}\le\lambda^{1/64},\qquad 2^{-T}\le2^{1-sp}\le4\lambda^{-s}. \label{eq:p3}
+\end{align}
+(For \eqref{eq:p2}: $b_0T\le b_0sp\le p/64$. For \eqref{eq:p3}: $c_2s\le1/64$ and $p\ge\log\lambda-1$.)
+
+\subsection{Normal form of $M$ and skeletons}\label{subsec:normal}
+Give every step of $M$ a \emph{transition code} in $\{0,1\}^{e_M}$, with exactly one valid code for each transition available in
+the current state and scanned tuple. In a halting configuration exactly one code is valid, and it leaves the configuration
+unchanged. A \emph{run} is a sequence of $\tau=Ib$ valid codes together with the configurations they produce. Each computation of
+$M$ on $x$ (length $\le a_Mt\le\tau$) extends to exactly one run, and the run ends in an accepting state iff the computation
+accepts. So $\acc(M,x)$ equals the number of accepting runs.
+
+For the network we index tape cells by $\mathbb Z$ and let negative cells hold blanks initially. By the endmarker convention no
+run moves a head to a negative cell; this is how skeletons that ``leave the tape'' are handled: the network below is
+defined for \emph{every} skeleton, and for a skeleton that a run cannot follow it contracts to $0$.
+
+\emph{Small block} $j\in\mathbb Z$ of a tape is the cells $[jB,(j+1)B)$; \emph{big block} $Q$ is the small blocks
+$[QN,(Q+1)N)$. \emph{Small interval} $i\in[0,IN)$ is the steps $[iB,(i+1)B)$; \emph{big interval} $\iota\in[0,I)$ is the small
+intervals $[\iota N,(\iota+1)N)$. In $B$ steps a head moves at most $B$ cells, so its small-block index changes by
+$\sigma_\rho(i)\in\{-1,0,1\}$ over small interval $i$ on tape $\rho$. The \emph{skeleton} of a run is
+$\sigma=(\sigma_\rho(i))\in\{-1,0,1\}^{rIN}$. Put $\beta_\rho(i)=\sum_{i'<i}\sigma_\rho(i')$, the small block of head $\rho$ at
+the start of small interval $i$. During small interval $i$ head $\rho$ stays in the \emph{window}
+$\beta_\rho(i)+\{-1,0,1\}$.
+
+\begin{lemma}[Ownership]\label{lem:own}
+Let $q_\rho(\iota)=\lfloor\beta_\rho(\iota N)/N\rfloor$. Every small block in a window of a small interval of big interval
+$\iota$ on tape $\rho$ lies in big block $q_\rho(\iota)-1$, $q_\rho(\iota)$ or $q_\rho(\iota)+1$.
+\end{lemma}
+\begin{proof}
+Write $\beta_\rho(\iota N)=qN+\varrho$ with $0\le\varrho<N$. For $0\le g<N$, $|\beta_\rho(\iota N+g)-\beta_\rho(\iota N)|\le g$,
+so the window of small interval $\iota N+g$ lies in $[qN+\varrho-N,\,qN+\varrho+N]\subseteq[(q-1)N,(q+2)N-1]$.
+\end{proof}
+We say $\iota$ \emph{owns} big blocks $q_\rho(\iota)+\delta$, $\delta\in\{-1,0,1\}$, on tape $\rho$. For a tape $\rho$ and a big
+block $Q$, its \emph{owners} are the $\iota$ that own it, in increasing order.
+
+\subsection{The network $N_{x,\sigma}$}\label{subsec:network}
+Fix $x$ and any $\sigma\in\{-1,0,1\}^{rIN}$. All base arcs below have displacement $0$ unless stated. Lanes are $\F_2^h$; we
+identify a lane $g$ with an integer in $[0,N)$.
+
+\emph{(a) Interval tables.} One base vertex $F(\iota)$ per big interval; its position at lane $g$ is the small interval
+$i=\iota N+g$. Its incident strings are: the \emph{state} in and out (state of $M$ and the offsets of all heads inside their
+small blocks, $O_M(\log B)$ bits), and for each tape $\rho$ and $\delta\in\{-1,0,1\}$ the \emph{content} in and out of small block
+$\beta_\rho(i)+\delta$ ($B\lceil\log|\Gamma|\rceil$ bits). Its factor $\Phi_i$ is the number modulo $2$ of code strings in
+$(\{0,1\}^{e_M})^B$ that are valid at every step and lead from the incoming configuration restricted to the windows to the
+outgoing one, with the block changes $\sigma_\rho(i)$.
+
+\emph{(b) Ports and owner links.} For each $\iota,\rho,\delta$ there are base vertices $\mathrm{In}(\iota,\rho,\delta)$ and
+$\mathrm{Out}(\iota,\rho,\delta)$; their lane $g$ carries small block $(q_\rho(\iota)+\delta)N+g$. For consecutive owners
+$\iota_a<\iota_{a+1}$ of a big block $Q=q_\rho(\iota_a)+\delta=q_\rho(\iota_{a+1})+\delta'$ there is a base arc
+$\mathrm{Out}(\iota_a,\rho,\delta)\to\mathrm{In}(\iota_{a+1},\rho,\delta')$ (lane $g$ to lane $g$). At the first owner the
+factor of $\mathrm{In}$ at lane $g$ forces its outgoing string to be the initial contents of small block $QN+g$ (from $x$,
+$\vdash$, blanks); otherwise it ties outgoing to incoming. At the last owner $\mathrm{Out}$ has no outgoing link and factor $1$
+(its incoming string is summed).
+
+\emph{(c) The access permutation.} Fix $\iota,\rho$ and write $q=q_\rho(\iota)$. The \emph{sources} are $\mathrm{In}(\delta)$ at
+lane $g$ and the content output of window $\delta$ of small interval $\iota N+g$; the \emph{destinations} are
+$\mathrm{Out}(\delta)$ at lane $g$ and the content input of window $\delta$ of small interval $\iota N+g$
+($\delta\in\{-1,0,1\}$, $g\in[0,N)$). For each small block $Z\in[(q-1)N,(q+2)N)$ write $Z=(q+\delta_Z)N+g_Z$ and list in
+increasing $g$ the pairs $(g_1,\delta_1),\dots,(g_a,\delta_a)$ with $\beta_\rho(\iota N+g_c)+\delta_c=Z$. Send
+$\mathrm{In}(\delta_Z)$ at $g_Z$ to the input $(g_1,\delta_1)$, the output $(g_c,\delta_c)$ to the input $(g_{c+1},\delta_{c+1})$,
+and the output $(g_a,\delta_a)$ to $\mathrm{Out}(\delta_Z)$ at $g_Z$; if $a=0$ send $\mathrm{In}(\delta_Z)$ at $g_Z$ to
+$\mathrm{Out}(\delta_Z)$ at $g_Z$. By Lemma~\ref{lem:own} every window pair occurs in exactly one list, so this is a bijection
+between the $6N$ sources and the $6N$ destinations. Add two dummy types to make $8$ types; dummies go to dummies and carry zeros.
+An item has an address (type $\pi\in\F_2^3$, lane $g\in\F_2^h$).
+
+\emph{(d) Routing.} Number the $8$ source types and, separately, the $8$ destination types by $\F_2^3$, so that the access bijection is a
+permutation of $\F_2^{h+3}$. Route it by the Bene\v{s} network in butterfly form: position columns $\kappa=0,\dots,2(h+3)-1$, and
+between columns $\kappa$ and $\kappa+1$ a stage of switches pairing the addresses $a,a+e$ for one address bit $e=e(\kappa)$
+(the bits in the order $h+3,\dots,1,\dots,h+3$). The switch settings (straight: $a\mapsto a$; cross: $a\mapsto a+e$) are computed
+by the deterministic looping algorithm (each cycle of the bipartite constraint graph is two-coloured starting with colour $0$ at its
+least-labelled edge, then recursion on the two halves), in time $\mathrm{poly}(N)$. Position column $\kappa$ consists of the base
+vertices $R(\iota,\rho,\kappa,\pi)$, $\pi\in\F_2^3$, with lanes $\F_2^h$. If $e(\kappa)$ is a lane bit $e_j$, there are two base arcs
+$R(\kappa,\pi)\to R(\kappa+1,\pi)$ with displacements $0$ and $e_j$; if it is a type bit $e'_j$, there are base arcs
+$R(\kappa,\pi)\to R(\kappa+1,\pi)$ and $R(\kappa,\pi)\to R(\kappa+1,\pi+e'_j)$, both with displacement $0$. So each position has
+exactly the two out-arcs and the two in-arcs of its switches. The source of type $\pi$ feeds $R(0,\pi)$ and $R(2h+5,\pi)$ feeds the
+destination of type $\pi$, lane to lane. The factor of a position copies the string on its selected in-arc (selected by the
+setting of the stage before it; the source arc in column $0$) to its selected out-arc (by the setting of the stage after it; the
+destination arc in the last column), puts $0$ on its other out-arc, and requires its unselected in-arc to carry $0$. These factors
+depend on $\sigma$ through the settings.
+
+\emph{(e) The state chain.} Per big interval, sources are an external input $E^{\rm in}(\iota)$ (lane $0$; other lanes dummy) and
+the state outputs of the $N$ small intervals; destinations are the state inputs and an external output $E^{\rm out}(\iota)$
+(lane $0$). Map $E^{\rm in}$ at $0$ to the input of $g=0$, the output of $g$ to the input of $g+1$, the output of $N-1$ to
+$E^{\rm out}$ at $0$, and dummies to dummies. Route it by a Bene\v{s} network on $2^{h+1}$ addresses as in (d). Base arcs
+$E^{\rm out}(\iota)\to E^{\rm in}(\iota+1)$. $E^{\rm in}(0)$ forces the initial state (state of $M$, all offsets $0$) at lane $0$;
+$E^{\rm out}(I-1)$ requires an accepting state at lane $0$. Unused lanes are forced to $0$.
+
+\emph{(f) Degree $d_0$.} The base built so far has bounded valence $V_M$. Replace each base vertex $v$ of valence $a$ by a central
+site $v_0$ and a path $v_1,\dots,v_a$; the $c$-th incident arc of $v$ now ends at $v_c$ (same displacement); the path edges
+$v_0$--$v_1$--$\cdots$--$v_a$ carry the tuple of all $a$ incident strings (width $O_M(B)$), each $v_c$ ($c\ge1$) equates its arc's
+string with the $c$-th component and passes the tuple on, and $v_0$ applies the original factor to the tuple, lane by lane. For the
+port vertices $\mathrm{In}$ and $\mathrm{Out}$ the path always has a site for the owner link of (b), also when the link is absent
+(first or last owner), and $E^{\rm in}(0)$ and $E^{\rm out}(I-1)$ likewise have a site for the state link of (e); such a site then
+carries, in place of the link, a width-$0$ arc to the twin introduced below, which counts toward its valence. So $a$, and the path,
+depend neither on $\sigma$ nor on $\iota$. Give every undirected edge both orientations, the string on one and width $0$ on the other. Now every site has in- and
+out-degree equal to its valence $\le3$. Add a twin $v'$ of every site with the same arcs among twins (width $0$, factor $1$) and add
+$d_0-\mathrm{val}(v)$ arcs $v\to v'$ and as many $v'\to v$, of width $0$ ($d_0\ge4$ by H8 and EG l.451). Every base vertex now has
+$d_0$ in- and $d_0$ out-arcs, no arc is a loop, and all new arcs have displacement $0$. Number the slots by a fixed rule.
+This is the padding of EG \src{exact.tex} l.109--115.
+
+The result $N_{x,\sigma}$ is a network of the form of H7: base $B_0$, degree $d_0$, lanes $\F_2^h$ ($h\ge Tb_0$ coordinates by
+\eqref{eq:p2}). Its base vertex set is $[0,I)\times V_{\rm loc}$ for a fixed finite-times-$O(h)$ local set $V_{\rm loc}$ that does
+not depend on $\sigma$ (by the convention for $\mathrm{In}$, $\mathrm{Out}$, $E^{\rm in}(0)$ and $E^{\rm out}(I-1)$ in (f)); only the endpoints of the owner-link slots
+(another owner, or the twin) and the factors depend on $\sigma$ and $x$. Hence
+\begin{equation}\label{eq:size}
+ P_0=I\,|V_{\rm loc}|\,N=O_M(Ih N)=O_M\!\Bigl(\frac{t\log\lambda}{B}\Bigr),\qquad W_0=O_M(B),\qquad
+ \sqrt{\LL_0}\le d_0P_0W_0=O_M(t\log\lambda),
+\end{equation}
+using $IN B=Ib\le4a_Mt$ and $\LL_0=P_0d_0\sum b_e^2\le(P_0d_0W_0)^2$.
+
+\begin{lemma}[Path count]\label{lem:pathcount}
+For every $\sigma\in\{-1,0,1\}^{rIN}$ the contraction $Z_\sigma(x)\in\F_2$ of $N_{x,\sigma}$ equals the number modulo $2$ of
+accepting runs of $M$ on $x$ with skeleton $\sigma$. Hence $\sum_\sigma Z_\sigma(x)=\acc(M,x)\bmod2$.
+\end{lemma}
+\begin{proof}
+Expanding each $\Phi_i$ as a sum over code strings, $Z_\sigma(x)$ is the number modulo $2$ of pairs (labelling of all strings,
+code strings for all small intervals) at which every factor is $1$. Given such a pair, all factors in (b)--(f) are ties or forced
+zeros, so every content input of small interval $i$ equals, by (c), the content output of the previous access to the same small
+block inside the same big interval, or the string entering through the in-port, which by (b) is the last output in the previous
+owner (or passes through owners that do not access the block), or the initial contents; and every state input equals the
+previous state output (e). By Lemma~\ref{lem:own} no small block is accessed in a big interval that does not own its big block.
+By induction over small intervals in time order, the incoming data of interval $i$ are the restriction to the windows of the
+configuration reached after the code strings of intervals $<i$, and the code string of $i$ continues the run by $B$ steps with
+block changes $\sigma(i)$. So the pair defines a run with skeleton $\sigma$, accepting by (e). Conversely an accepting run with
+skeleton $\sigma$ determines its code strings and every string of the network (contents and states at the corresponding times;
+routed and regularization strings are then forced), and this pair has all factors $1$. The two maps are inverse.
+A run has exactly one skeleton, so summing over $\sigma$ gives $\acc(M,x)$ modulo $2$.
+\end{proof}
+
+\subsection{Compression}\label{subsec:compression}
+Apply H8 to $N_{x,\sigma}$ with $T$ blocks, over $\F_2$ with the fixed $\kappa$. Composing the identities \eqref{eq:kernel} of
+all substeps and multiplying by the vertex factors (H7, H8) gives, for every $\sigma$,
+\begin{equation}\label{eq:expansion}
+ Z_\sigma(x)=\sum_{\iota\in\mathrm{Adm}(\sigma)}\ \sum_{z\in\{0,1\}^{\ell(\sigma,\iota)}}\ \prod_{v}W_v(z|_v;\iota),
+\end{equation}
+where $\mathrm{Adm}(\sigma)$ is the set of sequences of admitted terms (one per motif of each shrinking substep and one per block
+of each refresh), $\ell(\sigma,\iota)$ is the total final width, $v$ runs over the final positions and $W_v\in\F_2$ is the
+vertex tensor of $v$: the sum over its own hidden indices of the product of the initial factors and map entries in its
+recursive expansion (H8, last sentence). By \eqref{eq:compress}, \eqref{eq:p3} and \eqref{eq:size},
+\begin{equation}\label{eq:zlen}
+ \ell(\sigma,\iota)\le2^{-T}\bigl(\sqrt{\LL_0}+O(P_0)\bigr)\le c_M\,2^{-T}t\log\lambda\le 4c_M\,t\,\lambda^{-s}\log\lambda .
+\end{equation}
+By H8 and \eqref{eq:p3}, at one final position there are at most $C_2^T$ occurrences, each field has at most
+$C_2^T(W_0+1)$ bits, so the hidden field bits number at most
+\begin{equation}\label{eq:hidden}
+ C_2^{2T}(W_0+1)\le c_M\lambda^{1/2+1/32}=c_M\lambda^{17/32}.
+\end{equation}
+
+\subsection{Levels, panels and addresses}\label{subsec:panels}
+Fix $(\sigma,\iota)$ with $\iota\in\mathrm{Adm}(\sigma)$. The expansion passes through \emph{levels} $\ell=0,1,\dots,\Lambda$,
+$\Lambda=T(s_0+1)$; substep $\ell$ (shrinking or refresh) turns the level-$\ell$ network into the level-$(\ell+1)$ network. Write
+$B_\ell$ for the base at level $\ell$, $d_\ell$ for its degree (a fixed constant for each $\ell\bmod(s_0+1)$), $\mathrm{dist}_\ell$
+for the distance in the underlying undirected graph of $B_\ell$ and $\Ball_\ell(x,\varrho)$ for the set of bases at distance at most
+$\varrho$ from $x$. The number of lanes at every level is at least $2^{h-b_0T}\ge(\lambda/2)^9$ by \eqref{eq:p2}, and at most $N$.
+
+\begin{definition}[Panel]\label{def:panel}
+The \emph{panel} of a base $y\in B_\ell$ consists of:
+\begin{enumerate}
+\item[(P1)] the \emph{base record}: for each of the $d_\ell$ outgoing and $d_\ell$ incoming slots of $y$, the address of the
+  neighbouring base, the slot number of the arc there, and the displacement;
+\item[(P2)] the widths of the outgoing actual arcs at all positions $(y,g)$;
+\item[(P3)] if substep $\ell$ is shrinking: the colour $c(y)$, the tag offset $\phi_y$, the term index of every motif whose
+  \emph{anchor} (the base of its thin end $C$) is $y$, and the energy prefixes $E_1(y),E_2(y)$ defined in
+  Section~\ref{subsec:witness}; if it is a refresh: the term index of each block $(y,g)$;
+\item[(P4)] if $\ell=\Lambda$: the prefix $\Omega(y)$ of the total outgoing final width of all bases with smaller address.
+\end{enumerate}
+Every field has a fixed length: addresses and prefixes $\lambda+O(\log\lambda)$ bits, displacements $h+O(1)$ bits, widths and the
+integers of a term index $O(\log\lambda)$ bits (since all widths are at most $C_2^T(W_0+1)=\lambda^{O(1)}$ and H6 bounds the
+integers of an index by $O(\text{width}+1)$), colours and offsets $O(1)$ bits. A position anchors at most $2d_\ell$ motifs, so the
+panel has a fixed number of term slots per position; unused slots are zero. Thus a panel has a fixed size $\Pi_\ell$, laid out as
+a per-base part ((P1), colour, offset, $E_1,E_2$, $\Omega$: $O(d_\ell\lambda)$ bits) followed by one per-position part for each lane
+((P2) and the term slots: $O(d_\ell\log\lambda)$ bits), so
+$\Pi_\ell=O(d_\ell\lambda)+O(d_\ell\log\lambda)\cdot(\#\text{lanes at level }\ell)$, which is $\lambda^{O(1)}$. These are the two
+kinds of fields that Lemma~\ref{lem:space} counts.
+\end{definition}
+
+\begin{remark}[Addresses]
+Level-$0$ bases have the product addresses $(\iota,v)\in[0,I)\times V_{\rm loc}$. A base created at a shrinking substep from the
+old base $x$ and tag $j$ is $(x,j)$ (H9(iii)); one created at a refresh from $x$ and port $j$ is $(x,j)$ (H11). We give it the
+product address $\mathrm{addr}(x)\cdot J_\ell+j$ (resp.\ $\mathrm{addr}(x)\cdot D+j$), where a tag $j$ is read as its binary
+number as in (R2) (and a port as its number). Thus $B_{\ell+1}$ is the full product
+$B_\ell\times[0,J_\ell)$ or $B_\ell\times[0,D)$, every address is in use, the panel of $y$ sits at the fixed offset
+$\mathrm{off}_\ell+\mathrm{addr}(y)\,\Pi_\ell$ of the witness, and the parent of a base is its address divided by $J_\ell$ or $D$.
+Addresses are therefore never stored for their own base; the neighbour addresses in (P1) are stored, and they are what lets the
+verifier walk through a ball. This answers a point of the line-by-line check of the port case: the neighbour's address is recomputed from its
+parent and tag (or port), and in addition stored in (P1) at $O(\lambda)$ bits per slot, which is counted in
+Lemma~\ref{lem:space}.
+\end{remark}
+
+\subsection{The one-substep locality lemma}\label{subsec:locality}
+
+\begin{lemma}[One-substep locality]\label{lem:locality}
+Fix $(\sigma,\iota)$, a level $\ell<\Lambda$ and a base $X\in B_{\ell+1}$ with parent $x\in B_\ell$. Let
+$\mathcal D_\ell(Y)$ denote the level-$\ell$ panels of the bases in $Y$ together with the layout bit of substep $\ell$.
+\begin{enumerate}
+\item[(a)] If substep $\ell$ is shrinking, then (i) the incidence list of $X$ without slot numbers, the widths of all actual arcs
+  at all positions $(X,g)$, and the kernel descriptions of all positions $(X,g)$ are functions of $\mathcal D_\ell(\Ball_\ell(x,3))$;
+  (ii) the full base record (P1) of $X$ is a function of $\mathcal D_\ell(\Ball_\ell(x,6))$, whose base records contain the
+  addresses of all bases of $\Ball_\ell(x,7)$.
+\item[(b)] If substep $\ell$ is a refresh, all of these are functions of $\mathcal D_\ell(\Ball_\ell(x,1))$.
+\item[(c)] In both cases the functions are computed by a multitape machine in $\lambda^{O(1)}$ steps from the listed panels written
+  on a work tape. A ball of radius $\varrho$ contains at most $(2d_\ell)^{\varrho+1}=O(1)$ bases.
+\end{enumerate}
+Here the \emph{kernel description} of a new position is the list of its immediate old positions, its local maps with their term
+data and roles, and the slices, ties and summed fields of \eqref{eq:kernel} (H10, H12).
+\end{lemma}
+
+\begin{proof}
+\emph{Part (a).} Write $d=d_\ell$ and split the level-$\ell$ lane as $(U,\eta,j,g)$ (H9(ii); we write $\eta$ for the slot
+coordinate). For a base $y$ and slot $\eta$ let $f_\eta(y)$ be the outgoing base arc of slot $\eta$ at $y$ and $y^+_\eta$ its head;
+for a base arc $f$ write $\tau_f=(\tau_f^U,\tau_f^\eta,\tau_f^{\rm tag},\tau_f^G)$. All of $c(y),\phi_y,f_\eta(y)$, the address of
+$y^+_\eta$ and $\tau_{f_\eta(y)}$ are in the panel of $y$ (P1, P3).
+
+\emph{Step 1 (where an old position goes).} Let $u=(y,U,\eta,j,g)$ be a level-$\ell$ position. By H9(iii),(iv) and H10:
+if $U_{c(y)}=1$ (thick), $\pi(u)=((y,j),g)$. If $u$ is thin, its bundle $\beta(u)$ is the bundle of the base arc
+$f=f_\eta(y)$ with source tag $j+\phi_y$ and remaining lane $g$; its packed ends are
+\[
+ A(\beta)=\bigl((y,\,j+\phi_y),\,g\bigr),\qquad B(\beta)=\bigl((y^+_\eta,\,j+\phi_y+\tau_f^{\rm tag}),\,g+\tau_f^G\bigr),
+\]
+because the thick--thick wires of $f$ from source tag $j'$ and lane $g$ end at thick positions with tag $j'+\tau_f^{\rm tag}$ and
+lane $g+\tau_f^G$ at $y^+_\eta$, which are packed at $((y^+_\eta,j'+\tau^{\rm tag}_f),g+\tau_f^G)$. Then $\pi(u)=A(\beta)$ in
+layout~1 and $B(\beta)$ in layout~2. Hence the parent of the base of $\pi(u)$ is $y$ or an out-neighbour of $y$, and $\pi(u)$ is
+computed from the panel of $y$ and the layout bit.
+
+\emph{Step 2 (which motifs meet a new base).} A level-$\ell$ actual arc $w$ over a base arc $e$ joins positions at bases $y_1,y_2$
+($y_1\ne y_2$). From $c(y_1),c(y_2)$, the $U$-coordinates of its two ends and $\tau_e$ one reads off whether $w$ is thick--thick
+(then it lies in a bundle) or not; if not, which end is $C$ (a thin end; for thin--thin, the source) and which is $D$ (H9(iii)).
+Let $\mu$ be the motif of a non-bundle wire, with \emph{anchor} $a=$ base of $C$ and $y_D=$ base of $D$, so
+$\mathrm{dist}_\ell(a,y_D)=1$. By Step 1 and H10 the six parties of $\mu$ are placed as follows: $A,B$ are the packed ends of
+$\beta(C)$, with parents $a$ and an out-neighbour $a^+$ of $a$; $D^*=\pi(D)$ has parent $y_D$ (if $D$ is thick, or thin in
+layout~1) or an out-neighbour $y_D^+$ of $y_D$ (thin, layout~2); $C$ goes to $A$ or $B$; $M,N$ go to $A$ or $B$ and to $D^*$.
+So every new position touched by $\mu$ has its parent in
+\[
+ S(\mu)\subseteq\{a,\ a^+,\ y_D,\ y_D^+\}\subseteq\Ball_\ell(a,2),\qquad \operatorname{diam}S(\mu)\le3,
+\]
+the diameter bound by the path $a^+$--$a$--$y_D$--$y_D^+$. Consequently: \textbf{(2a)} if $\mu$ touches a child of $x$ then
+$\mathrm{dist}_\ell(a,x)\le2$; \textbf{(2b)} the new positions of all parties of $\mu$ are computed from the panels of $a$ and
+$y_D$, i.e.\ from $\mathcal D_\ell(\Ball_\ell(a,1))$.
+
+\emph{Step 3 (the demand widths of a motif).} Let $\beta$ be the bundle of arc $f=f_\eta(a)$ with source tag $j'$ and lane $g$.
+Its payload is the concatenation of the $K/4$ thick--thick wires over $f$ from the positions $(a,U',\eta',j',g)$ with
+$U'_{c(a)}=1$ whose heads are thick; their widths are in the panel of $a$ (P2) and their thickness is read from $c(a^+)$ and
+$\tau_f$. Its $Q$ demands $CD$ are the non-bundle wires whose $C$ is a thin position $(a,U,\eta,j,g)$ with $j+\phi_a=j'$; their
+widths are in the panel of $a$ (outgoing wires) or of the in-neighbours of $a$ (incoming wires, P2 of the source). Both lists are
+ordered by the identifiers of H12, written relative to the source lane of $\beta$; the payload is cut into $Q$ pieces as evenly as
+possible by the fixed rule of H10, and the $c$-th piece is the $AB$ demand of the $c$-th $CD$ demand. So both demand widths of every
+motif anchored at $a$, and the slices of the payload that its $AB$ demand uses, are functions of $\mathcal D_\ell(\Ball_\ell(a,1))$.
+
+\emph{Step 4 (terms).} The term index of a motif anchored at $a$ is in the panel of $a$ (P3). Its admission and its supply widths
+$c_{\alpha,e}$ follow from the index and the two demand widths by H6 in $\mathrm{poly}(\log\lambda)$ bit operations.
+
+\emph{Step 5 (surviving arcs).} Given the layout bit, the surviving group is $G_2$ (layout~1) or $G_1$ (layout~2). Each surviving
+supply type $e$ of $\mu$ gives $m_e$ parallel actual arcs between the new positions of its two roles (Step 2), oriented by the
+fixed role order, with widths the even split of $c_{\alpha,e}$ (H10). Its identifier is (the $CD$ arc of $\mu$ with lanes relative
+to the endpoint being numbered, $e$, the subdivision index) (H9(vii)). All of this is a function of
+$\mathcal D_\ell(\Ball_\ell(a,1))$.
+
+\emph{Step 6 (dummy arcs).} By H9(vi) and H10 every new position has the same deficit $d'-dQ\sum_em_e$, a constant. The dummy arcs
+at $((y,j),g)$ go to $((y,j^{\rm next}),g)$ and come from $((y,j^{\rm prev}),g)$ for the cyclic order of tags (H9(vii)), which we take to be $j^{\rm next}=j+1$ and $j^{\rm prev}=j-1$ modulo $J$ in the binary
+numbering of (R2).
+They need no data.
+
+\emph{Step 7 (proof of (a)(i)).} The positions $(X,g)$, $X=(x,j)$, receive: old positions $u$ with $\pi(u)=(X,g)$, which by
+Step~1 lie at bases in $\Ball_\ell(x,1)$; roles of motifs with anchor $a\in\Ball_\ell(x,2)$ (Step 2a), each computed from
+$\mathcal D_\ell(\Ball_\ell(a,1))\subseteq\mathcal D_\ell(\Ball_\ell(x,3))$ (Steps 2b--5); and dummy arcs (Step 6). Enumerate all
+positions of all bases of $\Ball_\ell(x,2)$ and all motifs anchored there, compute their placements, and keep those touching a
+position above $X$. This gives the unnumbered incidence list of every $(X,g)$ with its identifiers and widths (Step 5). The kernel
+description of $(X,g)$ consists of the old positions placed there (Step 1), the maps of the roles placed there with their term
+data (Steps 2--4), the slices of bundle payloads (Step 3) and of surviving payloads (Step 5), the ties of the supply edges of the
+contracted (non-retained) group, which became local, and the identification of each placed old position's half-wires with the demand fields of its
+motifs. All are among the data just computed. This proves (a)(i).
+
+\emph{Step 8 (proof of (a)(ii)).} By H9(vii) and H12 the slot numbers at $X$ are the ranks of the identifiers in the incidence
+list of $(X,0)$, sorted separately for incoming and outgoing arcs; translation of the remaining lane preserves them, so these are
+the slot numbers at every lane. Consider an arc at $(X,0)$ produced by a motif $\mu$ (or a dummy), with other end $(X',g')$,
+$X'=(x',j')$. Both $x$ and $x'$ lie in $S(\mu)$ (or $x'=x$ for a dummy), so $\mathrm{dist}_\ell(x,x')\le3$. The slot number of the
+arc at $X'$ is its rank in the incidence list of $(X',g')$, which equals the rank of the translated arc in the list of $(X',0)$;
+by Step 7 applied to $X'$ this list is a function of $\mathcal D_\ell(\Ball_\ell(x',3))\subseteq\mathcal D_\ell(\Ball_\ell(x,6))$.
+The displacement of the base arc is $g'$ (an arc from $(X,0)$ ends at lane $g'$; an arc into $(X,0)$ from $(X',g')$ has
+displacement $g'$ as well, since $g'+g'=0$ in $\F_2^h$). The address of $X'$ is $\mathrm{addr}(x')J_\ell+j'$, and the address of
+$x'\in\Ball_\ell(x,3)$ is in the base records of $\Ball_\ell(x,2)$. This proves (a)(ii). (Radius $6$ suffices; the base records of
+$\Ball_\ell(x,6)$ name the bases of $\Ball_\ell(x,7)$, which are never needed beyond their addresses.)
+
+\emph{Part (b).} Split the level-$\ell$ lane as (port $j$, remaining $g$) (H11). For an old base arc $e:x\to y$ with outgoing slot
+$o(e)$ at $x$ and incoming slot $i(e)$ at $y$ (the latter stored in the base record of $x$), the external arc of $e$ at remaining
+lane $g$ runs from $((x,o(e)),g)$ to $((y,i(e)),g+\tau^G_e)$ and its width is the sum of the $D$ widths of the old arcs over $e$ from
+the block $(x,g)$ (panel of $x$). The external arc entering port $j$ of $(x,g)$ is the external arc of the old arc $e'$ in incoming
+slot $j$ of $x$, whose source $y'$ and outgoing slot $o(e')$ are in the base record of $x$ and whose width is in the panel of
+$y'\in\Ball_\ell(x,1)$. Internal arcs join $(x,j)$ to $(x,j')$ along the fixed port graph, displacement $0$, widths given by the block
+term (panel of $x$) and H6. Padding arcs go to the next port cyclically. The external slot is slot $0$ in both directions, so the far
+slot number of an external arc is $0$. The kernel of $((x,j),g)$ holds the single old position $(x,(j,g))$, the ties of its old
+half-wires to their segments of the external wires (the offsets are prefix sums of the old widths in source-port order, from the
+panels of $x$ and of the in-neighbours of $x$), and the internal maps of the block term. Everything is a function of
+$\mathcal D_\ell(\Ball_\ell(x,1))$.
+
+\emph{Part (c).} The undirected degree of $B_\ell$ is at most $2d_\ell$, so a ball of radius $\varrho$ has at most
+$(2d_\ell)^{\varrho+1}$ bases, a constant. Each panel has $\lambda^{O(1)}$ bits. The computations above enumerate at most
+$O(1)\cdot N=\lambda^{O(1)}$ positions and motifs, sort bounded lists of identifiers of $O(\lambda)$ bits, add and compare
+integers of $O(\lambda)$ bits, and evaluate H6's admission test; on a multitape machine each of these costs $\lambda^{O(1)}$.
+\end{proof}
+
+\begin{remark}
+The radii in Lemma~\ref{lem:locality} improve the radius $10$ asserted in the first written version of the port case and agree with the
+bounds $3$ and $6$ found in its line-by-line check. Any fixed radius would do: only $O(1)$ batched lookup rounds per level are needed.
+\end{remark}
+
+\subsection{The witness and its checks}\label{subsec:witness}
+
+\paragraph{Fixed choices.} Where EG leaves a choice free we fix one deterministic rule. For the colours and tag offsets we use
+exactly the greedy scans of OpenAI's Lean construction (\texttt{orderedColor} and \texttt{orderedTagOffsets},
+\src{OAI/Computability/VPVNP/SlotGreedyScan.lean} l.182 and l.235): bases are visited in increasing address, starting from tables
+that hold $0$ (colour $0$, tag $0$) at every base, and each visit reads the current tables at the $2d$ neighbour slots of $y$. So a
+neighbour of \emph{larger} address is read as having value $0$. Write $N(y)$ for the bases at the slots of $y$, and for
+$y'\in N(y)$ put $\tilde c_y(y')=c(y')$, $\tilde\phi_y(y')=\phi_{y'}$ if $\mathrm{addr}(y')<\mathrm{addr}(y)$, and
+$\tilde c_y(y')=0$, $\tilde\phi_y(y')=0$ otherwise.
+\begin{itemize}
+\item[(R1)] $c(y)$ is the least colour in $\{0,\dots,2d\}$ outside $\{\tilde c_y(y'):y'\in N(y)\}$ (at most $2d$ values, so it exists).
+\item[(R2)] $\phi_y$ is the first tag, in increasing order of the binary number that a tag (a vector in $\F_2^{\log J}$) spells
+  with its first coordinate most significant (the numbering \texttt{bitWordFinEquiv} of OpenAI's Lean; the proof needs only that the
+  construction and the checks use the same order), outside the list of at most
+  $2d((d+1)+(d+1)^2)<J$ forbidden values: at each incidence of a base arc $e$ at $y$, with other end $y'$, the values
+  $\tau^{\rm tag}_e+\ell$ ($\ell\in L_y$) and $\tau^{\rm tag}_e+\ell+\ell'+\tilde\phi_y(y')$ ($\ell\in L_y$, $\ell'\in L_{y'}$).
+\end{itemize}
+These scans give a proper colouring and offsets that satisfy H9(v) at every incidence: the condition between $y$ and an earlier
+neighbour $y'$ is imposed when $y$ is visited, with the final $c(y')$, $\phi_{y'}$; reading later neighbours as $0$ only forbids
+additional values. Payloads are cut with the larger pieces first; the layout tie goes to layout~1; the external slot of a refresh
+is slot $0$, internal slots follow the port-graph order, dummies come last. By the scope stated in H8, which rests on EG's
+proof, H8 applies to these choices. The four rules above (the two greedy scans, the larger-pieces-first split, the tie to layout~1)
+are also the rules of OpenAI's Lean construction (\texttt{orderedColor}, \texttt{orderedTagOffsets}, \texttt{splitWidth},
+\texttt{chosenLayout}); we do not claim that the rest of our construction matches the Lean one (Remark~\ref{rem:weak}, item 3).
+
+\paragraph{Energy scores.} For a shrinking substep and a motif $\mu$ with term $\alpha$, let $e_k(\mu)$ ($k=1,2$) be the energy
+of the group $G_k$ of $\mu$, written after clearing the fixed denominator as an integer combination, with fixed coefficients, of the
+squares of the supply widths $c_{\alpha,e}$, $e\in G_k$ (H12). For a base $y$ put $E_k(y)=\sum_{y'\le y}\sum_{\mu\text{ anchored
+at }y'}e_k(\mu)$. Layout~1 (which retains $G_2$) is chosen iff $E_2(y_{\max})\le E_1(y_{\max})$, by the fixed tie rule.
+
+\paragraph{The witness.} A witness is a string $u\in\{0,1\}^m$ with the following sections at fixed offsets:
+\begin{enumerate}
+\item[S0] $\sigma$, two bits per trit ($00\mapsto0$, $01\mapsto1$, $10\mapsto-1$; $11$ is invalid), $2rIN$ bits;
+\item[S1] the \emph{directory}: for each $\iota,\rho$ the start block $\beta_\rho(\iota N)$, and for each $\delta$ the previous and
+  the next owner of the big block $q_\rho(\iota)+\delta$ (or ``none''), each in $\lambda+O(1)$ bits;
+\item[S2] for $\ell=0,\dots,\Lambda$: the layout bit of substep $\ell$ (if shrinking) and the panels of all bases of $B_\ell$, in
+  address order, each of size $\Pi_\ell$;
+\item[S3] the string $z$, followed by zeros up to length $m$.
+\end{enumerate}
+The sizes of $B_\ell$ and $\Pi_\ell$ depend only on $n$ and the fixed data, so the offsets of S0--S3 and of every panel are
+computable from $n$. Given $u$, write $\sigma(u)$ for the content of S0 and $\iota(u)$ for the term indices in S2.
+
+\paragraph{The checks.} The verifier $V(x,u,\gamma)$ reads $\gamma$ as a number and performs the check with that number (in a
+fixed enumeration of the checks below; numbers beyond the last check accept). Each check also verifies that the fields it reads
+are in range and that their unused parts are zero.
+\begin{enumerate}
+\item[C1] (one per trit) The trit code is not $11$.
+\item[C2] (one per $\rho$, and one per $\rho$ and $\iota<I-1$) $\beta_\rho(0)=0$, and
+  $\beta_\rho((\iota+1)N)=\beta_\rho(\iota N)+\sum_{g<N}\sigma_\rho(\iota N+g)$ (the value $\beta_\rho(IN)$ is not stored).
+\item[C3] (one per $\iota,\rho,\delta$) With $Q=q_\rho(\iota)+\delta$, the stored next owner is the least $\iota'>\iota$ with
+  $Q\in q_\rho(\iota')+\{-1,0,1\}$, or ``none'' if there is none; likewise for the previous owner.
+\item[C4] (one per level-$0$ base) Its panel (P1), (P2) equals the one computed from the directory entries of its big interval
+  and of the at most $6r$ owners named in them (these give the far ends of the owner links),
+  the piece of $\sigma$ of that interval, and the construction of Section~\ref{subsec:network} (including the looping algorithm).
+\item[C5] (one per base of a shrinking level) $c(y)$ equals the value of (R1) computed from the stored colours of the bases of
+  $N(y)$ of smaller address, with $0$ for those of larger address (addresses from the base record of $y$).
+\item[C6] (one per base of a shrinking level) $\phi_y$ equals the value of (R2) computed in the same way from the stored offsets
+  and the displacements in the base records of $y$ and of the bases of $N(y)$.
+\item[C7] (one per term slot) The term slot is zero if no motif (block) is anchored there; otherwise it holds the fixed-length
+  encoding of an index admitted (H6) for the demand widths computed by Steps 2--3 of Lemma~\ref{lem:locality} (resp.\ by the block
+  widths, for a refresh).
+\item[C8] (one per base of a shrinking level) $E_k(y)=E_k(y-1)+\sum_{\mu\text{ anchored at }y}e_k(\mu)$, with $E_k(-1)=0$.
+\item[C9] (one per shrinking level) The layout bit agrees with $E_1,E_2$ at the last base and the tie rule.
+\item[C10] (one per base $X$ of each level $\ell+1\le\Lambda$) The panel entries (P1), (P2) of $X$ equal the values computed by
+  Lemma~\ref{lem:locality} from the level-$\ell$ panels of $\Ball_\ell(\mathrm{parent}(X),6)$ and the layout bit.
+\item[C11] (one per final base $y$) If $y$ is the first final base, $\Omega(y)=0$. If $y$ is not the last final base,
+  $\Omega(y+1)=\Omega(y)+\sum_{g,\eta}(\text{width of out-slot }\eta\text{ at }(y,g))$. The last base has no successor and no
+  stored $\Omega(y+1)$ (P4 stores prefixes only for actual bases); its sum is checked by C12.
+\item[C12] (one) Every bit of S3 after position $\Omega(y_{\max})+\sum(\text{widths at }y_{\max})$ is $0$, and this number is at most
+  the length of S3.
+\item[C13] (one per final position $v$) $W_v(z|_v;\iota(u))=1$, where $z|_v$ is read from S3 at the offsets given by (P4) and (P2)
+  (the bits of an arc are stored once, at its source position, in the order base, lane, outgoing slot).
+\end{enumerate}
+
+\begin{lemma}[Uniqueness]\label{lem:unique}
+Let $n\ge n_M$. For every $\sigma\in\{-1,0,1\}^{rIN}$, $\iota\in\mathrm{Adm}(\sigma)$ and $z\in\{0,1\}^{\ell(\sigma,\iota)}$ there is
+exactly one witness $u=u(\sigma,\iota,z)$ that passes C1--C12 and has $\sigma(u)=\sigma$, $\iota(u)=\iota$ and $z$ at the start of
+S3. Every witness that passes C1--C12 is of this form. For $u=u(\sigma,\iota,z)$, the check C13 at $v$ evaluates the true vertex
+tensor $W_v(z|_v;\iota)$ of \eqref{eq:expansion}.
+\end{lemma}
+\begin{proof}
+\emph{Existence.} Write into $u$ the encoding of $\sigma$, the true directory, and for each level the true panels of the level-$\ell$
+network determined by $(\sigma,\iota)$ with the fixed choices, the true layout bits, energy prefixes and final prefixes, then $z$
+and zeros. Lemma~\ref{lem:space} below shows that this fits into $m$ bits. Every check passes: C4 and C10 by construction and
+Lemma~\ref{lem:locality}, the others by definition.
+
+\emph{Uniqueness and form.} Let $u$ pass C1--C12. By C1, $\sigma(u)$ is a skeleton. By C2 and C3 (induction over $\iota$) the
+directory is the true one for $\sigma(u)$; by C4 the level-$0$ panels are the true base records and widths of $N_{x,\sigma(u)}$.
+Suppose the level-$\ell$ base records and widths in $u$ are the true ones for $\sigma(u)$ and the terms $\iota_{<\ell}(u)$ of the
+earlier substeps. By C5 and C6, induction in address order shows that the colours and offsets are the ones of the scans (R1),
+(R2): if the stored values agree with the scans at all bases of smaller address than $y$, then C5 and C6 at $y$ compute (R1) and
+(R2) from exactly the table that the scan reads when it visits $y$ (final values below $\mathrm{addr}(y)$, the value $0$ above it),
+so the stored values at $y$ agree as well. By C7
+the terms of substep $\ell$ are admitted for the true demand widths, so $\iota_{\le\ell}(u)$ is an admitted prefix. By C8 and C9
+the energy prefixes and the layout bit are the true ones. By C10 and Lemma~\ref{lem:locality} the level-$(\ell+1)$ base records and
+widths are the true ones. At the end $\iota(u)\in\mathrm{Adm}(\sigma(u))$, the final prefixes are true by C11, and by C12 S3 is
+$z$ followed by zeros, with $|z|=\ell(\sigma(u),\iota(u))$. So $u=u(\sigma(u),\iota(u),z)$; and $u(\sigma,\iota,z)$ is determined by
+$(\sigma,\iota,z)$ because each field is the true value or a forced zero.
+
+\emph{C13.} For such $u$ the verifier rebuilds the recursive expansion of $v$ from true panels (Lemma~\ref{lem:locality}(a)(i),(b),
+level by level down to level $0$, where the initial factors of Section~\ref{subsec:network} are recomputed from $x$, the directory and
+$\sigma$), and sums over the hidden indices of $v$ with $z|_v$ fixed. By H8 (last sentence) this is $W_v(z|_v;\iota)$.
+\end{proof}
+
+\begin{lemma}[Space]\label{lem:space}
+For $n\ge n_M$, the sections S0--S2 together with any $z$ of length $\ell(\sigma,\iota)$ fit into $m$ bits.
+\end{lemma}
+\begin{proof}
+S0 has $2rIN=O_M(t/B)=O_M(t\lambda^{-1/2})$ bits and S1 has $O_M(I\lambda)=O_M(t\lambda/b)=O(t\lambda^{-9})$ bits. For S2 let
+$P_\ell=|B_\ell|\cdot(\#\text{lanes at level }\ell)$ be the number of positions at level $\ell$. By H8, all levels of block $i$
+have at most $P_0\kappa_0^{-i}$ positions, and each block has $s_0+1$ levels, so $\sum_\ell P_\ell\le2(s_0+1)P_0$. Since every level
+has at least $(\lambda/2)^9$ lanes \eqref{eq:p2}, $\sum_\ell|B_\ell|=O(P_0\lambda^{-9})$. The per-base fields (base record, colour,
+offset, both energy prefixes, the final prefix: $O(d_\ell\lambda)$ bits) therefore cost $O(P_0\lambda^{-8})$ bits in all, and the
+per-position fields (widths and term slots, $O(\log\lambda)$ bits each, a bounded number per position) cost $O(P_0\log\lambda)$.
+By \eqref{eq:size} the total of S2 is $O_M(t(\log\lambda)^2\lambda^{-1/2})$. Since $s\le1/64<1/2$ and
+$m\ge t\lambda^{-s}(\log\lambda)^6$, S0--S2 take at most $m/2$ bits for $n\ge n_M$. By \eqref{eq:zlen},
+$|z|\le c_M2^{-T}t\log\lambda\le m\,c_M\log\lambda/(p+1)^6\le m/2$ for $n\ge n_M$.
+\end{proof}
+
+\begin{lemma}[Time]\label{lem:time}
+For $n\ge n_M$, $V$ halts within $O_M(m\log\lambda)$ steps on every $(x,u,\gamma)$ with $|x|=n$, $|u|=m$, $|\gamma|=k$.
+\end{lemma}
+\begin{proof}
+Computing $t,\lambda,p,B,h,N,b,T,I,m$, the section offsets and $\Pi_\ell$ costs $O(n)+\lambda^{O(1)}$ steps (count $n$ by
+Lemma~\ref{lem:countdown}, then binary arithmetic). Every fetch below is a batched lookup (Lemma~\ref{lem:batch}) of
+$\lambda^{O(1)}$ requests of total length $\lambda^{O(1)}$, costing $O(m)+\lambda^{O(1)}$.
+
+C1, C2, C5--C9, C11 use $O(1)$ rounds and $\lambda^{O(1)}$ computation. C3 scans the directory between $\iota$ and the stored owner
+and computes $\lfloor\beta/N\rfloor$ (a shift by $h$ bits) per entry: $O(I\lambda)=o(m)$. C4 fetches the piece of $\sigma$ of one big
+interval ($rN$ trits), the directory entries of that interval and of the at most $6r$ owners named there, one panel, and recomputes the access permutation, the Bene\v{s} settings and the
+regularization in $\mathrm{poly}(N)=\lambda^{O(1)}$. C10 fetches $\Ball_\ell(\mathrm{parent}(X),6)$ by $7$ rounds of breadth-first
+search over the addresses in the base records, then applies Lemma~\ref{lem:locality}(c). C12 is one scan.
+
+C13: starting from $v$ at level $\Lambda$, for $\ell=\Lambda-1,\dots,0$ the verifier fetches, in $7$ rounds, the level-$\ell$ balls of
+radius $6$ around the parents of the occurrences found so far, and computes their kernel descriptions (Lemma~\ref{lem:locality}). By
+H8 there are at most $C_2^T\le\lambda^{1/64}$ occurrences in the whole expansion, so each round has $\lambda^{O(1)}$ requests. Then
+it fetches $z|_v$ (one round, offsets from (P4) and (P2) of the bases that carry the arcs of $v$), and for the level-$0$ factors
+the relevant pieces of $\sigma$, directory entries and input bits (one scan of $x$, $O(n)$). If the description claims more than
+$\lambda^{3/4}$ hidden bits, or more than $C_2^T$ occurrences, it rejects. Otherwise it enumerates all assignments of the at most
+$\lambda^{3/4}$ claimed hidden bits (for a true expansion there are at most $c_M\lambda^{17/32}$ of them, by \eqref{eq:hidden}, so
+true expansions are never rejected for large $n$); for each it evaluates at most $C_2^T$ occurrences: map entries by H6
+($\lambda^{O(1)}$, with $\kappa\in\F_2$ hardwired, so a monomial is $0$ or $1$), ties, pins and routing factors, and interval tables
+$\Phi_i$ by enumerating $2^{e_MB}$ code strings. This costs $2^{O_M(\lambda^{3/4})}=t^{o(1)}$ steps. In all C13 costs
+$O((\Lambda+1)(m+n))+t^{o(1)}=O_M(m\log\lambda)$, since $\Lambda=(s_0+1)T=O(\log\lambda)$ and $n\le m$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:P}]
+Let $n\ge n_M$ and $x\in\{0,1\}^n$. The number of checks is $O(\sum_\ell P_\ell+rIN)=O_M(t\log\lambda/B)\le t$, so $k=\lceil\log
+t\rceil$ bits address them all. By Lemma~\ref{lem:unique}, a witness passes every check iff it equals $u(\sigma,\iota,z)$ for some
+$\sigma$, $\iota\in\mathrm{Adm}(\sigma)$, $z$, with $W_v(z|_v;\iota)=1$ for all final $v$. Since $W_v\in\{0,1\}$,
+\[
+ \#\{u:\forall\gamma\ V(x,u,\gamma)=1\}=\#\{(\sigma,\iota,z):\textstyle\prod_vW_v=1\}
+ \equiv\sum_\sigma\sum_{\iota\in\mathrm{Adm}(\sigma)}\sum_z\prod_vW_v(z|_v;\iota)\pmod2,
+\]
+which by \eqref{eq:expansion} and Lemma~\ref{lem:pathcount} is $\sum_\sigma Z_\sigma(x)\equiv\acc(M,x)\pmod2$. By
+Lemma~\ref{lem:time}, $V$ runs in time $O(m\log\lambda)$.
+\end{proof}
+
+%======================================================================
+\section{Proof of the main theorem}\label{sec:wrapper}
+
+We write $\NTIME[n;2\log n]$ for $\NTIME[f;g]$ with $f(n)=n$, $g(n)=\lfloor2\log n\rfloor$. If $g\le g'=O(f)$ and a machine that reads
+its input can compute $g(n)$ within $O(f(n))$ steps (true for all budgets here), then $\NTIME[f;g]\subseteq\NTIME[f;g']$: the new verifier copies the first
+$g(n)$ guess bits to a fresh tape, followed by a blank, and runs the old one.
+
+\begin{proposition}[Case 2]\label{prop:case2}
+If characteristic $2$ has ports, then
+\[\NTIME[n;2\log n]\not\subseteq\DTIME(n(\log n)^{s/2}),\]
+with $s$ as in Section~\ref{sec:case2}.
+\end{proposition}
+\begin{proof}
+Suppose $\NTIME[n;2\log n]\subseteq\DTIME(n(\log n)^{s/2})$. Let $A\in\parTIME(n^2)$, and take $V,m,k$ from Lemma~\ref{lem:P}, with
+$\lambda,p$ as there. Put $R(n)=(p+1)\,m(n)$ and
+\[
+ A''=\bigl\{\,1^n0\,x\,u\,0^{R(n)}:\ n\ge n_M,\ x\in\{0,1\}^n,\ u\in\{0,1\}^{m(n)},\ \forall\gamma\in\{0,1\}^{k(n)}\
+ V(x,u,\gamma)=1\,\bigr\}.
+\]
+Let $w$ have length $\nu$. \emph{The complement of $A''$ is in $\NTIME[\nu;2\log\nu]$:} count the leading ones to get $n$; if $w$ is
+not of the form $1^n0xu0^{R(n)}$ with $n\ge n_M$ (a check of lengths and of the zero tail, using counters, $O(\nu)$ steps), accept;
+otherwise take the first $k(n)$ guess bits as $\gamma$ and accept iff $V(x,u,\gamma)=0$. Here $\nu\ge m\ge t^{0.9}$, so
+$k=\lceil\log t\rceil\le\lfloor2\log\nu\rfloor$ for large $n$, and the time is $O(\nu)+O(m\log\lambda)=O(\nu)$ because
+$p+1\ge\log\lambda$. By the assumption and closure of $\DTIME$ under complement, some deterministic machine $E$ decides $A''$ in time
+$O(\nu(\log\nu)^{s/2})$.
+
+\emph{A faster parity machine for $A$.} On input $x$ with $n\ge n_M$: write $1^n0x$, write $m(n)$ nondeterministic bits $u$, write
+$0^{R(n)}$, run $E$ on the resulting string and accept iff $E$ accepts (for $n<n_M$ use a finite table, with one accepting
+computation iff $x\in A$). Its accepting computations correspond to the $u$ with $1^n0xu0^{R}\in A''$, so their number is
+$\#\{u:\forall\gamma\,V(x,u,\gamma)=1\}$, which is odd iff $x\in A$ by Lemma~\ref{lem:P}. Its running time is
+$O(\nu(\log\nu)^{s/2})$ with $\nu=2n+1+(p+2)m=O(t\lambda^{-s}(\log\lambda)^7)$ and $\log\nu\le\lambda+O(1)$, i.e.
+\[
+ O\bigl(t\,\lambda^{-s/2}(\log\lambda)^7\bigr)=o(n^2).
+\]
+So $\parTIME(n^2)\subseteq\parTIME(t'')$ with $t''(n)=n^2(\log n)^{-s/2}(\log\log n)^7=o(n^2)$, which contradicts
+Theorem~\ref{thm:hier} with $t(n)=n^2$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+If characteristic $2$ has no ports, Corollary~\ref{cor:case1} gives $\NTIME[n;\lfloor\log n\rfloor+1]\not\subseteq\DTIME(n(\log n)^{1/4})$, and
+$\NTIME[n;\lfloor\log n\rfloor+1]\subseteq\NTIME[n;2\log n]$, since $\lfloor\log n\rfloor+1\le\lfloor2\log n\rfloor$ for $n\ge2$. If it has ports, Proposition~\ref{prop:case2} applies. So the theorem
+holds with $\sigma=1/4$ or $\sigma=s/2$, according to the case. Finally $\NTIME[n;2\log n]\subseteq\NTIME(n)$.
+\end{proof}
+
+%======================================================================
+\section{Nondeterministic and unambiguous machines}\label{sec:utime}
+
+The two cases of the proof extend from deterministic machines to two larger classes, one in each case: Case~1 to all
+nondeterministic machines, Case~2 to parity machines. Since $\mathrm{UTIME}(f)\subseteq\NTIME(f)\cap\parTIME(f)$, this gives a
+separation from unambiguous time. The classes are those of Definition~\ref{def:classes}.
+
+\begin{theorem}\label{thm:Uplus}
+Assume H1--H12. There are $\sigma>0$ (not effective) and a language $L\in\coNTIME[n;2\log n]$ such that
+$L\notin\NTIME(n(\log n)^{\sigma})\cap\parTIME(n(\log n)^{\sigma})$. In particular
+$\coNTIME[n;2\log n]\not\subseteq\mathrm{UTIME}(n(\log n)^{\sigma})$.
+\end{theorem}
+
+As before, $\sigma=1/4$ if characteristic $2$ has no ports and $\sigma=s/2$ if it has ports. The language $L$ depends on the case:
+$L=\TRANS$ in the first; in the second, the padded language $A''$ of Lemma~\ref{lem:B}, built from a language $A$ that witnesses
+the parity time hierarchy at time $n^2$. Theorem~\ref{thm:Uplus} implies
+Theorem~\ref{thm:main}: if $\NTIME[n;2\log n]\subseteq\DTIME(n(\log n)^{\sigma})$, then, $\DTIME$ being closed under complement,
+$\coNTIME[n;2\log n]\subseteq\DTIME(n(\log n)^{\sigma})\subseteq\mathrm{UTIME}(n(\log n)^{\sigma})$.
+
+\begin{lemma}[Lemma A]\label{lem:A}
+Assume characteristic $2$ has no ports. Let $M$ be an NTM such that every input $(X,X^T)$ has an accepting computation and no input
+$(X,Y)$ with $Y\ne X^T$ has one ($X,Y\in\{0,1\}^{N\times N}$, row-major, $N\ge1$). Then there are $c_M>0$ and $N_M$ such that for
+every $N\ge N_M$ some $X$ has no accepting computation on $(X,X^T)$ with fewer than $c_MN^2\sqrt{\log N}$ steps.
+\end{lemma}
+
+\begin{proof}
+Fix $N$ and let $T$ be the largest, over $X$, of the length of a shortest accepting computation on $(X,X^T)$; assume
+$T\le N^2\sqrt{\log N}$ (otherwise there is nothing to prove). Give the transitions of $M$ codes as in
+Section~\ref{subsec:normal}: exactly one valid code in $\{0,1\}^{e_M}$ for each available transition, and one code that keeps a
+halted configuration unchanged. Let $E=\max(1,\lceil T/N\rceil)$. Then each computation of length at most $EN$ extends to exactly one
+\emph{run}, a sequence of $EN$ valid codes, and the run ends in an accepting state iff the computation accepts.
+
+\emph{Records.} Blocks of $N$ cells and epochs of $N$ steps are as in the proof of Proposition~\ref{prop:trans}. For every $X$ fix
+one accepting computation $\pi_X$ on $(X,X^T)$ of length at most $T$. The record of a run is the list of the blocks scanned by each
+head at each epoch boundary; there are at most $3^{rE}$ records ($r$ tapes). The choice codes are not part of the record. Let $R$
+be the record of the largest number of the runs of the $\pi_X$, and $\mathcal G_R$ the set of those $X$:
+$|\mathcal G_R|\ge3^{-rE}2^{N^2}$.
+
+\emph{Network with formal weights.} Take the graph, the terminals, the wires and all vertices other than the epoch vertices exactly as
+in the proof of Proposition~\ref{prop:trans}, for the record $R$. For each epoch $j$ and each word $w\in(\{0,1\}^{e_M})^N$ let
+$z_{j,w}$ be an indeterminate. The table of epoch $j$ at given incident strings is the sum of $z_{j,w}$ over all words $w$ that are
+valid codes at every step and lead in $N$ steps from the incoming data (state, head offsets, contents of the blocks of the window)
+to the outgoing data, with the block changes prescribed by $R$; for the first epoch the incoming state and head offsets are the
+initial ones, and for the last epoch the words must end in an accepting halted configuration. For external strings $X$ at the $A_i$ and $Y$ at the $B_k$ let $P_{X,Y}$ be the contraction, a polynomial over
+$\F_2$ in the $z_{j,w}$. Expanding the tables, $P_{X,Y}$ is the sum, over pairs (labelling of the internal strings, words
+$w_1,\dots,w_E$) at which every non-epoch table is $1$ and each $w_j$ is admitted by its table, of $\prod_jz_{j,w_j}$. Exactly as in
+the proof of Proposition~\ref{prop:trans} (induction over epochs in time order; the contents of a block arrive from its last earlier
+use, and between two uses no head is in the block), these pairs are in bijection with the runs on $(X,Y)$ that follow $R$ and
+accept: a run determines its words and every label (summed final contents included, so each run is counted once), and the words of
+a pair concatenate to such a run. On a fixed input the code word sequence determines the run, so distinct runs give distinct
+monomials. Hence
+\[
+ P_{X,Y}=\sum_{\text{runs on }(X,Y)\text{ that follow }R\text{ and accept}}\ \prod_{j=1}^{E}z_{j,w_j(\text{run})},
+\]
+a sum of distinct multilinear monomials of degree $E$ with coefficient $1$. If $Y\ne X^T$ there is no accepting computation, so
+$P_{X,Y}=0$ identically. If $X\in\mathcal G_R$, the run of $\pi_X$ contributes, so $P_{X,X^T}\ne0$.
+
+\emph{Specialization over $\F_2$.} Let $X\in\mathcal G_R$ and let $\mu$ be a monomial of $P_{X,X^T}$. Fix the indeterminates that
+do not occur in $\mu$ to arbitrary values in $\F_2$. Every other monomial of $P_{X,X^T}$ misses some indeterminate of $\mu$ (it is
+multilinear, of degree $E$ and different from $\mu$), so what remains is a multilinear polynomial in the $E$ indeterminates of $\mu$
+in which $\mu$ has coefficient $1$. Its sum over $\{0,1\}^E$ equals that coefficient, because the sum of a monomial over the cube is
+even unless the monomial contains every indeterminate. So the polynomial takes the value $1$ somewhere. Hence, for $z$ uniform over
+all assignments in $\F_2$, $\Pr[P_{X,X^T}(z)=1]\ge2^{-E}$, and by averaging one assignment $z$ satisfies $P_{X,X^T}(z)=1$ for all
+$X$ in a set $\mathcal G\subseteq\mathcal G_R$ with $|\mathcal G|\ge2^{-E}|\mathcal G_R|\ge2^{N^2-(1+r\log3)E}$. Fix this $z$.
+The tables are now $\F_2$-valued functions of the incident strings.
+
+\emph{Conclusion.} For $X\in\mathcal G$, fixing the $A_i$ to the rows of $X$ makes the contraction, as a tensor in the column
+indices, equal to $\bigotimes_ke_{\mathrm{col}_k(X)}$, because $P_{X,Y}(z)$ is $1$ at $Y=X^T$ and $0$ at every other $Y$. Since
+$E=O(1+T/N)=O(N\sqrt{\log N})=o(N^2)$, $|\mathcal G|\ge2^{(1-\rho)N^2}$ with $\rho=1/4$ for $N\ge N_M$. The graph is that of
+Proposition~\ref{prop:trans}, so it has maximum degree $O_M(1)$ in bundles, bundle widths $O_M(N)$ and $O_M(N+1+T/N)$ vertices.
+Proposition~\ref{prop:table} gives $O_M(N+1+T/N)\ge cN\sqrt{\log N}$, so $T\ge c'_MN^2\sqrt{\log N}$ for large $N$.
+\end{proof}
+
+\begin{remark}
+(1) We index the weights by an epoch and a whole code word. With one weight per transition the product would be commutative,
+two runs with the same multiset of transitions would share a monomial, and its coefficient could be even. (2) Over an infinite field
+one could keep all of $\mathcal G_R$ by choosing $z$ outside the zero set of $\prod_{X\in\mathcal G_R}P_{X,X^T}$; this is the idea of
+OpenAI's Lean lemma \texttt{realize\_relations} (one indeterminate per vertex and local view, over an infinite field). But then Proposition~\ref{prop:table} is needed over that field with
+nonzero scalars $c(X)$ in place of $1$, that is, H2, H4 and H5 for that field. (For the algebraic closure of $\F_2$ the class of spaces is $\X_2$ again, by H1(b) and
+H2, so H4 would apply as stated; the price comparison and the entropy lemma with general nonzero scalars would be new inputs.) The specialization over $\F_2$ avoids this, so
+Theorem~\ref{thm:Uplus} uses H1--H12 exactly as stated. (3) For an unambiguous machine one may take every $z_{j,w}=1$: the
+contraction is then the number of accepting runs with record $R$, which is $0$ or $1$.
+\end{remark}
+
+\begin{corollary}\label{cor:A}
+If characteristic $2$ has no ports, then $\TRANS\in\coNTIME[n;\lfloor\log n\rfloor+1]$ and $\TRANS\notin\NTIME(n(\log n)^{\sigma})$ for every
+$\sigma<1/2$.
+\end{corollary}
+\begin{proof}
+The complement of $\TRANS$ is in $\NTIME[n;\lfloor\log n\rfloor+1]$ (Corollary~\ref{cor:case1}). An NTM for $\TRANS$ that runs in time
+$O(n(\log n)^{\sigma})$ has, at $n=2N^2$, only computations of length $O(N^2(\log N)^{\sigma})=o(N^2\sqrt{\log N})$, which
+contradicts Lemma~\ref{lem:A}.
+\end{proof}
+
+\begin{lemma}[Lemma B]\label{lem:B}
+Assume characteristic $2$ has ports, and let $s$ be as in Section~\ref{sec:case2}. Let $A$ be a language given by
+Theorem~\ref{thm:hier} for $t(n)=n^2$ (so $A\in\parTIME(n^2)$ and $A\notin\parTIME(t')$ for every $t'=o(n^2)$), and define
+$V,m,k,R(n)$ and $A''$ for this $A$ as in the proof of Proposition~\ref{prop:case2}. Then $A''\in\coNTIME[\nu;2\log\nu]$ and
+$A''\notin\parTIME(\nu(\log\nu)^{s/2})$.
+\end{lemma}
+\begin{proof}
+The proof of Proposition~\ref{prop:case2} shows that the complement of $A''$ is in $\NTIME[\nu;2\log\nu]$. Suppose some NTM $P$
+runs in time $O(\nu(\log\nu)^{s/2})$ with $w\in A''$ iff $\acc(P,w)$ is odd. The parity machine $P_A$, on input $x$ with $n\ge n_M$, writes $1^n0x$, then $m(n)$ nondeterministic bits $u$ with one binary
+branching per bit (so each $u$ has exactly one computation prefix), then $0^{R(n)}$, and runs $P$ on $w_u=1^n0xu0^{R(n)}$, accepting iff
+$P$ accepts; for $n<n_M$ it uses a finite table, with one accepting computation iff $x\in A$. Its accepting computations are the pairs
+($u$, accepting computation of $P$ on $w_u$), so
+\[
+ \acc(P_A,x)=\sum_u\acc(P,w_u)\equiv\#\{u:\ w_u\in A''\}=\#\{u:\ \forall\gamma\ V(x,u,\gamma)=1\}\pmod2,
+\]
+which is odd iff $x\in A$ by Lemma~\ref{lem:P}. Its running time is $O(\nu(\log\nu)^{s/2})=o(n^2)$, as in the proof of
+Proposition~\ref{prop:case2}. So $A\in\parTIME(t'')$ with $t''=o(n^2)$, which contradicts the choice of $A$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:Uplus}]
+If characteristic $2$ has no ports, $L=\TRANS$ is in $\coNTIME[n;\lfloor\log n\rfloor+1]\subseteq\coNTIME[n;2\log n]$ and not in
+$\NTIME(n(\log n)^{1/4})$ (Corollary~\ref{cor:A}). If it has ports, $L=A''$ of Lemma~\ref{lem:B} is in $\coNTIME[n;2\log n]$ and not in
+$\parTIME(n(\log n)^{s/2})$. In both cases $L$ is not in the intersection. Finally
+$\mathrm{UTIME}(f)\subseteq\NTIME(f)\cap\parTIME(f)$.
+\end{proof}
+
+\begin{remark}[Limits of the method]
+(1) \emph{No separation of $\NTIME$ from $\coNTIME$.} The proof of Lemma~\ref{lem:B} does not work for NTIME machines: for a
+machine $P$ that may have several accepting computations, $\sum_u\acc(P,w_u)$ modulo $2$ need not equal $\#\{u:w_u\in A''\}$
+modulo $2$. So
+$\coNTIME[n;2\log n]\not\subseteq\NTIME(n(\log n)^{\sigma})$ is obtained only when characteristic $2$ has no ports.
+(2) \emph{Parity machines in Case~1.} Lemma~\ref{lem:A} fails for parity machines, on the reject side: on $(X,Y)$ with $Y\ne X^T$ a
+parity machine may have a positive even number of accepting computations, and the part with record $R$ may be odd. For example, a
+machine that guesses a bit $b$, and for $b=0$ reads the input from left to right and accepts (a head schedule that depends only on
+$n$, never moving its second work head), for $b=1$ first moves its second work head $N$ cells to the right during the first epoch
+(so at the first epoch boundary that head is in another block, and the two branches have different records) and then decides
+$\TRANS$ and accepts iff the input is not in $\TRANS$, has one accepting computation on each input in $\TRANS$ and two on every other input; the only record class
+with an odd count on $(X,X^T)$ is the $b=0$ class, whose network gives the all-ones vector in $Y$. So the record-split construction
+does not, in general, give a network that satisfies Proposition~\ref{prop:table}. (This machine is slow; it shows only that this
+step has no proof.)
+(3) \emph{Bounded ambiguity.} Lemma~\ref{lem:A} holds for all NTMs. The proof of Lemma~\ref{lem:B} extends to machines that
+accept iff they have at least one accepting computation, that have at most $k(\nu)\le(\log\nu)^{\varepsilon}$ of them on inputs of
+length $\nu$, and that run in time $O(\nu(\log\nu)^{\sigma})$, whenever $\sigma+\varepsilon<s$ (for instance $\sigma=s/2$ and
+$\varepsilon<s/2$). For $0\le a\le k$ one has $[a\ge1]\equiv\sum_{j=1}^{k}\binom aj\pmod2$
+(the sum is $2^a-1$), the identity behind $\mathrm{FewP}\subseteq\oplus\mathrm P$. So the parity machine, for each $u$, guesses
+$j$ with $1\le j\le k$ (one binary code for each value; other codes reject) and then $j$ transcripts of the given machine on $w_u$ (each in the fixed transcript encoding of
+Theorem~\ref{thm:hier}, and each cut by a clock at the given machine's time bound), keeps the previous transcript on a work tape to check that they come in strictly increasing order, checks
+that each is an accepting computation, and accepts iff all checks pass; each $j$-set of accepting computations gives exactly one accepting path. This costs
+$O(k)$ times the running time of the given machine, which is $o(n^2)$ when $\sigma+\varepsilon<s$. For polynomial $k$ this route needs every term $j\le k$ and the question stays open.
+(4) \emph{Open:} $\NTIME[n;2\log n]\not\subseteq\mathrm{UTIME}(n(\log n)^{\sigma})$ (the complement side). In Case~2 it follows,
+since $\parTIME$ is closed under complement. In Case~1 the method does not give it: a machine for the complement of $\TRANS$ gives
+support on all $Y\ne X^T$, not a basis vector, and Proposition~\ref{prop:table} does not apply. (No method can show that the
+complement of $\TRANS$ is outside $\NTIME(n(\log n)^{\sigma})$, since it is in $\NTIME(n)$.)
+\end{remark}
+
+%======================================================================
+\section{Remarks}\label{sec:remarks}
+
+\begin{remark}[Range of the exponent]\label{rem:range}
+Write $B=\lambda^{a+o(1)}$ and $T=s\log\lambda+O(1)$. The construction needs $a>s$ (the skeleton and the per-position records, of
+order $t\lambda^{-a}\operatorname{polylog}\lambda$, must be $o(t\lambda^{-s})$) and $a+2s\log C_2<1$ (exhaustive evaluation of
+$W_v$ in time $t^{o(1)}$, by \eqref{eq:hidden}); the big-block exponent can be raised to keep $\lambda^{\Omega(1)}$ lanes. Hence this
+proof certifies every $s<1/(1+2\log C_2)$, not only the $s$ fixed above. (This range was found in the first written version of the port case and confirmed in its line-by-line check.)
+\end{remark}
+
+\begin{remark}[An obstruction to this design]
+Count the variables of the literal expansion of a vertex tensor $W_v$, before any tie is applied. Each interval factor
+placed at $v$ brings its boundary half-wires (the state and content strings on its in- and out-edges, $\Theta_M(B)$ bits), which are
+summed inside $v$ (H7: each whole old factor goes to one new position, with its incident indices summed there); its transition codes
+are not variables, since $\Phi_i$ is evaluated as a table. There are $\Theta_M(t/B)$ interval factors and at most
+$O_M(t\log\lambda/(B\kappa_0^T))$ final positions, each initial factor lying whole at one final position (H8). So some final position
+receives $\Omega_M(\kappa_0^T/\log\lambda)$ interval factors, that is at least $\Omega_M(B\kappa_0^T/\log\lambda)$ raw variables,
+which is at least $\lambda^{s(1+\log\kappa_0)-o(1)}$ once $B\ge\lambda^{s}$. If $s(1+\log\kappa_0)>1$ an enumeration of these raw
+variables, as in C13, costs $2^{\omega(\lambda)}=t^{\omega(1)}$. So this design with this evaluation cannot give every $s$; a larger
+exponent needs a cheaper evaluation of the interval parity tables (for example after simplifying the kernels) or a compressor with a
+better $\kappa_0$--$C_2$ trade-off. It is not an obstruction to the theorem.
+\end{remark}
+
+\begin{remark}[What the proof does not need]
+No block-respecting simulation (Hopcroft--Paul--Valiant) is used: the three-block windows give the network directly
+(Section~\ref{subsec:network}). The descriptor RAM of H12 is not run; only its construction is used, and the global records it
+schedules (colours, offsets, layout) are replaced by locally checkable records. No Lean proof is used: the proof is on paper.
+Several hypotheses are, at the level of statements, instances of theorems of OpenAI's Lean library for every field (H2, price
+part: \texttt{wire\_cost\_le}; H5: \texttt{paired\_entropy\_at\_placement}; H6: \texttt{MotifConversion.exists\_conversion},
+\src{OAI/Computability/VPVNP/MotifConversion.lean} l.327; for H8, \texttt{Compression.exists\_iterated\_compression} under
+\texttt{HasWireExpanders} proves the bounds of H8 for OpenAI's own construction, which is not literally H8 with the scope used
+here). The other inputs, or parts of inputs, rest on our reading of the preprints only: H1(b), H1(d) in characteristic $2$, the class
+$\X_2$ of H2, H3 in the general-class form, H4, H7, the scope of H8 over all admissible choices, and the constructions H9--H12, whose match with
+OpenAI's Lean construction files is not checked (Remark~\ref{rem:weak}); the accompanying file HYPOTHESES.md has the table. Weak ETH is not used: Case~1 replaces it by the no-ports hypothesis itself.
+\end{remark}
+
+\begin{remark}[Weakest points, for a reviewer]\label{rem:weak}
+\begin{enumerate}
+\item H8 over $\F_2$ (EG asserts it for every field with ports; the energy estimate and the field of the parameter solution are
+  the content). Theorem~\ref{thm:main} is exactly as strong as H8 in Case~2. OpenAI's Lean library proves the bounds of H8 for its
+  own construction, for every field $k$ under the hypothesis \texttt{HasWireExpanders k} (\texttt{Compression.exists\_iterated\_compression},
+  \src{OAI/Computability/VPVNP/IteratedCompression.lean} l.115--136; arbitrary finite base, one lane displacement per base slot,
+  lane-dependent widths, energy bound $\sqrt{\mathcal L_T}\le(\sqrt{\mathcal L_0}+O(P_0))/2^T$). The step from H1 to
+  \texttt{HasWireExpanders} is formalized there only for characteristic $0$ (\texttt{wireExpanders\_of\_port},
+  \src{OAI/Computability/MultitapeWeakETH/PortTemplates.lean} l.45). We read but did not build these files.
+  A separate check shows that ports in any field of characteristic $2$ give ports over $\F_2$ with the
+  same graphs, and that the parameter solution lies in $\F_2$.
+\item The characteristic-$2$ form H4 of T's geometric lemma, and H1(d) in characteristic $2$. They rest on a reading of the proofs
+  (EG \src{port-graphs.tex} l.38--54); no Lean build exists (a field-uniform Lean patch was drafted but not compiled). H5 is an instance of a field-general Lean statement (H5 above).
+\item Lemma~\ref{lem:locality} rests on the constructions H9--H11 as we restate them from EG's text. A reviewer should compare
+  Step~1 (placement) and Step~2 (the four parent bases of a motif) with \src{EG/compressor-appendix.tex} l.39--55 and
+  \src{EG/compressor.tex} l.392--404. OpenAI's Lean construction, which the Lean form of H8 certifies, fixes some free choices of
+  the text in its own way: we follow its greedy scans exactly ((R1), (R2)); its slot identifiers use absolute base addresses where
+  H12 writes lanes relative to a source lane, and its layout scores use the weights $(10,20,6,5)$ of the four surviving supply types.
+  A proof against the Lean construction would use those keys and weights in C7--C10;
+  this changes no radius of Lemma~\ref{lem:locality}. An independent reading of OpenAI's executed Lean construction (commit
+  \texttt{3344da5}), datum by datum, found that H9--H11 hold as used here, with the same radii and the same uniqueness argument; the
+  only differences are these keys and weights (\src{CHECKS.md}, row 28).
+\item Lemma~\ref{lem:pathcount}: the access chains of Section~\ref{subsec:network}(c) and the parity of the Bene\v{s} routing
+  (settings are computed, not guessed; a guessed setting would multiply each term by the number of valid settings, an even number
+  for most permutations, and destroy the parity).
+\item The uniqueness of the passing witness (Lemma~\ref{lem:unique}): every free choice of EG must be fixed by a rule that the
+  checks enforce; we listed them under ``Fixed choices''.
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[Why characteristic $2$]
+We use characteristic $2$ because then every vertex tensor $W_v$ of \eqref{eq:expansion} is $0$ or $1$, so a witness needs no
+multiplicity bits. The argument extends to every prime $p$. For $\mathrm{Mod}_p\mathrm{TIME}$ (accept iff
+$\acc\not\equiv0\pmod p$) there is a time hierarchy as well: the class is closed under complement with a constant factor in time,
+since a machine with $1+(p-1)\acc(M,x)^{p-1}$ accepting computations ($p-1$ sequential copies of $M$, then Fermat's little
+theorem) accepts exactly when $\acc(M,x)\equiv0$, and the diagonal machine of Theorem~\ref{thm:hier} uses this complement in place
+of the extra accepting computation. In Case~2 over $\F_p$ the vertex tensors lie in $\F_p$, so the witness carries, for each final
+position $v$, an index $c_v<W_v$ (with $W_v$ read as an integer in $[0,p)$): $O(\log p)$ more bits per final position, which fit
+into the bound of Lemma~\ref{lem:space}. This needs the characteristic-$p$ forms of H1(d), H2, H4, H5 and H8, and gives
+Theorem~\ref{thm:main} again; Section~\ref{sec:utime} would need further changes. We do not pursue it.
+\end{remark}
+
+\begin{remark}[The number of guess bits]
+The proof gives slightly more than stated: Case~1 uses $\lfloor\log n\rfloor+1$ guess bits and Case~2 uses
+$\lceil\log t\rceil\le\log\nu+\log\log\nu+2$ guess bits at input length $\nu$ (for $n\ge n_M$, since
+$\nu\ge m\ge t\lambda^{-s}$). So $\NTIME[n;\,g]\not\subseteq\DTIME(n(\log n)^{\sigma})$ already for
+$g(n)=\lceil\log n\rceil+\lceil\log\log n\rceil+2$, which is below $\lfloor2\log n\rfloor$ for all large $n$; $\lfloor2\log n\rfloor$ is a
+safe, weaker choice.
+\end{remark}
+
+\begin{remark}[What is not claimed]
+(1) No explicit $\sigma$: $\sigma=1/4$ if characteristic $2$ has no ports and $\sigma=s/2$ if it has ports, with $s$ from constants
+that H8 asserts to exist. (2) Nothing unconditional: every statement here assumes H1--H12. (3) No separation of $\NTIME$ from
+$\coNTIME$ (Section~\ref{sec:utime}). (4) Nothing for random-access machines: there $\TRANS$ is decidable in linear time, so Case~1
+has no analogue. (5) The argument does not relativize: it uses that one step of a multitape machine reads only the cells under its
+heads, so that a short time interval touches $O(1)$ small blocks. For oracle machines with a query tape that is erased after each
+query (queries of linear length), relative to a set $A$ that is complete for linear space under linear-time reductions,
+$\NTIME^{A}(n)=\DTIME^{A}(O(n))$ (simulate the nondeterministic oracle machine in linear space, then make one query; Hemmerling~\cite[Proposition 15]{Hem}, \cite[Corollary 1]{Hem13}). So any proof of Theorem~\ref{thm:main} must fail to relativize.
+\end{remark}
+
+\begin{thebibliography}{99}
+\bibitem{EG} OpenAI, \emph{Euclidean geometry in the asymptotic spectrum of tensors}, preprint, 24 November 2026,
+  \texttt{github.com/openai/math}, folder \url{preprints/Euclidean-geometry-in-the-asymptotic-spectrum-of-tensors-November-24-2026}.
+\bibitem{CL} OpenAI, \emph{Circuit lower bounds for Hamiltonian cycle and the permanent}, preprint, 24 November 2026,
+  \texttt{github.com/openai/math}, folder \url{preprints/Circuit-lower-bounds-for-Hamiltonian-cycle-and-the-permanent-November-24-2026}.
+\bibitem{T} OpenAI, \emph{The logarithmic exponent of integer multiplication on tapes}, preprint, 24 November 2026,
+  \texttt{github.com/openai/math}, folder
+  \url{preprints/The-logarithmic-exponent-of-integer-multiplication-on-tapes-November-24-2026}. Lean library: same repository,
+  folder \texttt{lean} (commit \texttt{3344da5}).
+\bibitem{OAI-ETH} OpenAI, \emph{The Exponential Time Hypothesis is False}, preprint, 25 October 2026, \texttt{github.com/openai/math}.
+\bibitem{Ant} Claude (Anthropic), \emph{VP $\ne$ VNP over every field}, hexagonmath.org 2611.00954v1, 23 November 2026.
+\bibitem{PPST} W.~J.~Paul, N.~Pippenger, E.~Szemer\'edi, W.~T.~Trotter, \emph{On determinism versus non-determinism and related
+  problems}, 24th FOCS (1983), 429--438.
+\bibitem{San} R.~Santhanam, \emph{On separators, segregators and time versus space}, 16th CCC (2001), 286--294.
+\bibitem{CW} L.~Chen, Y.~Wang, \emph{Separating RAM and multitape Turing machines with short random oracles}, ECCC TR26-006 (2026).
+\bibitem{Wil} R.~Williams, \emph{Inductive time-space lower bounds for SAT and related problems}, Computational Complexity 15 (2006),
+  433--470.
+\bibitem{Lin} A.~Lingas, \emph{Consequences of APSP, triangle detection, and 3SUM hardness for separation between determinism and
+  non-determinism}, arXiv:2011.02428v5 (2021); Procedia Computer Science 195 (2021), 163--171.
+\bibitem{AVW} J.~Alman, V.~Vassilevska Williams, \emph{Truly subquadratic 3SUM and truly subcubic APSP via triangles in sparse
+  lopsided graphs}, arXiv:2610.06783 (2026).
+\bibitem{HvdH} D.~Harvey, J.~van der Hoeven, \emph{Integer multiplication is at least as hard as matrix transposition}, FOCS 2025,
+  1366--1381; arXiv:2503.22848.
+\bibitem{Tal} Y.~Tal, \emph{Sorting in $o(N\log N)$ time on a multitape Turing machine}, ECCC TR26-331 (2026).
+\bibitem{SS} C.~Strassle, B.~Subercaseaux, \emph{Simulating nondeterministic Turing machines in subexponential deterministic time},
+arXiv:2611.11832 (9 November 2026).
+\bibitem{BGW} R.~V.~Book, S.~A.~Greibach, B.~Wegbreit, \emph{Time- and tape-bounded Turing acceptors and AFLs}, J. Comput. System
+  Sci. 4 (1970), 606--621.
+\bibitem{HS65} J.~Hartmanis, R.~E.~Stearns, \emph{On the computational complexity of algorithms}, Trans. Amer. Math. Soc. 117
+  (1965), 285--306.
+\bibitem{Cook73} S.~A.~Cook, \emph{A hierarchy for nondeterministic time complexity}, J. Comput. System Sci. 7 (1973), 343--353.
+\bibitem{SFM78} J.~I.~Seiferas, M.~J.~Fischer, A.~R.~Meyer, \emph{Separating nondeterministic time complexity classes}, J. ACM 25
+  (1978), 146--167.
+\bibitem{Zak83} S.~\v{Z}\'ak, \emph{A Turing machine time hierarchy}, Theoret. Comput. Sci. 26 (1983), 327--333.
+\bibitem{Benes} V.~E.~Bene\v{s}, \emph{Optimal rearrangeable multistage connecting networks}, Bell System Tech. J. 43 (1964),
+  1641--1656.
+\bibitem{Waksman} A.~Waksman, \emph{A permutation network}, J. ACM 15 (1968), 159--163.
+\bibitem{HPV} J.~Hopcroft, W.~Paul, L.~Valiant, \emph{On time versus space}, J. ACM 24 (1977), 332--337.
+\bibitem{BG} R.~Beigel, J.~Gill, \emph{Counting classes: thresholds, parity, mods, and fewness}, Theoret. Comput. Sci. 103 (1992),
+  3--23.
+\bibitem{Hem} A.~Hemmerling, \emph{Observations on complete sets between linear time and polynomial time}, Inform. and Comput. 209
+  (2011), 173--182.
+\bibitem{Hem13} A.~Hemmerling, \emph{On the tape-number problem for deterministic time classes}, arXiv:1309.7457 (2013).
+\end{thebibliography}
+
+\end{document}
