@@ -66,11 +66,12 @@ on OpenAI's Lean library, whose proofs are compiled and checked with ours. No hu
 earlier work (made by models; not a claim of priority): `NOVELTY.md`. Conditional separations of the same classes from
 fine-grained hypotheses are due to Lingas (arXiv:2011.02428).
 
-## Errata to the paper
+## Errata to the first version of the paper
 
-The Lean work found two errors in the paper; neither affects the theorem (`ERRATA.md`). E1: check C12 must check every bit
-from position L on (the paper says "after position L", which leaves one bit unchecked). E2: the paper does not justify the
-length bound for the energy prefixes; one sentence repairs it. The paper files are unchanged.
+The Lean work found two errors in the first version of the paper (25 November 2026); neither affected the theorem. Both are
+corrected in the paper of 26 November (its Section 9 lists them). `ERRATA.md` keeps the record. E1: check C12 must check every
+bit from position L on (the first version said "after position L", which left one bit unchecked). E2: the first version did not
+justify the length bound for the energy prefixes; one sentence repairs it.
 
 ## Files
 
@@ -79,8 +80,9 @@ length bound for the energy prefixes; one sentence repairs it. The paper files a
   fetched files (`lean/upstream/`), `lean/CLOSURE-SHA256SUMS`, and the licenses and notices (`lean/LICENSE`, `lean/NOTICE`).
 - `LEAN-STATEMENT.md`: the Lean statements, the definitions in words, and the blind fidelity reads.
 - `LEAN-AUDIT.md`: kernels, clean rebuilds, source scan, checksums. `logs/`: the build and audit logs.
-- `ERRATA.md`: the two errata to the paper.
-- `ntime-dtime-polylog.tex`, `ntime-dtime-polylog.pdf`: the paper.
+- `ERRATA.md`: the two errata to the first version of the paper (corrected in the paper of 26 November).
+- `ntime-dtime-polylog.tex`, `ntime-dtime-polylog.pdf`: the paper (revised 26 November 2026, 36 pages: the theorem without
+  assumptions, what is ours and what is OpenAI's, the Lean proof and where each part is formalized, the two errata corrected).
 - `STATEMENT.md`, `HYPOTHESES.md`, `CHECKS.md`, `NOVELTY.md`: as of 25 November 2026, each with a dated addendum at the end.
 - `SHA256SUMS`: sha256 of every file.
 

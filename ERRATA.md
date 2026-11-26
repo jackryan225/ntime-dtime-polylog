@@ -1,8 +1,8 @@
-# Errata to the paper (found by the Lean work, 25 November 2026)
+# Errata to the first version of the paper (found by the Lean work, 25 November 2026)
 
-The paper files `ntime-dtime-polylog.tex` and `ntime-dtime-polylog.pdf` are kept byte-identical to the version of 25 November 2026, so
-corrections are listed here and not made in the paper. **Neither erratum affects the theorem.** The Lean proof uses the
-corrected forms.
+These are errors of the first version of the paper (25 November 2026). **Both are corrected in the paper of 26 November 2026**
+(Section 9 of the paper lists them). This file keeps the record. Line numbers below refer to the first version. **Neither erratum
+affects the theorem.** The Lean proof uses the corrected forms.
 
 ## E1. Check C12: one bit is not checked
 

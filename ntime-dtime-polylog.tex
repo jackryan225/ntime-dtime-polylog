@@ -11,7 +11,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{hyp}{Hypothesis}
+\newtheorem{hyp}{Input}
 \renewcommand{\thehyp}{H\arabic{hyp}}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
@@ -28,22 +28,21 @@
 \newcommand{\acc}{\#\mathrm{acc}}
 \newcommand{\src}[1]{\url{#1}}
 \title{Linear time with logarithmically many guesses is not in\\ deterministic time $n(\log n)^{\sigma}$\\[4pt]
-\large (conditional on twelve stated inputs from the OpenAI preprints of 24 November 2026)}
+\large (machine-checked in Lean 4, with no assumption)}
 \author{Research driven, orchestrated and reviewed by Jack Ryan.\\
 Claude (by Anthropic), GPT-6.2 Astra (by OpenAI) and Gemini 4 Neon (by Google)\\
 collaborated in finding and writing the proofs.\\
-No professional mathematician has refereed this repository.\\
-The proof is not machine-checked.}
-\date{25 November 2026\\
+Both theorems are machine-checked in Lean 4.\\
+No professional mathematician has refereed the paper or the Lean proof.}
+\date{25 November 2026; revised 26 November 2026\\
 DOI: 10.5281/zenodo.24527297\\
 Repository: \url{https://github.com/jackryan225/ntime-dtime-polylog}}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We give a complete paper proof, relative to twelve explicitly stated hypotheses (H1--H12) that restate, or transfer to
-characteristic $2$, results of three OpenAI preprints dated 24 November 2026, of the following statement about multitape Turing
-machines: there is a constant $\sigma>0$ such that
+We prove the following statement about multitape Turing machines, and the proof is checked in Lean~4 with no assumption:
+there is a constant $\sigma>0$ such that
 \[
   \NTIME[n;\,2\log n]\ \not\subseteq\ \DTIME\bigl(n(\log n)^{\sigma}\bigr),
 \]
@@ -56,23 +55,31 @@ coarse head-movement skeleton of a parity machine running in time $n^2$ and whos
 gives $\parTIME(n^2)\subseteq\oplus\cdot\forall\cdot\DTIME(n^2(\log n)^{-s}\operatorname{polyloglog}n)$ with a short
 universal quantifier; together with the hypothesis to be refuted this contradicts the parity time hierarchy.
 The proof of the second case contains a one-substep locality lemma for the compressor records (radius $7$ in the old base
-graph), written out in full. From the same hypotheses we also prove the stronger statement
+graph), written out in full. We also prove the stronger statement
 $\coNTIME[n;2\log n]\not\subseteq\NTIME(n(\log n)^{\sigma})\cap\parTIME(n(\log n)^{\sigma})$, so in particular
 $\coNTIME[n;2\log n]\not\subseteq\mathrm{UTIME}(n(\log n)^{\sigma})$ (Section~\ref{sec:utime}). Under Weak ETH the first case alone
 already gives the main statement, by a short argument from the OpenAI transposition lower bound (Section~\ref{sec:prior}); the
-new part is the second case, which removes Weak ETH. This is a paper proof; it is not machine-checked.
+new part is the second case, which removes Weak ETH. The first version of this paper (25 November 2026) proved the theorem
+relative to twelve stated inputs H1--H12 taken from three OpenAI preprints of 24 November 2026. The Lean proof assumes none
+of them: it builds on OpenAI's Lean library and proves the rest (Section~\ref{sec:lean}). The inputs remain in this text as
+cited results, and the two errors that the Lean work found in the first version are corrected.
 \end{abstract}
 
 \paragraph{Status.}
-Every step that is not one of the hypotheses H1--H12 is proved here. The hypotheses restate, with file and line, theorems and
+Theorem~\ref{thm:main} and Theorem~\ref{thm:Uplus} are proved in Lean~4 with no hypothesis. The Lean proofs depend only on the
+three standard axioms of Lean and were checked by three kernels (Section~\ref{sec:lean}). This paper is the proof in words. It is
+organised around twelve inputs H1--H12 (Section~\ref{sec:hyp}), which restate, with file and line, theorems and
 constructions of the preprints \emph{Euclidean geometry in the asymptotic spectrum of tensors} (cited as EG~\cite{EG}), \emph{Circuit
 lower bounds for Hamiltonian cycle and the permanent} (CL~\cite{CL}) and \emph{The logarithmic exponent of integer multiplication on tapes}
-(T~\cite{T}), whose sources are in the public repository \src{github.com/openai/math}, folder \src{preprints/}. We restate them in our own words and copy only their formulas;
-the reader must compare each restatement with the cited lines. H4 is used in a characteristic-$2$ form that the preprints do not
+(T~\cite{T}), whose sources are in the public repository \src{github.com/openai/math}, folder \src{preprints/}. Every step of this
+text that is not one of these inputs is proved here. In the first version the inputs were hypotheses of the theorem. They are
+not hypotheses any more, because the Lean proof does not assume them. We restate them in our own words and copy only their formulas.
+H4 is used in a characteristic-$2$ form that the preprints do not
 state (we derived it from T's proof); H5 is stated in T for the rationals and for every field in OpenAI's Lean library; the price
 comparison in H2 is stated in T for the rationals and for every field in CL and in OpenAI's Lean library; H3 is field-free; H1(d) is stated in EG's text for every field but formalized in OpenAI's Lean library
-only in characteristic $0$. Section~\ref{sec:hyp} says exactly which change is made and
-where it was audited. Earlier versions of the argument were checked by blind re-derivations, a line-by-line check of
+only in characteristic $0$. Section~\ref{sec:hyp} says exactly which change is made. The Lean work found two errors in the first version of this text
+(one unchecked bit in check C12, and a missing length bound for the energy prefixes); both are corrected here
+(Section~\ref{sec:lean}). Earlier versions of the argument were checked by blind re-derivations, a line-by-line check of
 the port case, an adversarial reading and an independent reading of the whole paper; every repair they found is built in (the list
 is in the file \src{CHECKS.md} that accompanies this paper). In particular the tag rule uses the full forbidden set (``Fixed
 choices'' in Section~\ref{subsec:witness}), the degree is regularized as in EG (Section~\ref{subsec:network}(f)), head offsets ride on
@@ -87,11 +94,10 @@ checked separately (EG \texttt{lem:comparison}).
 
 Paul, Pippenger, Szemer\'edi and Trotter proved that linear nondeterministic time is strictly larger than linear
 deterministic time for multitape Turing machines. The known separations have the form $\NTIME(n)\not\subseteq\DTIME(n\,f(n))$
-with $f$ of iterated-logarithm type (see Section~\ref{sec:prior}). We prove a polylogarithmic separation, conditional on
-stated inputs.
+with $f$ of iterated-logarithm type (see Section~\ref{sec:prior}). We prove a polylogarithmic separation.
 
 \begin{theorem}[Main theorem]\label{thm:main}
-Assume Hypotheses H1--H12 of Section~\ref{sec:hyp}. There is $\sigma>0$ such that
+There is $\sigma>0$ such that
 \[
   \NTIME[n;\,2\log n]\not\subseteq\DTIME\bigl(n(\log n)^{\sigma}\bigr)
 \]
@@ -100,6 +106,21 @@ for multitape Turing machines. Consequently $\NTIME(n)\not\subseteq\DTIME(n(\log
 
 Here $\NTIME[n;g]$ is the class of languages accepted in linear time by multitape machines that make at most $g(n)$ binary
 guesses (Definition~\ref{def:classes}). Every such language is in $\DTIME(n^{3})$, so the separation is inside $\mathrm P$.
+Theorem~\ref{thm:main} is unconditional: it is checked in Lean~4 with no hypothesis (Section~\ref{sec:lean}).
+
+\paragraph{What is ours and what is OpenAI's.} The spectral geometry of tensors, the notion of ports, the transposition lower
+bound for tapes and the iterated compressor are due to OpenAI (the three preprints EG, CL and T, and OpenAI's Lean library).
+Under Weak ETH the main statement is a short corollary of OpenAI's transposition lower bound (Section~\ref{sec:prior}). Our
+contribution is the following.
+\begin{enumerate}
+\item[(i)] The dichotomy on ports in characteristic~$2$, which removes Weak ETH. Case~1 is OpenAI's transposition argument with
+Weak ETH replaced by ``characteristic $2$ has no ports''; it needs characteristic-$2$ forms of two steps of that argument (H4, H5).
+\item[(ii)] The ports case (Case~2, Section~\ref{sec:case2}): the network whose base graph is the head-movement skeleton of a
+parity machine, the Bene\v{s}-routed lanes, the locally checkable compressor records with the locality lemma
+(Lemma~\ref{lem:locality}), the witness and its checks, and the wrapper with the parity time hierarchy (Section~\ref{sec:wrapper}).
+\item[(iii)] The stronger form for nondeterministic, parity and unambiguous machines (Section~\ref{sec:utime}).
+\item[(iv)] The Lean~4 proof of both theorems, built on OpenAI's Lean library (Section~\ref{sec:lean}).
+\end{enumerate}
 
 \paragraph{The dichotomy.} A field \emph{has ports} (H1) if bounded-degree regular graphs of unbounded order satisfy one
 uniform nonlinear Poincar\'e inequality in all spectral wire metrics over that field. This depends only on the characteristic.
@@ -129,9 +150,10 @@ functions of the summation variables and are checked locally with $o(t(\log t)^{
 (Lemma~\ref{lem:locality}).
 
 \paragraph{Organisation.} Section~\ref{sec:prior} compares with prior work. Section~\ref{sec:models} fixes machine
-models, classes, the parity hierarchy and a batched-lookup lemma. Section~\ref{sec:hyp} states H1--H12. Sections
+models, classes, the parity hierarchy and a batched-lookup lemma. Section~\ref{sec:hyp} states the inputs H1--H12 with their sources. Sections
 \ref{sec:case1}, \ref{sec:case2} and \ref{sec:wrapper} prove the theorem. Section~\ref{sec:utime} proves the stronger form for
-nondeterministic, parity and unambiguous machines. Section~\ref{sec:remarks} discusses the range of the exponent, the weakest
+nondeterministic, parity and unambiguous machines. Section~\ref{sec:lean} describes the Lean proof: what is formalized where, and what it takes from OpenAI's library.
+Section~\ref{sec:remarks} discusses the range of the exponent, the weakest
 points and what is not claimed.
 
 %======================================================================
@@ -142,8 +164,7 @@ some language is recognized in linear time by a nondeterministic machine with tw
 machine in linear time: $\DTIME(n)\ne\NTIME(n)$. Santhanam~\cite{San} proved $\DTIME(n\sqrt{\log^*n})\ne\NTIME(n\sqrt{\log^*n})$,
 with the same time bound on both sides. The bound $\NTIME(n)\not\subseteq\DTIME(o(n(\log^*n)^{1/4}))$ is stated by Chen and
 Wang~\cite[footnote 3]{CW} as the best they know; they attribute it to~\cite{PPST} and to an answer of R.~Williams on MathOverflow
-(question 4953, 16 December 2009) that derives it from the proof of~\cite{PPST}. All these factors are of iterated-logarithm type. Theorem~\ref{thm:main} gives a polylogarithmic factor, but only
-relative to H1--H12. For simulations in small space much more is known, for example $\mathrm{NTIBI}[n,n^{\varepsilon}]\not\subseteq
+(question 4953, 16 December 2009) that derives it from the proof of~\cite{PPST}. All these factors are of iterated-logarithm type. Theorem~\ref{thm:main} gives a polylogarithmic factor. For simulations in small space much more is known, for example $\mathrm{NTIBI}[n,n^{\varepsilon}]\not\subseteq
 \mathrm{DTISP}[n^{c_\varepsilon},n^{o(1)}]$ (Williams~\cite[Theorem 1.6]{Wil}; in his notation $\mathrm{NTIBI}[t,b]$ is nondeterministic
 time $t$ with $b$ nondeterministic bits and $\mathrm{DTISP}[t,s]$ is deterministic time $t$ and space $s$ simultaneously); such bounds restrict the space of the deterministic
 machine, and Theorem~\ref{thm:main} does not.
@@ -156,8 +177,9 @@ low-dimensional orthogonal vectors conjecture $\mathrm{NDTIME}(\lceil\log n\rcei
 $\epsilon>0$; further forms use APSP, 3SUM, clique problems and ETH. Some of these premises have since
 been reported false in preprints: ETH~\cite{OAI-ETH}, and the polynomial-range forms of 3SUM and APSP~\cite{AVW}; the triangle and
 orthogonal-vectors premises and Lingas's large-weight forms are, as far as we know, open. Where his premises hold, his bounds are much
-stronger than ours. Theorem~\ref{thm:main} assumes no fine-grained hypothesis; its inputs H1--H12 are results stated in the OpenAI
-preprints, two of them (H4 and H5) in a characteristic-$2$ form that we derived from the proofs in T.
+stronger than ours. Theorem~\ref{thm:main} assumes no fine-grained hypothesis, and no other hypothesis. Its proof in this text rests on results stated in the OpenAI
+preprints (the inputs H1--H12), two of them (H4 and H5) in a characteristic-$2$ form that we derived from the proofs in T; the Lean
+proof takes them from OpenAI's Lean library or proves what it needs (Section~\ref{sec:lean}).
 
 \paragraph{What follows from the OpenAI preprints directly.} Under the variable-count Weak Exponential Time Hypothesis, T proves that
 a deterministic multitape machine that writes the transpose of an $N\times N$ binary matrix on a $2^{-\rho N^2}$ fraction of the
@@ -308,16 +330,19 @@ Thus $L_\oplus(D)$ differs from $L_\oplus(M)$ at $z$. Every language of $\parTIM
 \end{proof}
 
 %======================================================================
-\section{The external inputs H1--H12}\label{sec:hyp}
+\section{The inputs H1--H12 from the OpenAI preprints}\label{sec:hyp}
 
 Paths are relative to the folder \src{preprints/} of the public repository \src{github.com/openai/math}; Lean paths are relative to its
 folder \src{lean/} (commit \texttt{3344da5}). Write
 \src{EG/} for \src{Euclidean-geometry-in-the-asymptotic-spectrum-of-tensors-November-24-2026/build/},
 \src{CL/} for \src{Circuit-lower-bounds-for-Hamiltonian-cycle-and-the-permanent-November-24-2026/build/} and
 \src{T/} for \src{The-logarithmic-exponent-of-integer-multiplication-on-tapes-November-24-2026/build/}.
-Each hypothesis is our restatement of the cited lines: formulas are copied, the prose is ours. Where the source says
-``rational'' or ``Weak ETH'' and we use characteristic $2$, the change is stated in the hypothesis itself.
-These are research inputs, not axioms: Theorem~\ref{thm:main} is exactly as strong as H1--H12.
+Each input is our restatement of the cited lines: formulas are copied, the prose is ours. Where the source says
+``rational'' or ``Weak ETH'' and we use characteristic $2$, the change is stated in the input itself.
+In the first version of this paper these twelve statements were hypotheses of Theorem~\ref{thm:main}. They are not hypotheses
+any more: the Lean proof assumes none of them (Section~\ref{sec:lean}). They stay here as the interface between this text and
+the preprints. Sections~\ref{sec:case1} to~\ref{sec:utime} are written relative to them, so the proof in words is exactly as
+strong as H1--H12; the unconditional status of the theorems comes from the Lean proof.
 
 \subsection{Spectral prices and ports}
 
@@ -543,7 +568,7 @@ relative to the bundle's source lane or the numbered position (by xor), so that 
 records for every lane; a refresh lists, for each old base arc and source block, its $D$ actual arcs in source-port order.
 \end{hyp}
 
-\begin{remark}[Which hypotheses are used where]
+\begin{remark}[Which inputs are used where]
 Case~1 uses H1(a)--(c), H2, H3 (through H4), H4 and H5. Case~2 uses H1(a),(b),(d) and H6--H12. Lemma~\ref{lem:locality} uses
 only the constructions in H9--H12, not their energy estimates. The energy estimate is used only through \eqref{eq:compress}.
 \end{remark}
@@ -841,7 +866,11 @@ The \emph{panel} of a base $y\in B_\ell$ consists of:
 \end{enumerate}
 Every field has a fixed length: addresses and prefixes $\lambda+O(\log\lambda)$ bits, displacements $h+O(1)$ bits, widths and the
 integers of a term index $O(\log\lambda)$ bits (since all widths are at most $C_2^T(W_0+1)=\lambda^{O(1)}$ and H6 bounds the
-integers of an index by $O(\text{width}+1)$), colours and offsets $O(1)$ bits. A position anchors at most $2d_\ell$ motifs, so the
+integers of an index by $O(\text{width}+1)$), colours and offsets $O(1)$ bits. The energy prefixes fit as well: a level has at most
+$P_0=O_M(t)$ positions, a position anchors at most $2d_\ell$ motifs, and every supply width is at most
+$C_2^T(W_0+1)=\lambda^{O(1)}$, so $0\le E_k(y)\le2^{\lambda+O(\log\lambda)}$, and a field of $\lambda+O(\log\lambda)$ bits holds every
+energy prefix for $n\ge n_M$ (the threshold of Lemma~\ref{lem:space}). If a coefficient of an energy can be negative, the stored
+number is the cleared-denominator form with non-negative coefficients. A position anchors at most $2d_\ell$ motifs, so the
 panel has a fixed number of term slots per position; unused slots are zero. Thus a panel has a fixed size $\Pi_\ell$, laid out as
 a per-base part ((P1), colour, offset, $E_1,E_2$, $\Omega$: $O(d_\ell\lambda)$ bits) followed by one per-position part for each lane
 ((P2) and the term slots: $O(d_\ell\log\lambda)$ bits), so
@@ -1047,8 +1076,8 @@ are in range and that their unused parts are zero.
 \item[C11] (one per final base $y$) If $y$ is the first final base, $\Omega(y)=0$. If $y$ is not the last final base,
   $\Omega(y+1)=\Omega(y)+\sum_{g,\eta}(\text{width of out-slot }\eta\text{ at }(y,g))$. The last base has no successor and no
   stored $\Omega(y+1)$ (P4 stores prefixes only for actual bases); its sum is checked by C12.
-\item[C12] (one) Every bit of S3 after position $\Omega(y_{\max})+\sum(\text{widths at }y_{\max})$ is $0$, and this number is at most
-  the length of S3.
+\item[C12] (one) Let $L=\Omega(y_{\max})+\sum(\text{widths at }y_{\max})$. Then $L$ is at most the length of S3, and every bit of S3
+  at a position $i\ge L$ is $0$ (positions are counted from $0$, so the bit at position $L$ is checked too).
 \item[C13] (one per final position $v$) $W_v(z|_v;\iota(u))=1$, where $z|_v$ is read from S3 at the offsets given by (P4) and (P2)
   (the bits of an arc are stored once, at its source position, in the order base, lane, outgoing slot).
 \end{enumerate}
@@ -1189,7 +1218,7 @@ nondeterministic machines, Case~2 to parity machines. Since $\mathrm{UTIME}(f)\s
 separation from unambiguous time. The classes are those of Definition~\ref{def:classes}.
 
 \begin{theorem}\label{thm:Uplus}
-Assume H1--H12. There are $\sigma>0$ (not effective) and a language $L\in\coNTIME[n;2\log n]$ such that
+There are $\sigma>0$ (not effective) and a language $L\in\coNTIME[n;2\log n]$ such that
 $L\notin\NTIME(n(\log n)^{\sigma})\cap\parTIME(n(\log n)^{\sigma})$. In particular
 $\coNTIME[n;2\log n]\not\subseteq\mathrm{UTIME}(n(\log n)^{\sigma})$.
 \end{theorem}
@@ -1261,7 +1290,7 @@ one could keep all of $\mathcal G_R$ by choosing $z$ outside the zero set of $\p
 OpenAI's Lean lemma \texttt{realize\_relations} (one indeterminate per vertex and local view, over an infinite field). But then Proposition~\ref{prop:table} is needed over that field with
 nonzero scalars $c(X)$ in place of $1$, that is, H2, H4 and H5 for that field. (For the algebraic closure of $\F_2$ the class of spaces is $\X_2$ again, by H1(b) and
 H2, so H4 would apply as stated; the price comparison and the entropy lemma with general nonzero scalars would be new inputs.) The specialization over $\F_2$ avoids this, so
-Theorem~\ref{thm:Uplus} uses H1--H12 exactly as stated. (3) For an unambiguous machine one may take every $z_{j,w}=1$: the
+the proof of Theorem~\ref{thm:Uplus} uses the inputs H1--H12 exactly as stated. (3) For an unambiguous machine one may take every $z_{j,w}=1$: the
 contraction is then the number of accepting runs with record $R$, which is $0$ or $1$.
 \end{remark}
 
@@ -1331,6 +1360,94 @@ complement of $\TRANS$ is outside $\NTIME(n(\log n)^{\sigma})$, since it is in $
 \end{remark}
 
 %======================================================================
+\section{The Lean proof: what is formalized where}\label{sec:lean}
+
+The repository of this paper (\url{https://github.com/jackryan225/ntime-dtime-polylog}, folder \src{lean/}) has a Lean~4 proof of
+Theorem~\ref{thm:main} and Theorem~\ref{thm:Uplus} with no hypothesis. This section says what it proves, what it takes from
+OpenAI, and which part of this text is in which Lean files. The files \src{LEAN-STATEMENT.md} and \src{LEAN-AUDIT.md} of the
+repository have the details.
+
+\paragraph{The four theorems.} The statement files in \src{lean/C1Challenge/} import only Mathlib. They define the machines, the
+running time and the classes in full. The proved theorems are:
+\begin{itemize}
+\item \texttt{P1Final.c1\_closed}: there are $\sigma>0$ and $L\in\NTIME[n;\lfloor2\log n\rfloor]$ with $L\notin\DTIME(n(\log n)^{\sigma})$;
+\item \texttt{P1Final.c1\_ntime\_closed}: the same with $L\in\NTIME(n)$ in addition, so both sentences of Theorem~\ref{thm:main}
+  hold with one $\sigma$ and one language;
+\item \texttt{P1Final.c1u\_closed}: Theorem~\ref{thm:Uplus};
+\item \texttt{P1Final.c1u\_utime\_closed}: its consequence for $\mathrm{UTIME}$.
+\end{itemize}
+Each has exactly the type of its target in the statement files (compared as Lean terms), and each depends only on the axioms
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+
+\paragraph{What was checked.} Three kernels checked the proof: Lean's kernel during the build; \texttt{leanchecker}, which
+replays all compiled modules; and \texttt{lean4lean}, an independent implementation of the kernel, on an export of each theorem
+with its whole closure, Mathlib included. The closure has $3{,}067$ source files: $746$ of ours, $2{,}290$ of OpenAI's library
+(six of them changed by our two patches) and $31$ of the library Lemmata, which OpenAI's library uses. A build of the released
+files from an empty folder passed.
+
+\paragraph{What the Lean proof takes from OpenAI's library} (commit \texttt{3344da5} of \src{github.com/openai/math}): the machine
+model (copied field for field into the statement file); the port theorem and the wire expanders; the compressor with its
+shrinking and refresh substeps; the packing data and the motif blocks; the network kernel; the stack-program and code calculus;
+and the integer-multiplication program library. OpenAI's library states the step from ports to wire expanders for
+characteristic $0$; our two patches (\src{field-uniform.patch}, \src{port-over.patch}) make it uniform in the field. All of
+OpenAI's files in the build are compiled and kernel-checked together with ours. The Lean proof does not state H1--H12 one by
+one. Where this text uses an input, the Lean proof uses a theorem of OpenAI's library or a lemma of our own; where
+Section~\ref{sec:hyp} says that an input rests on our reading of the preprints, the Lean proof proves what it needs, or does not
+need the input.
+
+\paragraph{Differences between the Lean statements and this text.}
+\begin{enumerate}
+\item \emph{Machines.} The machines of this text have one-way tapes with an end marker and the guess on a second tape. The Lean
+  machines have two-way tapes and take the guess as a prefix of the input. The two models give the same classes, since each
+  simulates the other in $O(n+g)$ extra steps ($g$ the number of guess bits). This equivalence is argued in words; it is not in
+  Lean.
+\item \emph{Constants.} The clocks and the number of guess bits at $n\le1$ differ by constants. The classes are the same.
+\item \emph{The case split.} Lean splits, by excluded middle, on one proposition: whether the algebraic closure of $\F_2$ has
+  ports in the sense of OpenAI's library. This text splits on ``characteristic $2$ has ports'' and uses H1(b) to pass between
+  fields of characteristic $2$. The Lean proof does not need H1(b). In both forms $\sigma$ is not effective.
+\end{enumerate}
+
+\paragraph{Which part of this text is in which folder.} The table is a guide to the folders of \src{lean/}. It is not a
+line-by-line correspondence.
+\begin{center}
+\begin{tabular}{p{0.50\textwidth}p{0.43\textwidth}}
+\hline
+Part of this text & Lean folders \\
+\hline
+Statements of Theorems~\ref{thm:main} and~\ref{thm:Uplus} & \texttt{C1Challenge/} (targets), \texttt{P1Final/} (proved theorems) \\
+Counters and batched lookup (Section~\ref{sec:models}) & \texttt{P1Batch/} \\
+Parity time hierarchy (Theorem~\ref{thm:hier}) & \texttt{P1Hier/} \\
+Case 1, transposition (Section~\ref{sec:case1}) & \texttt{P1Case1/} \\
+Skeletons, the network, access chains (Sections~\ref{subsec:normal}, \ref{subsec:network}) & \texttt{P1Net/}; Bene\v{s} routing: \texttt{P1Benes/} \\
+Locality lemma (Lemma~\ref{lem:locality}) & \texttt{P1P7/} \\
+Witness format and its length (Section~\ref{subsec:witness}, Lemma~\ref{lem:space}) & \texttt{P1Wit/} \\
+Checks C1--C4 and C14 & \texttt{P1ChkDir/} \\
+Checks C5--C9 & \texttt{P1ChkGreedy/} \\
+Checks C10--C13 & \texttt{P1ChkFinal/}, \texttt{P1C10/} \\
+The checks as tape programs within the time bound & \texttt{P1ProgDir/}, \texttt{P1ProgEng/}, \texttt{P1Dispatch/}, \texttt{P1P5/}, \texttt{P1Sol*/}, \texttt{P1OaiReuse/} \\
+Parity bookkeeping and assembly of Lemma~P & \texttt{P1Count/}, \texttt{P1Int/} \\
+Wrapper (Section~\ref{sec:wrapper}); the step from the closure of $\F_2$ to a finite algebra; $\NTIME(n)$ & \texttt{P1Wrap/}, \texttt{P1NTime/}, \texttt{P1Final/} \\
+Stronger form (Section~\ref{sec:utime}) & \texttt{P1C1U/}, \texttt{P1Final/} \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Two errors of the first version, found by the Lean work.} Both are corrected in this version. Neither affected the
+theorem.
+\begin{enumerate}
+\item[(E1)] Check C12 said that every bit of S3 ``after position'' $L$ is $0$. With positions counted from $0$ this left the bit
+  at position $L$ unchecked. Section~\ref{subsec:witness} now checks every position $i\ge L$. Three independent readings of the
+  section made for the Lean work found it.
+\item[(E2)] The first version gave no reason for the length of the energy prefixes. The bound is now stated in
+  Section~\ref{subsec:panels}. It was found when a Lean step failed: the stored energy sums were known only modulo a power of two.
+\end{enumerate}
+
+\paragraph{What is not formalized.} The equivalence of the two machine models above; the comparison with prior work
+(Section~\ref{sec:prior}); the remarks of Section~\ref{sec:remarks}; and the match between the inputs H1--H12 as restated in
+Section~\ref{sec:hyp} and the OpenAI preprints, which the Lean proof does not need. No professional mathematician has refereed
+the Lean statements; two blind readings of each main statement by other models are recorded in \src{LEAN-STATEMENT.md}.
+
+%======================================================================
 \section{Remarks}\label{sec:remarks}
 
 \begin{remark}[Range of the exponent]\label{rem:range}
@@ -1356,29 +1473,33 @@ better $\kappa_0$--$C_2$ trade-off. It is not an obstruction to the theorem.
 \begin{remark}[What the proof does not need]
 No block-respecting simulation (Hopcroft--Paul--Valiant) is used: the three-block windows give the network directly
 (Section~\ref{subsec:network}). The descriptor RAM of H12 is not run; only its construction is used, and the global records it
-schedules (colours, offsets, layout) are replaced by locally checkable records. No Lean proof is used: the proof is on paper.
-Several hypotheses are, at the level of statements, instances of theorems of OpenAI's Lean library for every field (H2, price
+schedules (colours, offsets, layout) are replaced by locally checkable records. The proof in this text does not use the Lean proof.
+Several inputs are, at the level of statements, instances of theorems of OpenAI's Lean library for every field (H2, price
 part: \texttt{wire\_cost\_le}; H5: \texttt{paired\_entropy\_at\_placement}; H6: \texttt{MotifConversion.exists\_conversion},
 \src{OAI/Computability/VPVNP/MotifConversion.lean} l.327; for H8, \texttt{Compression.exists\_iterated\_compression} under
 \texttt{HasWireExpanders} proves the bounds of H8 for OpenAI's own construction, which is not literally H8 with the scope used
-here). The other inputs, or parts of inputs, rest on our reading of the preprints only: H1(b), H1(d) in characteristic $2$, the class
+here). In this text the other inputs, or parts of inputs, rest on our reading of the preprints: H1(b), H1(d) in characteristic $2$, the class
 $\X_2$ of H2, H3 in the general-class form, H4, H7, the scope of H8 over all admissible choices, and the constructions H9--H12, whose match with
-OpenAI's Lean construction files is not checked (Remark~\ref{rem:weak}); the accompanying file HYPOTHESES.md has the table. Weak ETH is not used: Case~1 replaces it by the no-ports hypothesis itself.
+OpenAI's Lean construction files this text does not check (Remark~\ref{rem:weak}); the accompanying file HYPOTHESES.md has the table. The Lean proof does not depend on these readings (Section~\ref{sec:lean}). Weak ETH is not used: Case~1 replaces it by the no-ports hypothesis itself.
 \end{remark}
 
-\begin{remark}[Weakest points, for a reviewer]\label{rem:weak}
+\begin{remark}[Weakest points of the proof in words, for a reviewer]\label{rem:weak}
+These points concern the proof in this text. The Lean proof does not use our restatements H1--H12, so the theorems do not depend
+on them.
 \begin{enumerate}
 \item H8 over $\F_2$ (EG asserts it for every field with ports; the energy estimate and the field of the parameter solution are
-  the content). Theorem~\ref{thm:main} is exactly as strong as H8 in Case~2. OpenAI's Lean library proves the bounds of H8 for its
+  the content). The proof in words is exactly as strong as H8 in Case~2. OpenAI's Lean library proves the bounds of H8 for its
   own construction, for every field $k$ under the hypothesis \texttt{HasWireExpanders k} (\texttt{Compression.exists\_iterated\_compression},
   \src{OAI/Computability/VPVNP/IteratedCompression.lean} l.115--136; arbitrary finite base, one lane displacement per base slot,
   lane-dependent widths, energy bound $\sqrt{\mathcal L_T}\le(\sqrt{\mathcal L_0}+O(P_0))/2^T$). The step from H1 to
   \texttt{HasWireExpanders} is formalized there only for characteristic $0$ (\texttt{wireExpanders\_of\_port},
-  \src{OAI/Computability/MultitapeWeakETH/PortTemplates.lean} l.45). We read but did not build these files.
+  \src{OAI/Computability/MultitapeWeakETH/PortTemplates.lean} l.45). For the first version we read but did not build these files; the Lean proof builds them, with two patches of ours that make
+  the port statement uniform in the field (Section~\ref{sec:lean}).
   A separate check shows that ports in any field of characteristic $2$ give ports over $\F_2$ with the
   same graphs, and that the parameter solution lies in $\F_2$.
 \item The characteristic-$2$ form H4 of T's geometric lemma, and H1(d) in characteristic $2$. They rest on a reading of the proofs
-  (EG \src{port-graphs.tex} l.38--54); no Lean build exists (a field-uniform Lean patch was drafted but not compiled). H5 is an instance of a field-general Lean statement (H5 above).
+  (EG \src{port-graphs.tex} l.38--54); for the first version no Lean build existed; the field-uniform patch is now part of the Lean proof and compiles
+  (Section~\ref{sec:lean}). H5 is an instance of a field-general Lean statement (H5 above).
 \item Lemma~\ref{lem:locality} rests on the constructions H9--H11 as we restate them from EG's text. A reviewer should compare
   Step~1 (placement) and Step~2 (the four parent bases of a motif) with \src{EG/compressor-appendix.tex} l.39--55 and
   \src{EG/compressor.tex} l.392--404. OpenAI's Lean construction, which the Lean form of H8 certifies, fixes some free choices of
@@ -1418,9 +1539,9 @@ safe, weaker choice.
 
 \begin{remark}[What is not claimed]
 (1) No explicit $\sigma$: $\sigma=1/4$ if characteristic $2$ has no ports and $\sigma=s/2$ if it has ports, with $s$ from constants
-that H8 asserts to exist. (2) Nothing unconditional: every statement here assumes H1--H12. (3) No separation of $\NTIME$ from
-$\coNTIME$ (Section~\ref{sec:utime}). (4) Nothing for random-access machines: there $\TRANS$ is decidable in linear time, so Case~1
-has no analogue. (5) The argument does not relativize: it uses that one step of a multitape machine reads only the cells under its
+that H8 asserts to exist. (2) No separation of $\NTIME$ from
+$\coNTIME$ (Section~\ref{sec:utime}). (3) Nothing for random-access machines: there $\TRANS$ is decidable in linear time, so Case~1
+has no analogue. (4) The argument does not relativize: it uses that one step of a multitape machine reads only the cells under its
 heads, so that a short time interval touches $O(1)$ small blocks. For oracle machines with a query tape that is erased after each
 query (queries of linear length), relative to a set $A$ that is complete for linear space under linear-time reductions,
 $\NTIME^{A}(n)=\DTIME^{A}(O(n))$ (simulate the nondeterministic oracle machine in linear space, then make one query; Hemmerling~\cite[Proposition 15]{Hem}, \cite[Corollary 1]{Hem13}). So any proof of Theorem~\ref{thm:main} must fail to relativize.
