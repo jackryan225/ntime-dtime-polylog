@@ -1,0 +1,32 @@
+=== start 2026-11-25T15:53:53Z on <host> in <home>/pnp-remote
+ 'sh' 'scripts/c1-audit.sh' 'C'
+build folder before: packages
+--- clean build exit 0 in 3287 s: Build completed successfully (11960 jobs).
+--- axioms exit 0:
+'P1Final.c1_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'P1Final.openChecksRec_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+# external roots: Mathlib
+--- closure:     3037 modules
+--- scan hits (sorry|native_decide|axiom|admit|implemented_by|extern):      730
+C1Challenge/NonVacuity.lean:8:guard the fixed definitions against that kind of error. All of them are sorry-free.
+C1Challenge/Statement.lean:126:  sorry
+OAI/Computability/IntegerMultiplication/Bits/Multiply.lean:32:/-- external interface, specializing *only* proof. -/
+OAI/Computability/IntegerMultiplication/Direct.lean:50:-- correction support-only if external x good
+OAI/Computability/IntegerMultiplication/Net/Reward.lean:72:-- pick two external pivots (only use one when triples coincide)
+OAI/Computability/MultitapeWeakETH/CallExecution.lean:16:effect on the external memory. -/
+OAI/Computability/MultitapeWeakETH/ChainExecution.lean:4:/-! # Successive descriptor calls on one external write log -/
+OAI/Computability/MultitapeWeakETH/ChainExecution.lean:21:The old private bank is discarded, while all external writes are retained. -/
+OAI/Computability/MultitapeWeakETH/ChainExecution.lean:100:/-- Rejection, the final persistent word, and every external write agree with
+OAI/Computability/MultitapeWeakETH/ExternalMemoryProgram.lean:27:/-- Newest-first external stores override the initial word queried on a miss. -/
+OAI/Computability/MultitapeWeakETH/ExternalMemoryProgram.lean:46:/-- Return one native word from its address, the external log and the
+OAI/Computability/MultitapeWeakETH/ExternalMemoryProgram.lean:73:/-- The descriptor's actual external memory is available by a polynomial
+OAI/Computability/MultitapeWeakETH/ExternalRoot.lean:44:theorem paired_entropy_external_root {X : Type} [PseudoMetricSpace X]
+OAI/Computability/MultitapeWeakETH/InputBlocks.lean:3:/-! # Loading the first operand from its external block terminals -/
+OAI/Computability/MultitapeWeakETH/InputBlocks.lean:14:/-- Identify the external input bit at a physical cell, if there is one. -/
+OAI/Computability/MultitapeWeakETH/InputBlocks.lean:63:/-- The operand loaded after the first j external block vertices. -/
+OAI/Computability/MultitapeWeakETH/InputBlocks.lean:77:/-- Updating a single external block leaves every other register unchanged.
+OAI/Computability/MultitapeWeakETH/PhysicalBlocks.lean:81:/-- The high-address endpoint of a big-endian external block fixes its two
+OAI/Computability/MultitapeWeakETH/Pins.lean:53:wire-label contraction. The same weights work for every external setting. -/
+OAI/Computability/MultitapeWeakETH/Relations.lean:5:For one external setting, evaluation at the indicator tables of one witness
+--- sha256 manifest:     3037 files; its sha256 6eb94273a9a3fd8357a07ab6b51ef88367dc9db111510db24be9fa081e6982a8
+=== exit 0 at 2026-11-25T16:48:50Z

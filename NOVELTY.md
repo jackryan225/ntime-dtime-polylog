@@ -50,3 +50,15 @@ them from it was found.
   locality.
 - No unconditional NTIME versus coNTIME separation follows (paper, Section 8).
 - On random-access machines TRANS is in linear time, so Case 1 has no RAM analogue, as it should.
+
+
+## Addendum of 26 November 2026
+
+No new search was made for the Lean release; the searches above (25 November 2026) cover statements (A) and (B) with or without
+hypotheses. The Lean proof (`LEAN-STATEMENT.md`) proves (A) and (B) with no hypothesis.
+
+Method credit, found later on 25 November by a further reading of the OpenAI sources: the main idea of Lemma P (compress the
+count of a bounded counting computation, guess the short compressed record, check it in small local jobs, and route groups of
+trace rows as lanes on a butterfly network) is in OpenAI's preprint CL, theorem "Clock gap" (`gap.tex` l.48-75, proof
+l.184-319), for random-access machines and against arithmetic circuits. Lemma P is the multitape form of that idea, with every
+cost charged to one deterministic tape machine. The paper and the table above do not cite that theorem; they should.

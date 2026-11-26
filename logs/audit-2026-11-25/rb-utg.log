@@ -1,0 +1,6 @@
+=== start 2026-11-25T18:41:21Z on <host> in <home>/pnp-remote/p1-int
+ 'sh' '-c' 'ulimit -n 8192; shasum -a 256 C1Challenge/UTimeGuards.lean; lake env leanchecker -v C1Challenge.UTimeGuards 2>&1 | tail -2; echo "exit $?"'
+f8cf43f3f1763edb4d933e0f1bad935eabe185a19a0be45ca5e65f33ce8a2db5  C1Challenge/UTimeGuards.lean
+replaying C1Challenge.UTimeGuards
+exit 0
+=== exit 0 at 2026-11-25T18:41:35Z

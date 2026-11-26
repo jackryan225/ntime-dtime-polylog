@@ -1,0 +1,28 @@
+=== start 2026-11-25T18:37:04Z on <host> in <home>/pnp-remote
+ 'sh' 'scripts/slot.sh' 'sh' '-c' 'cd p1-int; printf "import P1Final.C1UClosed
+#print axioms P1Final.c1u_closed
+" > /tmp/rb-cu-ax2.lean; lake env lean /tmp/rb-cu-ax2.lean; cd ..; sh scripts/gen-audit.sh p1-int ut $HOME/pnp-remote/results/cu-closure.txt P1Final.UTimeClosed P1Final.c1u_utime_closed'
+=== slot 1 of 16 after 0 s wait
+'P1Final.c1u_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+# external roots: Mathlib
+closure:     3058 modules; new:        2: C1Challenge.UTime P1Final.UTimeClosed 
+'P1Final.c1u_utime_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+batch 1: exit 0, replayed 2, peak 7.4 GB
+TOTAL: batches 1, failed 0, modules replayed 2
+--- lean4export P1Final.UTimeClosed -- P1Final.c1u_utime_closed
+       34.68 real        29.82 user         4.36 sys
+          7703904256  maximum resident set size
+export bytes 822821042
+--- lean4export: exit 0
+theorems in export: 64279 axioms in export: ['Classical.choice', 'Quot.sound', 'propext'] missing named theorems: []
+EXPORT-OK
+--- lean4lean --import ut.ndjson
+checked 84028 declarations
+      134.64 real       133.44 user         0.60 sys
+          1413005312  maximum resident set size
+--- lean4lean: exit 0
+sha256 of the        2 new files:
+7e56d68ae9f369a52749e39891e79c9e7bc72a7ea9834a5676767a9add3ba9f4  C1Challenge/UTime.lean
+7b33bdb74d342579811a58b72b48991b964cb4a1996d086058a9f8ea2e349c6a  P1Final/UTimeClosed.lean
+=== slot: ran 209 s, peak RSS of one process 7.37 GB
+=== exit 0 at 2026-11-25T18:40:33Z

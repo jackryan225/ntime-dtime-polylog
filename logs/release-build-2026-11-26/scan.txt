@@ -1,0 +1,733 @@
+C1Challenge/C1U.lean:75:  sorry
+C1Challenge/NTime.lean:94:  sorry
+C1Challenge/NonVacuity.lean:8:guard the fixed definitions against that kind of error. All of them are sorry-free.
+C1Challenge/Statement.lean:126:  sorry
+C1Challenge/UTime.lean:24:  sorry
+OAI/Computability/IntegerMultiplication/Bits/Multiply.lean:32:/-- external interface, specializing *only* proof. -/
+OAI/Computability/IntegerMultiplication/Direct.lean:50:-- correction support-only if external x good
+OAI/Computability/IntegerMultiplication/Net/Reward.lean:72:-- pick two external pivots (only use one when triples coincide)
+OAI/Computability/MultitapeWeakETH/CallExecution.lean:16:effect on the external memory. -/
+OAI/Computability/MultitapeWeakETH/ChainExecution.lean:4:/-! # Successive descriptor calls on one external write log -/
+OAI/Computability/MultitapeWeakETH/ChainExecution.lean:21:The old private bank is discarded, while all external writes are retained. -/
+OAI/Computability/MultitapeWeakETH/ChainExecution.lean:100:/-- Rejection, the final persistent word, and every external write agree with
+OAI/Computability/MultitapeWeakETH/ExternalMemoryProgram.lean:27:/-- Newest-first external stores override the initial word queried on a miss. -/
+OAI/Computability/MultitapeWeakETH/ExternalMemoryProgram.lean:46:/-- Return one native word from its address, the external log and the
+OAI/Computability/MultitapeWeakETH/ExternalMemoryProgram.lean:73:/-- The descriptor's actual external memory is available by a polynomial
+OAI/Computability/MultitapeWeakETH/ExternalRoot.lean:44:theorem paired_entropy_external_root {X : Type} [PseudoMetricSpace X]
+OAI/Computability/MultitapeWeakETH/InputBlocks.lean:3:/-! # Loading the first operand from its external block terminals -/
+OAI/Computability/MultitapeWeakETH/InputBlocks.lean:14:/-- Identify the external input bit at a physical cell, if there is one. -/
+OAI/Computability/MultitapeWeakETH/InputBlocks.lean:63:/-- The operand loaded after the first j external block vertices. -/
+OAI/Computability/MultitapeWeakETH/InputBlocks.lean:77:/-- Updating a single external block leaves every other register unchanged.
+OAI/Computability/MultitapeWeakETH/PhysicalBlocks.lean:81:/-- The high-address endpoint of a big-endian external block fixes its two
+OAI/Computability/MultitapeWeakETH/Pins.lean:53:wire-label contraction. The same weights work for every external setting. -/
+OAI/Computability/MultitapeWeakETH/Relations.lean:5:For one external setting, evaluation at the indicator tables of one witness
+OAI/Computability/MultitapeWeakETH/Replay.lean:52:private def admit (tapes : List (List Bool)) : Option (Paths P fuel st m) :=
+OAI/Computability/MultitapeWeakETH/Replay.lean:57:    admit P fuel st m bs = some path ↔ bs = path.val := by
+OAI/Computability/MultitapeWeakETH/Replay.lean:59:  · unfold admit
+OAI/Computability/MultitapeWeakETH/Replay.lean:63:    rw [admit,dite_eq_left path.property]
+OAI/Computability/MultitapeWeakETH/Replay.lean:69:    let p ← admit P fuel st m bs
+OAI/Computability/MultitapeWeakETH/Replay.lean:92:    | none => simp [admit,run]
+OAI/Computability/MultitapeWeakETH/Replay.lean:102:      · simp [admit,run,halt]
+OAI/Computability/MultitapeWeakETH/ReplayProgram.lean:50:frames. The successful result contains the external writes in newest-first
+OAI/Computability/MultitapeWeakETH/SwitchFlow.lean:19:stage has external output, which is read at the same physical sites as input. -/
+OAI/Computability/MultitapeWeakETH/TraceNetwork.lean:107:/-- A stage may inspect its incoming blocks and external bits and choose its outgoing blocks. -/
+OAI/Computability/NearSquareRoot/CRTControlledBenes.lean:503:depending only on the supplied external controls and the other bits of this block. -/
+OAI/Computability/NearSquareRoot/CRTControlledBenesInput.lean:59:external control settings vary. The exponent of the polynomial may depend on `C`. -/
+OAI/Computability/NearSquareRoot/SynchronizedPrimitive.lean:7:A matched stage uses disjoint pairs. Both the forward and adjoint pairs admit
+OAI/Computability/VPVNP/CompressionBudget.lean:11:compressed bit count and the number of external accesses with the budget
+OAI/Computability/VPVNP/CompressionBudget.lean:109:/-- Proposition 13.1's external calls and probes use a vanishing fraction of
+OAI/Computability/VPVNP/CompressorBlockABSliceFootprint.lean:10:and external address evidence of all AB stages inside the allocated interval.
+OAI/Computability/VPVNP/CompressorBlockABSliceFootprint.lean:66:/-- Exact external interval enclosing all reads, including the old widths
+OAI/Computability/VPVNP/CompressorBlockHeadReads.lean:11:additional external reads.
+OAI/Computability/VPVNP/CompressorBlockMetadata.lean:14:reads its public operand bank before its first external store.
+OAI/Computability/VPVNP/CompressorBlockMetadata.lean:128:/-- The worker uses 12 external probes, all writes. The returned cursor
+OAI/Computability/VPVNP/CompressorBundleFixedGatherTable.lean:9:readback and external frame as the bounded row-wise construction.
+OAI/Computability/VPVNP/CompressorBundleKeyTable.lean:10:Successive runs of the three-probe worker share their external memory.
+OAI/Computability/VPVNP/CompressorBundleKeyTable.lean:23:/-- The four external arrays and the shape of the two sets of bundle rows. -/
+OAI/Computability/VPVNP/CompressorBundleKeyTable.lean:162:cost, persistent cursor, readback, and external frame are recorded. -/
+OAI/Computability/VPVNP/CompressorCalendarArenaTransfers.lean:9:bounds, install the pointer bank, and arm the calendar. The external tag is
+OAI/Computability/VPVNP/CompressorCalendarRows.lean:10:eight. Only this final instruction accesses external memory.
+OAI/Computability/VPVNP/CompressorChoiceGridStage.lean:137:calls choose the original fixed grid point and admit exactly the binary
+OAI/Computability/VPVNP/CompressorChoicePreparation.lean:7:The local demand widths are contiguous words in external memory. Starting at
+OAI/Computability/VPVNP/CompressorChoicePreparation.lean:302:/-- Two ordinary calls, with the repetition call's returned word and external
+OAI/Computability/VPVNP/CompressorChoiceRAM.lean:426:        MotifAdmission.admit q (fun e => (v (order.symm e)).val) u L R = true := by
+OAI/Computability/VPVNP/CompressorChoiceRAM.lean:586:      simp [MotifAdmission.admit, MotifAdmission.energy])
+OAI/Computability/VPVNP/CompressorCursorFrameTransfers.lean:4:# Cursor-frame startup across external stage transfers
+OAI/Computability/VPVNP/CompressorCursorFrameTransfers.lean:98:/-- From any external memory, the four native components and their transfers
+OAI/Computability/VPVNP/CompressorDefaultSelection.lean:29:      simp [MotifAdmission.admit,MotifAdmission.energy]⟩
+OAI/Computability/VPVNP/CompressorDemandFootprint.lean:32:/-- All external reads target the input rectangle and no external writes occur. -/
+OAI/Computability/VPVNP/CompressorDescriptorCursorFrame.lean:59:/-- The parameter-loader report, including its reads of the external frame, writes of the
+OAI/Computability/VPVNP/CompressorDescriptorCursorFrame.lean:94:persistent bank, changes no other external word and uses 25 probes. -/
+OAI/Computability/VPVNP/CompressorDescriptorScalars.lean:277:normal-entry report. Both calls use the external memory produced by their
+OAI/Computability/VPVNP/CompressorDescriptorStride.lean:38:/-- Report for a single-field recipe burst, including evaluation, the external write, and the
+OAI/Computability/VPVNP/CompressorFlatRowOperands.lean:62:/-- Seven prologue events for one operand, including an external read precisely when its load
+OAI/Computability/VPVNP/CompressorFlatRowWorker.lean:8:external effects and rejection agree with the original body.
+OAI/Computability/VPVNP/CompressorFlowFootprint.lean:11:no external cells, including when its finite execution takes loop branches.
+OAI/Computability/VPVNP/CompressorFlowFootprint.lean:36:/-- Test whether an instruction avoids external memory reads and writes. -/
+OAI/Computability/VPVNP/CompressorFlowFootprint.lean:41:/-- Recursively check that every instruction in a flow avoids external memory reads and writes. -/
+OAI/Computability/VPVNP/CompressorFormulaFootprint.lean:28:/-- Every external address read while evaluating an expression belongs to
+OAI/Computability/VPVNP/CompressorFormulaFootprint.lean:128:/-- Every external read of the actual formula-row report is justified by
+OAI/Computability/VPVNP/CompressorGreedyPrepareScanAccess.lean:7:The external address bounds therefore hold throughout the native scan.
+OAI/Computability/VPVNP/CompressorGreedyPrepareVisitAccess.lean:7:external probes. The header and operand writers stay inside the current
+OAI/Computability/VPVNP/CompressorGreedyPrepareVisitAccess.lean:8:walk layout, and the only external reads are the two mate tables.
+OAI/Computability/VPVNP/CompressorGreedyPrepareVisitAccess.lean:75:/-- Native single vertex visit and the complete bounds on its external addresses. -/
+OAI/Computability/VPVNP/CompressorGreedyRelocated.lean:103:memory. All external probes go to the mate arrays, labels and records. -/
+OAI/Computability/VPVNP/CompressorGreedyRelocated.lean:166:be read from the same external frame at every call. -/
+OAI/Computability/VPVNP/CompressorHistoryArenaBase.lean:11:before any of the three external stores.
+OAI/Computability/VPVNP/CompressorHistoryArenaBase.lean:93:/-- Number of external probes for history setup, including the three header stores after
+OAI/Computability/VPVNP/CompressorLogAccess.lean:35:/-- Event trace of one direct external write surrounded by specified numbers of tick events. -/
+OAI/Computability/VPVNP/CompressorLogAccess.lean:52:/-- One external write per ordinal, with a fixed number of ticks on each side. -/
+OAI/Computability/VPVNP/CompressorOnlineCursorStartup.lean:170:/-- Starting with arbitrary external memory, compute the row count, produce
+OAI/Computability/VPVNP/CompressorPayloadFootprint.lean:7:The only external read obtains the repetition count from the preceding header
+OAI/Computability/VPVNP/CompressorPayloadWrite.lean:10:from its retained register to an external memory word.
+OAI/Computability/VPVNP/CompressorPayloadWrite.lean:25:/-- Replace a contiguous slice of external memory with the given words. -/
+OAI/Computability/VPVNP/CompressorPayloadWrite.lean:56:one external write and one cursor increment. The terminal copy provides a
+OAI/Computability/VPVNP/CompressorPayloadWrite.lean:202:next native instruction its original bit suffix and the updated external
+OAI/Computability/VPVNP/CompressorRecordChoices.lean:187:      MotifAdmission.admit q (fun e => (v e).val) (repetitions B demand) B.scale B.radius = true}
+OAI/Computability/VPVNP/CompressorRecordChoices.lean:204:  (box.restrict (fun v => MotifAdmission.admit q (fun e => (v e).val)
+OAI/Computability/VPVNP/CompressorRecordChoices.lean:245:    simp [MotifAdmission.admit, MotifAdmission.energy]
+OAI/Computability/VPVNP/CompressorRecordFrame.lean:8:entry a fixed prelude reads the bank from consecutive external words. The
+OAI/Computability/VPVNP/CompressorRecordFrame.lean:46:/-- Temporary register used to address external parameter words during frame loading. -/
+OAI/Computability/VPVNP/CompressorRecordFrame.lean:96:/-- Instantiate the compiled framed template with the external frame base as its public
+OAI/Computability/VPVNP/CompressorRecordFrame.lean:214:external writes (even to the frame), adaptive reads, and all choices. -/
+OAI/Computability/VPVNP/CompressorRecordFrame.lean:226:/-- The source machine's public bank is the external frame at call entry. -/
+OAI/Computability/VPVNP/CompressorRecordFrame.lean:415:from the current external memory at each boundary. Only the original
+OAI/Computability/VPVNP/CompressorRecordGreedy.lean:320:stored externally and the persistent return word is the next record address. -/
+OAI/Computability/VPVNP/CompressorRecordGreedyDirectory.lean:4:# Installing the greedy directory in external memory
+OAI/Computability/VPVNP/CompressorRecordGreedyInit.lean:28:/-- The degree and external table addresses used to initialize greedy operand rows from a
+OAI/Computability/VPVNP/CompressorRecordGreedyInit.lean:249:row. No later lookup in this row depends on the overwritten external cells. -/
+OAI/Computability/VPVNP/CompressorRecordGreedyInit.lean:291:/-- Sequential writes preserve the complete external memory outside the row. -/
+OAI/Computability/VPVNP/CompressorRecordGreedyInit.lean:327:register arguments. Its event log installs the reader's operand words in external
+OAI/Computability/VPVNP/CompressorRecordGreedyInit.lean:454:retaining the current external memory between rows. -/
+OAI/Computability/VPVNP/CompressorRecordGreedyPass.lean:85:/-- Two consecutive native phases. The reader starts in exactly the external
+OAI/Computability/VPVNP/CompressorRecordGreedyPrepare.lean:7:Eight header words in external memory identify the current level's mate,
+OAI/Computability/VPVNP/CompressorRecordGreedyPrepare.lean:190:label. All inputs other than the fixed slot numbers come from external memory. -/
+OAI/Computability/VPVNP/CompressorRecordPreimageScan.lean:208:/-- In particular the pass uses exactly one call and four external probes per old site. -/
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:13:demand. We also give the endpoint and width tables for the external, expander and dummy slots.
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:27:/-- Both endpoint identifiers and one interval in the external word. An endpoint consists
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:28:of its block, its slot and its old port. Its first two components also locate the external
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:37:  /-- Number of bits contributed by this segment to its external bundle. -/
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:84:/-- For any chosen external payload the record's bit addresses recover the actual outgoing
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:96:  rw [incidentPortSegments_external, incomingRecord_matching]
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:105:outgoing external slots are distinct, so the two independently chosen words extend to a
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:138:/-- Off-diagonal motif demand references the old half-slot at `tieSource` and its external
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:159:  /-- Number of bits carried by this refreshed external, expander, or padding arc. -/
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:162:/-- Append the sole external slot, the expander slots in expander order and the dummy slots
+OAI/Computability/VPVNP/CompressorRecordRefresh.lean:184:    refine ⟨rfl, degreeRefresh_external G P hD hd (v,i) l, ?_⟩
+OAI/Computability/VPVNP/CompressorRecordRefreshAllSlots.lean:9:The scans share external memory. The incoming link is indexed by the target
+OAI/Computability/VPVNP/CompressorRecordRefreshAllSlots.lean:34:with the actual external memory left by its predecessor. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshAllSlots.lean:129:  /-- Base address of the table mapping each external bundle to its destination. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshAllSlots.lean:131:  /-- Base address of the total width of each external bundle. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshAllSlots.lean:222:/-- Use the final target and total of the native external segment pass. The
+OAI/Computability/VPVNP/CompressorRecordRefreshAllSlots.lean:273:    exact external_record X.baseIndex (bitWordFinEquiv g) hd dims (splitSlots X) (bitWordFinEquiv a)
+OAI/Computability/VPVNP/CompressorRecordRefreshAllocation.lean:88:/-- The scratch bases satisfy the external pass's common-capacity region convention. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshArgumentSite.lean:10:and new first slots multiply that ordinal by their respective degrees. The external
+OAI/Computability/VPVNP/CompressorRecordRefreshBuild.lean:135:  obtain ⟨external,internal⟩ := bounds X E hdH conn F hD hd choice nextWidth
+OAI/Computability/VPVNP/CompressorRecordRefreshBuild.lean:138:      L.baseApart external L.demandRoom L.demandApart
+OAI/Computability/VPVNP/CompressorRecordRefreshDemandScan.lean:300:/-- Recover the exact tie width from the completed external segment pass. At an
+OAI/Computability/VPVNP/CompressorRecordRefreshDeterminism.lean:56:/-- The gather, directory, external segment and demand tables determine both the
+OAI/Computability/VPVNP/CompressorRecordRefreshDeterminism.lean:82:/-- A fixed branch choice and initial incidence memory admit at most one complete
+OAI/Computability/VPVNP/CompressorRecordRefreshDirectory.lean:301:external segment scan. Only totals at live bundle numbers need initialization. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshDirectory.lean:302:theorem Prefix.external_start (q : Fin 8 → Word bits) (m : Memory bits)
+OAI/Computability/VPVNP/CompressorRecordRefreshExternal.lean:7:pass constructs both ends of every external segment. Its row count is the old degree times
+OAI/Computability/VPVNP/CompressorRecordRefreshExternal.lean:27:/-- A numbered external segment of a dyadic refresh, indexed by its base vertex, lane, bundle
+OAI/Computability/VPVNP/CompressorRecordRefreshExternal.lean:184:/-- The complete native external pass writes the source and destination records of every
+OAI/Computability/VPVNP/CompressorRecordRefreshExternal.lean:186:theorem external_pass (T : Directory X ord w p A fit) (regions : Regions p (n * 2 ^ a))
+OAI/Computability/VPVNP/CompressorRecordRefreshFinish.lean:11:fields and the retained external bundle directory, and the lane-zero scan recovers the base
+OAI/Computability/VPVNP/CompressorRecordRefreshIncidence.lean:8:The selected supply widths and completed external bundles feed every numbered actual slot
+OAI/Computability/VPVNP/CompressorRecordRefreshInputs.lean:7:The external pass obtains its gathered width directly from the site's outgoing width column.
+OAI/Computability/VPVNP/CompressorRecordRefreshInputs.lean:62:/-- From an arbitrary represented old state, the native external construction produces
+OAI/Computability/VPVNP/CompressorRecordRefreshInputs.lean:64:theorem Represents.external_execution (rep : T.Represents X m) (p : Fin 8 → BurstRAM.Word bits)
+OAI/Computability/VPVNP/CompressorRecordRefreshInputs.lean:82:  apply external_phases X (baseOrder X) p lanes T.width T.baseOut T.shift degree residual regions dirLayout m
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:31:/-- The local index is zero for the external slot, an expander-edge number
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:33:inductive Kind where | external | expander | padding
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:59:  | .external => ⟨b * p 2, m (p 5 + b).val * p 2, m (p 6 + b).val⟩
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:80:  | .external =>
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:100:Words 5–9 give bases of the external target, external total, expander target
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:110:/-- The native read and write events for one external, expander, or padding slot at the current
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:115:    | .external => ticks 3 ++ [read (p 5 + b)] ++ ticks 2 ++ [read (p 6 + b)] ++ ticks 3
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:127:    (events kind p m b).length = (match kind with | .external => 21 | .expander => 45 | .padding => 35) ∧
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:128:    countProbes (events kind p m b) = (match kind with | .external => 5 | .expander => 6 | .padding => 3) := by
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:174:/-- The external directory enumerates the base arc before the residual lane. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:306:input words of the external-slot visit. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:307:theorem external_record (s : (V × L) × Fin D)
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:310:    Represents vertices lanes (row .external p m (word (sites vertices lanes s).val))
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:395:/-- The two input words of the external-slot writer come directly from the
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:396:terminal memory of the external segment pass. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:397:theorem external_terminal_record {a : ℕ} (X : LiftedSlots V (2^a) (BitWord a × L))
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:407:    Represents vertices lanes (row .external p m (word (sites vertices lanes s).val))
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:413:  apply external_record vertices lanes hd sizes X (bitWordFinEquiv a) w E int s
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:443:  | .external => [p 5 + b, p 6 + b]
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:519:  | .external => 5
+OAI/Computability/VPVNP/CompressorRecordRefreshNewSlots.lean:525:  | .inl _ => .external
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:5:# Native external descriptor construction from an old compressor state
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:8:and a binary lane displacement per arc. Three scans with shared external memory gather the
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:24:/-- The gather and directory tables use the array bases of the ensuing external pass. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:62:/-- Native reports, memory and geometric rows produced by the three external passes. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:88:/-- Existence of a complete deterministic external construction. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:93:For `B` bundles and `S` segments the exact cost is `6B + 12S` calls plus external probes. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:94:theorem external_phases_stages (degree : (p 0).val = 2^a) (residual : lanes.val = 2^g)
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:129:  have init := BundleDirectory.Prefix.external_start (splitSlots X) base d p m₂ (splitWidths X) ready degree rfl rfl rfl (by
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:150:  obtain ⟨re,he,ce,atEnd,frameEnd,total,rows⟩ := external_pass (splitSlots X) ord (splitWidths X) p data T regions room m₂ init
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:168:theorem external_phases (degree : (p 0).val = 2^a) (residual : lanes.val = 2^g)
+OAI/Computability/VPVNP/CompressorRecordRefreshPhases.lean:178:  obtain ⟨rg,rd,re,h,_,_⟩ := external_phases_stages X base p lanes oldWidth target shift degree residual
+OAI/Computability/VPVNP/CompressorRecordRefreshPrepare.lean:5:# Preparing the external fields and internal demands of a refresh
+OAI/Computability/VPVNP/CompressorRecordRefreshPrepare.lean:7:The initial state is the shared six-column incidence directory. The three external passes
+OAI/Computability/VPVNP/CompressorRecordRefreshPrepare.lean:72:The same output memory also retains all external widths, endpoint offsets and bundle targets. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshPrepare.lean:85:  obtain ⟨rg,rd,re,extReports⟩ := IncidenceDirectory.Represents.external_execution X T m rep q lanes degree residual
+OAI/Computability/VPVNP/CompressorRecordRefreshRAM.lean:4:# Writing external segment records during a degree refresh
+OAI/Computability/VPVNP/CompressorRecordRefreshReadback.lean:9:these stored intervals supplies the diagonal tests and all external halves of the two
+OAI/Computability/VPVNP/CompressorRecordRefreshReadback.lean:36:/-- Numerical width and offset of one incident external segment. The direction is local
+OAI/Computability/VPVNP/CompressorRecordRefreshReadback.lean:44:source-ordered segment of the incident external word. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshScan.lean:6:# Complete external-bundle pass of Appendix E
+OAI/Computability/VPVNP/CompressorRecordRefreshScan.lean:182:/-- The external pass writes the total and three segment columns, indexed below `n`. -/
+OAI/Computability/VPVNP/CompressorRecordRefreshScan.lean:186:/-- All native calls of the external scan and all records through the resulting cursor. -/
+OAI/Computability/VPVNP/CompressorRecordRegisterSetup.lean:10:current external memory. Neither memory changes and no branch bits are consumed.
+OAI/Computability/VPVNP/CompressorRecordSlices.lean:329:/-- During a degree refresh the target list consists of one concatenated external word.
+OAI/Computability/VPVNP/CompressorRecordTable.lean:10:executes one insertion in the burst RAM. Its three external probes and seven instructions
+OAI/Computability/VPVNP/CompressorRecordsABScan.lean:170:/-- One call and three external probes per piece in the combined AB rectangle. -/
+OAI/Computability/VPVNP/CompressorRecordsBundleLists.lean:216:and four external probes per original arc. -/
+OAI/Computability/VPVNP/CompressorRecordsBundlePrefixGraph.lean:10:Their two full scans run consecutively on the external width arrays produced by
+OAI/Computability/VPVNP/CompressorRecordsBundleRAM.lean:29:/-- Read one external cell at a public column base plus a register offset. -/
+OAI/Computability/VPVNP/CompressorRecordsBundleRAM.lean:55:number of external bundles, actual outgoing column, thickness, owner and
+OAI/Computability/VPVNP/CompressorRecordsBundleScan.lean:111:expressed directly in the initial external memory. -/
+OAI/Computability/VPVNP/CompressorRecordsBundleScan.lean:188:/-- The returned registers, external work and complete memory contents of a
+OAI/Computability/VPVNP/CompressorRecordsCopyIncidence.lean:10:The worker copies one external word per call. Each column starts at cursor zero
+OAI/Computability/VPVNP/CompressorRecordsCopyIncidence.lean:26:/-- The scheduled worker that copies one external incidence word per call. -/
+OAI/Computability/VPVNP/CompressorRecordsCursor.lean:185:/-- Interpret an external address relative to the level's reserved region. -/
+OAI/Computability/VPVNP/CompressorRecordsCursorInit.lean:112:/-- From arbitrary external memory the compiled call installs the complete row
+OAI/Computability/VPVNP/CompressorRecordsCursorParameters.lean:253:/-- Two successive native bursts, with their actual external memory transfer
+OAI/Computability/VPVNP/CompressorRecordsCursorParameters.lean:276:Its two bursts make thirty external probes and use logarithmically many steps. -/
+OAI/Computability/VPVNP/CompressorRecordsDemandScan.lean:38:/-- The output family can occupy any disjoint region of the external workspace. -/
+OAI/Computability/VPVNP/CompressorRecordsDirectoryCursor.lean:170:post-state. The resulting external memory represents the typed cursor graph. -/
+OAI/Computability/VPVNP/CompressorRecordsOnlineWorkspace.lean:51:/-- Six external reads and eighteen private ticks precede each native linked
+OAI/Computability/VPVNP/CompressorRecordsPhaseRecipe.lean:187:/-- Number of external reads when evaluating an expression. Repeated occurrences
+OAI/Computability/VPVNP/CompressorRecordsPortRankRAM.lean:216:/-- Actual native execution on arbitrary external words, including unused row
+OAI/Computability/VPVNP/CompressorRecordsPortRankScan.lean:84:`cap+4` probes per call, and a frame covering every other external array. -/
+OAI/Computability/VPVNP/CompressorRecordsRowRecipe.lean:9:the current level pointer carried in persistent state, or external memory
+OAI/Computability/VPVNP/CompressorRecordsRowRecipe.lean:45:/-- Compute an assignment's word from the public operands, persistent state, external memory
+OAI/Computability/VPVNP/CompressorRecordsRowRecipe.lean:62:/-- Number of external reads charged for one right-hand side, one for a memory load and zero
+OAI/Computability/VPVNP/CompressorRecordsRowRecipe.lean:146:/-- Total external reads performed by the computation lines before the row is written, counting
+OAI/Computability/VPVNP/CompressorRecordsScheduleCursor.lean:7:Each row writes six entries. The external tag and twelve frame cells therefore
+OAI/Computability/VPVNP/CompressorRecordsShrinkScan.lean:172:expressed directly in the initial external memory. -/
+OAI/Computability/VPVNP/CompressorRecordsShrinkScan.lean:249:/-- The returned registers, external work and complete memory contents of a
+OAI/Computability/VPVNP/CompressorRecordsShrinkTagColumn.lean:69:/-- Report of the final zero-initialization call, with one external write and return cursor
+OAI/Computability/VPVNP/CompressorRecordsShrinkTagColumn.lean:98:/-- Reports from the actual, successively updated external memory. -/
+OAI/Computability/VPVNP/CompressorRecordsShrinkTagColumn.lean:187:/-- Complete native execution, memory contents, and external charge of the two phases. -/
+OAI/Computability/VPVNP/CompressorRecordsShrinkTagColumn.lean:252:shrinking construction, with an initialized external zero operand. -/
+OAI/Computability/VPVNP/CompressorRecordsShrinkWords.lean:8:of the four inputs are taken in the actual external memory.
+OAI/Computability/VPVNP/CompressorRecordsWorkspace.lean:35:/-- The header's two tag parameters refer to the same external cell. -/
+OAI/Computability/VPVNP/CompressorRecordsWorkspace.lean:73:six external reads and eighteen private ticks. -/
+OAI/Computability/VPVNP/CompressorRefreshBeforeSelector.lean:80:  have h := FrontFrame.external_scans X old a₀ dH t stride start before room widths m rep rg rd re L.regions.fits ext
+OAI/Computability/VPVNP/CompressorRefreshExternalReplay.lean:5:# Replaying the three ordered external refresh scans
+OAI/Computability/VPVNP/CompressorRefreshExternalReplay.lean:30:theorem external_scans (before : ∀ c, (T.column c).val+S ≤ start) (room : (P).stop < 2^w)
+OAI/Computability/VPVNP/CompressorRefreshExternalReplay.lean:47:  obtain ⟨rg',rd',re',raw',mid,init⟩ := external_phases_stages X O Q L T.width T.baseOut T.shift
+OAI/Computability/VPVNP/CompressorRefreshIncidenceWorkerSafety.lean:49:  | .external => ticks 3 ++ [read (p 5+i)] ++ ticks 2 ++ [read (p 6+i)] ++ ticks 3
+OAI/Computability/VPVNP/CompressorRefreshIncidenceWorkerSafety.lean:70:  | external =>
+OAI/Computability/VPVNP/CompressorRefreshIncidenceWorkerSafety.lean:165:      exact external_record X.baseIndex (bitWordFinEquiv g) hd dims (splitSlots X) (bitWordFinEquiv a)
+OAI/Computability/VPVNP/CompressorRefreshLevelRecipe.lean:65:  /-- Worker tag for constructing the directory of external bundles. -/
+OAI/Computability/VPVNP/CompressorRefreshLevelRecipe.lean:77:  /-- Worker tag for writing the refreshed external slot. -/
+OAI/Computability/VPVNP/CompressorRefreshLevelRecipe.lean:78:  external : ℕ
+OAI/Computability/VPVNP/CompressorRefreshLevelRecipe.lean:137:/-- Selects the dispatch tag for a stage, distinguishing the external, expander and padding
+OAI/Computability/VPVNP/CompressorRefreshLevelRecipe.lean:148:    | .external => tags.external
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:11:two external payloads and the internal expander halves belong to its parent
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:12:node. Both ends of an external segment use the prefix offset in the original
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:129:/-- The outgoing external bundle of the promoted site's half-wire assignment. -/
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:130:noncomputable abbrev externalOut (z : (Y).network.Half (promotedSites p)) :=
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:133:/-- The incoming external bundle indexed by the inverse bundle target at the promoted site. -/
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:134:noncomputable abbrev externalIn (z : (Y).network.Half (promotedSites p)) :=
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:138:/-- Splits the incoming and outgoing external bundles into the incident old-port segments of
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:142:    (externalOut X p P hD hd internal z) (externalIn X p P hD hd internal z)
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:148:private theorem external_payload (e : (X.Base × BitWord l) × Fin (2^a))
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:156:private theorem incoming_external_edge :
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:164:  rw [Equiv.apply_symm_apply, degreeRefresh_external]
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:167:theorem external_out_read (A : Arena) (node : ℕ) (z : (Y).network.Half (promotedSites p))
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:174:  let arg := externalOut X p P hD hd internal z
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:175:  have e := external_payload X P hD hd internal p arg
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:181:    (externalIn X p P hD hd internal z)).1 i
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:185:theorem external_in_read (A : Arena) (node : ℕ) (z : (Y).network.Half (promotedSites p))
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:196:  let arg := externalIn X p P hD hd internal z
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:197:  have e := external_payload X P hD hd internal ((bundleTarget G).symm p) arg
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:202:    (externalOut X p P hD hd internal z) arg).2 i
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:205:    (incoming_external_edge X p P hD hd internal) _ he).trans ev) k).trans (congrArg _ hb.symm)
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:278:external segments of the refreshed assignment. -/
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:284:/-- The offset of port j's segment in the site's incoming or outgoing external bundle,
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:286:def externalOffset (dir : Bool) (j : Fin (2^a)) : ℕ :=
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:291:tie uses its destination slot. The new external half uses its source port as
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:297:      + externalOffset X p (!e.1) (tieSource e)
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:338:  · exact (external_in_read X (s,j) P hD hd internal A newNode new mem newData source i).trans (encoded _ i)
+OAI/Computability/VPVNP/CompressorRefreshMapOperands.lean:339:  · exact (external_out_read X (s,j) P hD hd internal A newNode new mem newData source i).trans (encoded _ i)
+OAI/Computability/VPVNP/CompressorRefreshMiddleRecords.lean:7:The stored demand values, external segments and selected supply records are identified
+OAI/Computability/VPVNP/CompressorRefreshMiddleRecords.lean:47:  have external := (bounds X E hdH conn F hD hd c nextWidth).1
+OAI/Computability/VPVNP/CompressorRefreshMiddleRecords.lean:49:    L.regions L.directory L.gather L.baseApart external L.demandRoom L.demandApart
+OAI/Computability/VPVNP/CompressorRefreshOperandInputs.lean:10:ordinal. The four external segment heads describe independently oriented half-wires.
+OAI/Computability/VPVNP/CompressorRefreshOperandInputs.lean:23:external segment tables, demand row and selected term record. -/
+OAI/Computability/VPVNP/CompressorRefreshPlacementRows.lean:49:/-- Exact private ticks and three external writes that install the singleton preimage row at
+OAI/Computability/VPVNP/CompressorRefreshScheduledRuns.lean:8:The external segments, internal term choice, selected supplies, expander
+OAI/Computability/VPVNP/CompressorRefreshTraversalHeaders.lean:84:/-- The two external loads at the popped parent read its first and unique child. -/
+OAI/Computability/VPVNP/CompressorRefreshVerifiedStages.lean:12:The certified walk follows the actual selected term tape through the external
+OAI/Computability/VPVNP/CompressorRefreshVerifiedStages.lean:184:  have extFit := FrontFrame.external_scans X old a₀ dH t stride start before room
+OAI/Computability/VPVNP/CompressorRegisterSetupClock.lean:6:Every external address used by the expression compiler is computed from
+OAI/Computability/VPVNP/CompressorScatterCall.lean:8:one designated register. The exact external effect is a fold of these stores.
+OAI/Computability/VPVNP/CompressorScatterCall.lean:31:/-- Run all register assignments, then emit the ordered external writes from the selected
+OAI/Computability/VPVNP/CompressorScatterCall.lean:40:/-- Encode the ordered address-value pairs as external write events. -/
+OAI/Computability/VPVNP/CompressorScheduledSliceRates.lean:227:including when the external scheduler supplied a larger uniform allowance. -/
+OAI/Computability/VPVNP/CompressorShrinkABSliceGroup.lean:12:retains its exact external frame and resource bounds at its packet endpoint.
+OAI/Computability/VPVNP/CompressorShrinkABSliceGroup.lean:117:/-- Build the group, endpoint descriptors, external frame and costs of the
+OAI/Computability/VPVNP/CompressorShrinkBundleCertificates.lean:19:/-- The scheduled bundle stage has the stated source run and cursor limit, and its external
+OAI/Computability/VPVNP/CompressorShrinkLevelSpace.lean:8:# Linear external address ranges of a selected shrinking level
+OAI/Computability/VPVNP/CompressorShrinkOutputCharges.lean:25:/-- Calls plus external probes per incoming position for Parts 5–8. -/
+OAI/Computability/VPVNP/CompressorShrinkSliceArrays.lean:9:quotient and remainder rule. Each visit reads the total from external memory
+OAI/Computability/VPVNP/CompressorShrinkSliceArrays.lean:194:share external memory, including the computed total and the old widths. -/
+OAI/Computability/VPVNP/CompressorShrinkSliceHeads.lean:99:/-- The written header is contiguous and has no external effects elsewhere. -/
+OAI/Computability/VPVNP/CompressorShrinkSliceHeads.lean:143:the simultaneous shrinking sweep. All input answers are actual external words. -/
+OAI/Computability/VPVNP/CompressorShrinkSliceTable.lean:8:read all surviving widths from the same final external memory by absolute
+OAI/Computability/VPVNP/CompressorShrinkSlotFixedOperands.lean:33:/-- Every external load in the inputs of the actual 22-stage program uses
+OAI/Computability/VPVNP/CompressorShrinkSlotFootprint.lean:7:Every preparation call has one external write and no reads. Each copy call
+OAI/Computability/VPVNP/CompressorShrinkSlotPackets.lean:96:worker run and the lower bounds on all of its external accesses. -/
+OAI/Computability/VPVNP/CompressorShrinkSlotPlan.lean:113:with its native unpadded frame. The external catalog assigns its tag. -/
+OAI/Computability/VPVNP/CompressorShrinkTermPacketBounds.lean:33:external charge needed to construct their linked online rows. -/
+OAI/Computability/VPVNP/CompressorShrinkTermPackets.lean:12:branch tapes, successor ordinals, and external read and write bounds.
+OAI/Computability/VPVNP/CompressorShrinkTermPackets.lean:71:/-- The allowed external read region for gathering demands or reading the dense demands and
+OAI/Computability/VPVNP/CompressorShrinkWidthFootprints.lean:25:/-- A scan covers cursor ordinals from zero to the bound and confines all its external reads
+OAI/Computability/VPVNP/CompressorSliceAdjacencyRows.lean:148:/-- Appending to one row preserves the other rows and every external cell. -/
+OAI/Computability/VPVNP/CompressorSlicePairVisit.lean:7:One call reads both fields from the external start and width arrays. It stores
+OAI/Computability/VPVNP/CompressorSlicePrefix.lean:7:A fixed table visits the external width array in increasing index order.
+OAI/Computability/VPVNP/CompressorSlicePrefix.lean:8:Its persistent word carries the index across calls. An external cell holds the
+OAI/Computability/VPVNP/CompressorSlicePreparation.lean:10:original external width arrays. The pair records begin immediately after this
+OAI/Computability/VPVNP/CompressorSliceRAM.lean:271:/-- One step of `fieldsFrom` with the width in external memory. Registers
+OAI/Computability/VPVNP/CompressorSliceSchedule.lean:11:and remainder select source and target fields in their two external arrays.
+OAI/Computability/VPVNP/CompressorSlotBaseFootprint.lean:86:arc. These two fitting addresses account for every external read of the pass. -/
+OAI/Computability/VPVNP/CompressorSlotBuildInputs.lean:126:/-- Calls, calls plus external probes, total dispatched instructions, and the
+OAI/Computability/VPVNP/CompressorSlotBuildInputs.lean:199:Every external cell before the role table or beyond the counters retains its
+OAI/Computability/VPVNP/CompressorSlotOwnerAux.lean:10:cell and no external reads.
+OAI/Computability/VPVNP/CompressorSlotOwnerFootprint.lean:25:/-- A half-open external array of the given length. -/
+OAI/Computability/VPVNP/CompressorSlotOwnerRuns.lean:26:/-- The four external addresses consulted by the genuine worker. The second
+OAI/Computability/VPVNP/CompressorSlotOwnerRuns.lean:61:in address order. The frame covers arbitrary external addresses. -/
+OAI/Computability/VPVNP/CompressorSlotOwnerRuns.lean:258:/-- Straight-line templates use registers and external memory, so an
+OAI/Computability/VPVNP/CompressorSlotPhaseCosts.lean:13:A pass is charged for every worker call and external probe, including visits to
+OAI/Computability/VPVNP/CompressorSlotPhaseCosts.lean:151:/-- A refresh bundle concatenates its original slot widths into a single external word. -/
+OAI/Computability/VPVNP/CompressorSlotPhaseCosts.lean:383:  | .external => 22
+OAI/Computability/VPVNP/CompressorSlotPhaseCosts.lean:426:/-- The three external refresh passes followed by all actual incidence writebacks.
+OAI/Computability/VPVNP/CompressorSlotPhaseCosts.lean:427:These totals apply to the chronologically joined report lists from `external_phases` and
+OAI/Computability/VPVNP/CompressorSlotRankRAM.lean:189:/-- The table uses only registers and external probes. In the metered opcode
+OAI/Computability/VPVNP/CompressorSlotScatter.lean:6:# Inverting a rectangular endpoint table in external RAM
+OAI/Computability/VPVNP/CompressorSlotSelectedAccess.lean:8:with every actual external address it read or wrote. The final six scans copy
+OAI/Computability/VPVNP/CompressorSourceBankFrame.lean:9:above the six external pointer cells. Each original data call is charged its
+OAI/Computability/VPVNP/CompressorSourceObservableFrame.lean:5:# Recovering a write footprint from native replay and an external frame
+OAI/Computability/VPVNP/CompressorSourceWalk.lean:4:# Chronological source kernels in external memory
+OAI/Computability/VPVNP/CompressorSurvivingPass.lean:258:The single ordinal is computed from these two indices without external advice. -/
+OAI/Computability/VPVNP/CompressorSurvivingVisit.lean:12:their exact addresses. All other external words retain their previous values.
+OAI/Computability/VPVNP/CompressorTermRecord.lean:5:# Constructing a motif term descriptor in external memory
+OAI/Computability/VPVNP/CompressorTermRecord.lean:84:/-- Generated descriptor headers use adjacent external words. -/
+OAI/Computability/VPVNP/CompressorTermRecord.lean:188:selected integer vector. All other external addresses retain their input. -/
+OAI/Computability/VPVNP/CompressorTermRecord.lean:238:/-- The native term phase produces exactly one external-memory descriptor for
+OAI/Computability/VPVNP/CompressorTermRecordScan.lean:109:external memory and preserving every report in order. -/
+OAI/Computability/VPVNP/CompressorTermRecordScan.lean:278:term rows the external memory is preserved. -/
+OAI/Computability/VPVNP/CompressorTermWorker.lean:140:/-- The only external writes beyond the payload are the row index and the
+OAI/Computability/VPVNP/ContractionValue.lean:95:/-- The two blocks of the center admit independent covectors, so the
+OAI/Computability/VPVNP/CursorBranchCommunication.lean:48:/-- The per-site external charge, allowing a fixed number of probes per
+OAI/Computability/VPVNP/CursorCompressionBudget.lean:9:an admitted compressor path and the external operations performed on it.
+OAI/Computability/VPVNP/CursorCompressionBudget.lean:20:/-- Equations (12.1) and the external budget of Proposition 13.1 for the prescribed
+OAI/Computability/VPVNP/DegreeRefresh.lean:11:pair of distinct ports. The external widths cost at most `d₀ L`; across all
+OAI/Computability/VPVNP/DegreeRefresh.lean:38:is the designated slot at which its segment of the external wire is read. -/
+OAI/Computability/VPVNP/DegreeRefresh.lean:47:/-- Squared-width energy of the concatenated external payloads. -/
+OAI/Computability/VPVNP/DegreeRefresh.lean:48:noncomputable def externalEnergy (p' : ℝ) (w : Widths B D) : ℝ :=
+OAI/Computability/VPVNP/DegreeRefresh.lean:92:/-- Cauchy–Schwarz bounds the external energy after concatenating the `D`
+OAI/Computability/VPVNP/DegreeRefresh.lean:94:theorem externalEnergy_le (w : Widths B D) {p p' d₀ : ℝ}
+OAI/Computability/VPVNP/DegreeRefresh.lean:96:    externalEnergy p' w ≤ d₀ * oldEnergy p w := by
+OAI/Computability/VPVNP/DegreeRefresh.lean:97:  unfold externalEnergy oldEnergy
+OAI/Computability/VPVNP/DegreeRefresh.lean:162:    externalEnergy p' w + ∑ z, supply z ≤
+OAI/Computability/VPVNP/DegreeRefresh.lean:172:  linarith only [externalEnergy_le w hp hp' hmass, hs, hinc]
+OAI/Computability/VPVNP/DegreeRefreshActualStep.lean:107:/-- All copies of the grouped external, expander and cyclic padding arcs
+OAI/Computability/VPVNP/DegreeRefreshActualStep.lean:130:    · exact congrArg Prod.fst (degreeRefresh_external G P hD hd (v,j) l).symm
+OAI/Computability/VPVNP/DegreeRefreshCosts.lean:141:/-- All external, internal and padding widths in an admitted branch of
+OAI/Computability/VPVNP/DegreeRefreshExpansion.lean:8:payload per internal supply edge. The outer external wire assignment remains
+OAI/Computability/VPVNP/DegreeRefreshExpansion.lean:42:/-- The external-bundle identity and the ordinary local identities in all
+OAI/Computability/VPVNP/DegreeRefreshExpansion.lean:64:  rw [external_contraction]
+OAI/Computability/VPVNP/DegreeRefreshIncidence.lean:4:# Reading the incident external wires of a bundle matching
+OAI/Computability/VPVNP/DegreeRefreshIncidence.lean:7:segments at a port all come from one external wire. Their offsets are still
+OAI/Computability/VPVNP/DegreeRefreshIncidence.lean:24:private theorem readBundleSegment_external (w : Arc B d → ℕ) (z : External w)
+OAI/Computability/VPVNP/DegreeRefreshIncidence.lean:30:/-- Read all segments at a port using just the two external half-wires there.
+OAI/Computability/VPVNP/DegreeRefreshIncidence.lean:41:/-- On a global assignment of external words the local reader agrees with
+OAI/Computability/VPVNP/DegreeRefreshIncidence.lean:43:@[simp] theorem incidentPortSegments_external (t : Equiv.Perm (Arc B d))
+OAI/Computability/VPVNP/DegreeRefreshIncidence.lean:51:    exact readBundleSegment_external w z _ _
+OAI/Computability/VPVNP/DegreeRefreshKernel.lean:6:# Exact external-wire contraction in the degree refresh
+OAI/Computability/VPVNP/DegreeRefreshKernel.lean:11:segments of the appropriate external wires. Summing the external payloads
+OAI/Computability/VPVNP/DegreeRefreshKernel.lean:23:/-- A block and slot index the external bundle. The final coordinate gives an old source port. -/
+OAI/Computability/VPVNP/DegreeRefreshKernel.lean:47:/-- Extract one old payload from the concatenated external string. -/
+OAI/Computability/VPVNP/DegreeRefreshKernel.lean:91:/-- At an incoming slot, the external segment uses the order of its original source.
+OAI/Computability/VPVNP/DegreeRefreshKernel.lean:110:/-- Before the internal demand networks are converted, summing the external
+OAI/Computability/VPVNP/DegreeRefreshKernel.lean:112:theorem external_contraction (t : Equiv.Perm (Arc B d)) (w : Arc B d → ℕ)
+OAI/Computability/VPVNP/DegreeRefreshMotif.lean:12:into the external-wire contraction.
+OAI/Computability/VPVNP/DegreeRefreshMotif.lean:30:/-- Its other endpoint is the slot port bearing the external segment. -/
+OAI/Computability/VPVNP/DegreeRefreshMotif.lean:44:/-- Segment lists for the two external half-wires incident to a port, in
+OAI/Computability/VPVNP/DegreeRefreshMotif.lean:49:/-- Read the two incident external wires in the prescribed segment order. -/
+OAI/Computability/VPVNP/DegreeRefreshMotif.lean:66:the old incident wires, and its second coordinates read external segments. -/
+OAI/Computability/VPVNP/DegreeRefreshMotif.lean:126:demand tensor, with each old half-wire and external segment read at its port. -/
+OAI/Computability/VPVNP/DegreeRefreshPayloads.lean:8:external strings and a separate internal expander assignment in each block.
+OAI/Computability/VPVNP/DegreeRefreshPayloads.lean:66:/-- Shared actual-arc payloads are exactly one external assignment and one
+OAI/Computability/VPVNP/DegreeRefreshPayloads.lean:82:@[simp] theorem actualWidth_external (hd : dH + 1 ≤ d₀) (b : (V × L) × Fin D) :
+OAI/Computability/VPVNP/DegreeRefreshPayloads.lean:91:/-- Read the external component at its numbered actual slot. -/
+OAI/Computability/VPVNP/DegreeRefreshPayloads.lean:92:theorem payloadsEquiv_external (hd : dH + 1 ≤ d₀)
+OAI/Computability/VPVNP/DegreeRefreshPayloads.lean:96:      cast (congrArg (fun n => Fin n → Bool) (actualWidth_external ext internal hd b))
+OAI/Computability/VPVNP/DegreeRefreshPayloads.lean:111:/-- The equality of finite sums used to replace the separate external and
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:5:# Incident external words in the degree refresh
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:8:receives all its segments in one external word, ordered by the original source
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:31:/-- Every old port in the same external word reaches the same block and slot. -/
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:36:two incident external words, using the same local reader as the kernel step. -/
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:42:  (incidentPortSegments_external _ _ _ _ _ _).symm
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:48:/-- The actual refreshed matching sends the outgoing external word at a port
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:49:to the unique incoming external slot in the translated block. -/
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:50:theorem actualTarget_external_bundle (b : (V × L) × Fin d) :
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:56:    (degreeRefresh_external G P hD hd (v,i) g)
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:61:ending at the port's external slot. -/
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:62:theorem actualTarget_symm_external_bundle (b : (V × L) × Fin d) :
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:67:  rw [Equiv.apply_symm_apply, actualTarget_external_bundle, Equiv.apply_symm_apply]
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:71:/-- The external arc's actual width is the sum of the widths in its word. -/
+OAI/Computability/VPVNP/DegreeRefreshPorts.lean:72:theorem actualWidth_external_bundle (w : (V × Fin d) × (H × L) → ℕ)
+OAI/Computability/VPVNP/DegreeRefreshStep.lean:9:factor stays whole at that port. The local map reads the outgoing external
+OAI/Computability/VPVNP/DegreeRefreshStep.lean:47:/-- The selected output has one external slot per port. Each copy of the
+OAI/Computability/VPVNP/DegreeRefreshStep.lean:72:/-- Concatenated external words and internal assignments together specify
+OAI/Computability/VPVNP/DegreeRefreshStep.lean:124:external strings and the independent internal assignments in every block. -/
+OAI/Computability/VPVNP/DegreeRefreshStep.lean:151:  rw [incidentPortSegments_external]
+OAI/Computability/VPVNP/DegreeRefreshTopology.lean:11:coordinate to a base label. Each port has a single external arc, one
+OAI/Computability/VPVNP/DegreeRefreshTopology.lean:12:internal arc per expander slot, and cyclic padding arcs. The external arc
+OAI/Computability/VPVNP/DegreeRefreshTopology.lean:70:/-- A slot is external, internal, or a copy of the cyclic padding arc. -/
+OAI/Computability/VPVNP/DegreeRefreshTopology.lean:117:/-- The sole external wire preserves the old shift on the remaining lane.
+OAI/Computability/VPVNP/DegreeRefreshTopology.lean:130:/-- The old outgoing slot is the source port of the bundled external wire;
+OAI/Computability/VPVNP/DegreeRefreshTopology.lean:132:@[simp high] theorem degreeRefresh_external (p : V × Fin D) (g : L) :
+OAI/Computability/VPVNP/DegreeRefreshWidths.lean:7:Each port has one concatenated external field, one field per internal expander
+OAI/Computability/VPVNP/DegreeRefreshWidths.lean:21:/-- Widths of the external, internal and padding slots, respectively. -/
+OAI/Computability/VPVNP/DegreeRefreshWidths.lean:36:      externalEnergy p' w + ∑ z, internalEnergy p' (s z) := by
+OAI/Computability/VPVNP/DegreeRefreshWidths.lean:42:  simp only [localEnergy, Finset.sum_add_distrib, internalEnergy, externalEnergy, Fintype.sum_prod_type]
+OAI/Computability/VPVNP/DegreeRefreshWidths.lean:97:applies to the concatenated fields read by the external segment ties. -/
+OAI/Computability/VPVNP/EvaluatorMatrixStep.lean:32:postprocessing times need only admit a common bound. -/
+OAI/Computability/VPVNP/ExponentTrace.lean:77:the local checks admit exactly one binary first-half cut assignment. -/
+OAI/Computability/VPVNP/GrassmannFrames.lean:66:/-- Two partial tuples of length less than the dimension admit a common new
+OAI/Computability/VPVNP/IteratedCompression.lean:100:vertex factors, including those carrying fixed external indices. -/
+OAI/Computability/VPVNP/LiveAuxiliaryHeaderSweep.lean:10:machine reads the seven descriptors from external memory and writes the selected
+OAI/Computability/VPVNP/LiveAuxiliaryHeaders.lean:8:external memory. Only the cut lengths, index bits, advice bits, actual exterior
+OAI/Computability/VPVNP/LiveCountedStage.lean:8:The guard reads the last public word as either the capacity or its external address.
+OAI/Computability/VPVNP/LiveCountedStage.lean:59:/-- Guard the original table using a direct word or an external memory cell. -/
+OAI/Computability/VPVNP/LiveCountedStage.lean:129:/-- The guard log records an actual external read precisely for an indirect limit. -/
+OAI/Computability/VPVNP/LiveEvaluatorAdviceFrameStore.lean:51:/-- Exact registers, external memory and events after the fixed instruction schedule. -/
+OAI/Computability/VPVNP/LiveEvaluatorAdviceFrames.lean:59:/-- The external memory after computing and writing all four midpoint operand frames. -/
+OAI/Computability/VPVNP/LiveEvaluatorAdviceFrames.lean:73:/-- The sole length read and 19 operand writes are the only external probes. -/
+OAI/Computability/VPVNP/LiveEvaluatorRAM.lean:220:choice bit and leaves the external memory unchanged. -/
+OAI/Computability/VPVNP/LiveEvaluatorRAMPrepare.lean:39:/-- Read the symbol under the old first-tape head from its external configuration address. -/
+OAI/Computability/VPVNP/LiveEvaluatorRAMPrepare.lean:41:/-- Read the symbol under the old second-tape head from its external configuration address. -/
+OAI/Computability/VPVNP/LiveEvaluatorRAMPrepare.lean:68:/-- The two external head reads and arithmetic ticks used to locate the running configuration's
+OAI/Computability/VPVNP/LiveEvaluatorRAMPrepare.lean:121:/-- The exact external memory after the five consecutive writes. -/
+OAI/Computability/VPVNP/LiveEvaluatorRAMSchedule.lean:10:Cursor zero selects the transition and saves its five fields in external
+OAI/Computability/VPVNP/LiveEvaluatorRAMSchedule.lean:247:branch of the preparation call that changes external scratch memory. -/
+OAI/Computability/VPVNP/LiveEvaluatorReindexSkeleton.lean:293:/-- Report for one runtime position: local control ticks, one external write,
+OAI/Computability/VPVNP/LiveExponentRAM.lean:13:uses four external probes regardless of the length of an exponent.
+OAI/Computability/VPVNP/LiveHeaderAllocated.lean:153:/-- At every unoccupied position the count is the only external read. -/
+OAI/Computability/VPVNP/LiveHeaderBits.lean:8:one external word. A microcall addresses a single site, extracts a statically
+OAI/Computability/VPVNP/LiveHeaderBits.lean:51:/-- The exact interpreter trace of a copy call, on arbitrary external memory. -/
+OAI/Computability/VPVNP/LiveHeaderCopyDispatch.lean:42:/-- The external table stores the exclusive end, source, and destination for each of the seven
+OAI/Computability/VPVNP/LiveHeaderCopyDispatch.lean:85:/-- Instantiate the seven-segment copy dispatcher at the supplied external table base. -/
+OAI/Computability/VPVNP/LiveHeaderProgramRun.lean:6:# Composing native live-header stages on shared external memory
+OAI/Computability/VPVNP/LiveHeaderProgramRun.lean:11:write, with an exact cost in calls and external probes.
+OAI/Computability/VPVNP/LiveHeaderRuns.lean:97:/-- Exact invariant over the real external word memory after `cursor` cells. -/
+OAI/Computability/VPVNP/LiveHeaderSchedule.lean:9:A group's number and its incoming and outgoing cuts stay in external memory.
+OAI/Computability/VPVNP/LiveHeaderWidthCode.lean:77:/-- Exact external probes and arithmetic ticks, including the final write. -/
+OAI/Computability/VPVNP/LiveNominationSweep.lean:134:/-- Run all nominations with reset private registers at each call, preserving the external
+OAI/Computability/VPVNP/LivePrimedGroupIndices.lean:10:single borrow through external scratch, even when the index exceeds a RAM word.
+OAI/Computability/VPVNP/LiveProgram.lean:51:/-- Prepare the copy descriptors for the primed pair counter's external header and nominated
+OAI/Computability/VPVNP/LiveProgramLayout.lean:8:The group header occupies addresses below `2^d`. The external tag, the
+OAI/Computability/VPVNP/LiveProgramLayout.lean:81:/-- Address of the external dispatch tag, immediately above the range of the d-bit site
+OAI/Computability/VPVNP/LiveProgramRouting.lean:64:surplus choices and every external probe of the router and the outer dispatch. -/
+OAI/Computability/VPVNP/LiveRoute.lean:176:external probes. The jump writes its tag and returns zero, and the accepting
+OAI/Computability/VPVNP/LiveStageLink.lean:61:/-- Second extra register, holding the tag value read from external memory. -/
+OAI/Computability/VPVNP/LiveStageLink.lean:113:/-- Extend the ordinary public words with the reserved external tag address. -/
+OAI/Computability/VPVNP/LiveStageLinkPaths.lean:24:/-- The full external trace, including the deterministic dispatcher and transfer. -/
+OAI/Computability/VPVNP/LiveStageLinkPaths.lean:77:/-- The external memory transition is exactly that of the component, followed
+OAI/Computability/VPVNP/LiveStageLinkRun.lean:9:The dispatcher adds one external read per call. Within the selected component,
+OAI/Computability/VPVNP/LiveStageLinkRun.lean:11:ordinary meanings. Transferring an accepting exit adds one external write.
+OAI/Computability/VPVNP/LiveStageSegments.lean:76:returned cursor, external word effect and the precise cumulative probe cost. -/
+OAI/Computability/VPVNP/MotifAdmission.lean:152:def admit (q : I → ℚ) (v : I → ℕ) (u L : ℕ) (R : ℚ) : Bool :=
+OAI/Computability/VPVNP/MotifAdmission.lean:157:    admit q v u L R = true ↔
+OAI/Computability/VPVNP/MotifAdmission.lean:161:  rw [admit, decide_eq_true_eq, rational_cast R hR, ← mul_div_assoc, le_div_iff₀ hRden,
+OAI/Computability/VPVNP/MotifAdmission.lean:258:    (u L : ℕ) (R : ℚ) (hv : admit q v u L R = true) (i : I) :
+OAI/Computability/VPVNP/MotifConversion.lean:67:    (fun v => MotifAdmission.admit q v u B.scale B.radius = true)
+OAI/Computability/VPVNP/MotifConversion.lean:70:    v ∈ outerIndices B w ↔ MotifAdmission.admit q v (repetitions B w) B.scale B.radius = true := by
+OAI/Computability/VPVNP/NetworkKernel.lean:103:/-- Whole local factors, evaluated at a fixed choice of any external indices. -/
+OAI/Computability/VPVNP/NetworkKernel.lean:165:/-- Push an old factor with external indices, carrying all of those indices
+OAI/Computability/VPVNP/NetworkKernel.lean:166:to its designated new site. The local map only reads the external indices
+OAI/Computability/VPVNP/NetworkKernel.lean:176:external input consists exactly of the old external inputs placed there. -/
+OAI/Computability/VPVNP/PairLinkSlack.lean:6:The enclosing control transfers add at most two external probes and
+OAI/Computability/VPVNP/PairNodeChildAddress.lean:11:read one external word and preserve the unconsumed choice bits.
+OAI/Computability/VPVNP/PairNodeChildAddress.lean:48:/-- Trace of a child-address lookup, consisting of the external read of the descriptor at `ptr`
+OAI/Computability/VPVNP/PairNodeChildAddress.lean:66:configuration registers, all private words, and the external memory. -/
+OAI/Computability/VPVNP/PairNodeChildHeader.lean:56:/-- The seven directory words occupy consecutive external memory cells beginning at `base`,
+OAI/Computability/VPVNP/PairNodeChildHeader.lean:138:preserves the bit stream and reaches the linked loop on the same external memory. -/
+OAI/Computability/VPVNP/PairNodeChildScan.lean:9:independent of the row length. The pointer comes from external memory and
+OAI/Computability/VPVNP/PairNodeChildScan.lean:124:/-- Trace before the first slot of a live child. Three guard ticks precede the external read at
+OAI/Computability/VPVNP/PairNodeDispatch.lean:8:A single external word lookup selects the cursor leaf, six-party shrinking,
+OAI/Computability/VPVNP/PairNodeDispatch.lean:58:/-- Trace for dispatching one node. The external read is at offset + node, and a nonzero tag
+OAI/Computability/VPVNP/PairResidentFrameColumn.lean:33:  /-- Expression that locates the first word of the external three-word slice header. -/
+OAI/Computability/VPVNP/PairResidentFrameColumn.lean:44:/-- One resident copy interval, described by its two private buffer bases, its external header
+OAI/Computability/VPVNP/PairResidentFrameColumn.lean:72:/-- The setup expressions evaluate to the row's three pointers and the external header fits the
+OAI/Computability/VPVNP/PairResidentFrameColumn.lean:302:/-- Per-row upper bound on external probes, counting all loads in the setup expressions and up
+OAI/Computability/VPVNP/PairShrinkCDFieldAddress.lean:294:/-- Read the external word at a fixed scalar offset from the runtime old-level header address. -/
+OAI/Computability/VPVNP/PairShrinkCallABI.lean:15:words and the external level metadata.
+OAI/Computability/VPVNP/PairShrinkCallABI.lean:64:/-- The only external probe in the six live register operands is the
+OAI/Computability/VPVNP/PairShrinkOldHalfAddresses.lean:313:  /-- Distance in external words between adjacent site rows in the old DFS layer. -/
+OAI/Computability/VPVNP/PairShrinkPartyNative.lean:67:  /-- Start of the external AB frame-bank rectangle, with one indexed bank per bundle. -/
+OAI/Computability/VPVNP/PairSimulationCounters.lean:14:Each iteration loads one private count and makes one external read and write.
+OAI/Computability/VPVNP/PairSimulationCounters.lean:28:/-- Registers hold external cursor, external end, private cursor, one,
+OAI/Computability/VPVNP/PairSimulationCounters.lean:29:external count, and local count. -/
+OAI/Computability/VPVNP/PairSimulationCounters.lean:187:continuation with the updated external memory and original private histogram. -/
+OAI/Computability/VPVNP/PairSimulationDFS.lean:9:descriptor addresses in increasing list order. This uses one external read per
+OAI/Computability/VPVNP/PairSimulationDFS.lean:105:to the vertex code. This step consumes no binary choice or external probe. -/
+OAI/Computability/VPVNP/PairSimulationDFS.lean:233:/-- A terminating descent through the actual rows in external memory.
+OAI/Computability/VPVNP/PairSimulationDFSHooks.lean:42:  instruction count and external probes in the combined traversal. -/
+OAI/Computability/VPVNP/PairSimulationDescriptorRows.lean:85:external probe count and instruction count even for an empty child row. -/
+OAI/Computability/VPVNP/PairSimulationEndpointBits.lean:6:The five-opcode loop reads a contiguous final arc from external memory and
+OAI/Computability/VPVNP/PairSimulationEndpointBits.lean:9:keeps all private cells outside that interval, and the external memory and
+OAI/Computability/VPVNP/PairSimulationEndpointBits.lean:42:iteration loads one external arc cell into the private tape and advances both cursors until
+OAI/Computability/VPVNP/PairSimulationFinalBits.lean:32:continuation without making a choice or accessing external memory. -/
+OAI/Computability/VPVNP/PairSimulationFinalBits.lean:343:/-- Exactly one call and one external write per physical bit. -/
+OAI/Computability/VPVNP/PairSimulationFinalBits.lean:445:destination register, preserves external memory and consumes no choice. -/
+OAI/Computability/VPVNP/PairSimulationInlinePrefix.lean:33:/-- A terminal source entry can be an external continuation label. Its outgoing row
+OAI/Computability/VPVNP/PairSimulationKernels.lean:143:/-- Run the same two external-segment tests as the refresh map, then
+OAI/Computability/VPVNP/PairSimulationLeafCacheWrite.lean:8:sequence has no external actions and preserves the source registers.
+OAI/Computability/VPVNP/PairSimulationMapArgumentWriter.lean:9:The register compiler reads a fixed family of expressions from external records.
+OAI/Computability/VPVNP/PairSimulationMapArgumentWriter.lean:75:fuel and branch-bit continuation on the same external memory. -/
+OAI/Computability/VPVNP/PairSimulationMapArgumentWriter.lean:173:fuel and branch-bit continuation on the same external memory. -/
+OAI/Computability/VPVNP/PairSimulationMapSelectors.lean:90:/-- The selector scan rejects inconsistent or unused tags on every external
+OAI/Computability/VPVNP/PairSimulationPrivateFields.lean:9:fragments accept arbitrary program labels and leave the external memory and
+OAI/Computability/VPVNP/PairSimulationPrivateFields.lean:277:/-- A copy has no branch bits or external probes and takes five local
+OAI/Computability/VPVNP/PairSimulationPrivateLabels.lean:10:the corresponding private counters. This is the array read by the external
+OAI/Computability/VPVNP/PairSimulationPrivateLabels.lean:199:/-- The last private scan of a vertex links directly to the common external
+OAI/Computability/VPVNP/PairSimulationPrivateLabels.lean:205:    (names : List (Fin t)) (src base external grammar : ℕ) (c : Config w p r) (hc : c.pc = pc 0)
+OAI/Computability/VPVNP/PairSimulationPrivateLabels.lean:210:    (hpub : M.publicData (param 0) = word w external)
+OAI/Computability/VPVNP/PairSimulationPrivateLabels.lean:212:    (hbase : M.publicData (param 3) = word w base) (hout : external+grammar+t < 2^w)
+OAI/Computability/VPVNP/PairSimulationPrivateLabels.lean:214:    let target := Counters.addHistogram external grammar (fun i => prior i + names.count i) m
+OAI/Computability/VPVNP/PairSimulationPrivateLabels.lean:225:    Counters.execute_flush hf entry param hcode q hq external grammar base hpub hgrammar hcount hbase
+OAI/Computability/VPVNP/PairSimulationPrivateSlices.lean:28:external address of the first offset and is preserved. -/
+OAI/Computability/VPVNP/PairSimulationPrivateSlices.lean:59:/-- The header contains local instructions and external reads only. -/
+OAI/Computability/VPVNP/PairSimulationSliceReads.lean:9:intersection. The private bit loop adds no external reads.
+OAI/Computability/VPVNP/PairSimulationSliceReads.lean:68:/-- Guesses and copies within the private bit loop read no external cell. -/
+OAI/Computability/VPVNP/PairSimulationSliceReads.lean:74:only if that length is nonzero, even when the external cells contain stale values. -/
+OAI/Computability/VPVNP/PairSimulationStackTable.lean:10:accesses external memory. The true halt jumps to the caller's continuation.
+OAI/Computability/VPVNP/PairSimulationTerminalRootGatherLayout.lean:21:/-- Addresses and sizes used to gather one final site's incident wire words from external
+OAI/Computability/VPVNP/PairSimulationTerminalRootGatherLayout.lean:70:/-- First external address of the endpoint field, obtained by adding its outgoing slot's
+OAI/Computability/VPVNP/PairSimulationTerminalRootGatherLayout.lean:74:/-- Contiguous wire words of one selected slot in increasing external address order, including
+OAI/Computability/VPVNP/PairTerminalLayout.lean:58:/-- All simultaneous external and private regions fit on every selected
+OAI/Computability/VPVNP/PairTerminalPrefixSegment.lean:41:stage. This set bounds all external probes before any disjointness condition
+OAI/Computability/VPVNP/PairTerminalPrefixSegment.lean:141:the pointer values through external probes on every call. -/
+OAI/Computability/VPVNP/PairTerminalPrefixSegment.lean:398:its external probes. -/
+OAI/Computability/VPVNP/PairTraversalArena.lean:10:their retained pass origins. The programs share one external memory, and
+OAI/Computability/VPVNP/PairTraversalControllerInputs.lean:41:/-- Read a terminal-header field at its machine-word offset in the supplied external memory. -/
+OAI/Computability/VPVNP/PairTraversalLayerExecution.lean:25:actual external memory and concatenating their emitted events. -/
+OAI/Computability/VPVNP/PairTraversalLeafWorker.lean:11:zero count directly. Padding and other external words keep their old contents.
+OAI/Computability/VPVNP/PairTraversalLeafWorker.lean:75:/-- A complete leaf pass from site zero on arbitrary initial external memory. -/
+OAI/Computability/VPVNP/PairTraversalRoleDispatch.lean:70:/-- At any selected layer and site, the machine's one external read dispatches
+OAI/Computability/VPVNP/PairTraversalRoleExecution.lean:85:/-- Exactly one burst and one external write per stored role. The final memory
+OAI/Computability/VPVNP/PairTraversalRoleNative.lean:34:/-- Chronological role-worker events, including the external write of the selected role code at
+OAI/Computability/VPVNP/PairTraversalRoleNative.lean:130:layer. The report cost includes one burst invocation and one external write. -/
+OAI/Computability/VPVNP/PairTraversalRowExecution.lean:8:Both runs use the same external memory, with the header starting from the
+OAI/Computability/VPVNP/PairTraversalRowExecution.lean:31:/-- The external memory after the identifier translation and the two header writes. -/
+OAI/Computability/VPVNP/PairTraversalWorkerMemory.lean:20:/-- Writing the two saved header values first gives the same complete external
+OAI/Computability/VPVNP/PairTypedVertexJobs.lean:284:only disjointness from the externally supplied suffix. Within the selected
+OAI/Computability/VPVNP/PairVertexImage.lean:33:/-- Saved register holding the external terminal header address. -/
+OAI/Computability/VPVNP/PairVertexImage.lean:168:/-- Public words 4, 5 and 9 give the external counter base, production
+OAI/Computability/VPVNP/PairVertexLevelScan.lean:8:until the node lies at or above the current start. It uses one external read per tested
+OAI/Computability/VPVNP/PrimedCounterCallPaths.lean:9:tape and the post-call external memory used by the next scheduled item.
+OAI/Computability/VPVNP/PrimedCounterCallPaths.lean:29:/-- Report replay has exactly the external-memory effect of the structured body. -/
+OAI/Computability/VPVNP/PrimedCounterData.lean:10:histogram are loaded from the actual initial external memory. The same code
+OAI/Computability/VPVNP/PrimedCounterData.lean:91:/-- Initial external memory with the pair header followed by its nominated histogram. -/
+OAI/Computability/VPVNP/PrimedCounterGuessWord.lean:27:branch bit and tick, and performs no external probe. -/
+OAI/Computability/VPVNP/PrimedCounterGuessWord.lean:45:continuation, preserving the external memory and every unconsumed bit. -/
+OAI/Computability/VPVNP/PrimedCounterGuessWord.lean:223:continuation. Every external address and every other register is preserved. -/
+OAI/Computability/VPVNP/PrimedCounterKernelExact.lean:23:/-- A kernel records the actual external-memory effect of each successful run. -/
+OAI/Computability/VPVNP/PrimedCounterKernelExact.lean:58:the same events, registers and external memory. -/
+OAI/Computability/VPVNP/PrimedCounterRenameRun.lean:7:Relocating operands preserves the complete event sequence and external memory
+OAI/Computability/VPVNP/PrimedInputRAM.lean:35:  /-- Beginning of the first-pass choice rectangle in external memory. -/
+OAI/Computability/VPVNP/PrimedInputRAMAddresses.lean:68:there is one, is a separate single external probe. -/
+OAI/Computability/VPVNP/PrimedInputRAMCopy.lean:22:/-- The value of a copied input cell is either an immediate word or a word read from external
+OAI/Computability/VPVNP/PrimedInputRAMCopy.lean:28:/-- Read the indicated word, or take the literal without an external probe. -/
+OAI/Computability/VPVNP/PrimedInputRAMCopy.lean:138:/-- All recorded reads use their actual values in external memory. -/
+OAI/Computability/VPVNP/PrimedInputRAMHeaders.lean:38:in external memory, padding the unused cells with zero. -/
+OAI/Computability/VPVNP/PrimedInputRAMLayout.lean:94:/-- Prefix and address are private literals. The only external probes in a
+OAI/Computability/VPVNP/PrimedInputRAMOpcodeDispatch.lean:116:finite word instructions. Its trace has no external probes and uses only
+OAI/Computability/VPVNP/PrimedInputRAMOpcodeExecution.lean:11:branch bit. Its external writes and payload read are the operations of the public
+OAI/Computability/VPVNP/PrimedInputRAMOpcodeExecution.lean:12:schedule. The three preceding external reads leave the memory unchanged.
+OAI/Computability/VPVNP/PrimedInputRAMOpcodeLoad.lean:9:The three cut-length words are fetched from external memory on every data
+OAI/Computability/VPVNP/PrimedInputRAMOpcodeParameters.lean:196:header reads and seven cursor arithmetic steps, leaving external memory intact. -/
+OAI/Computability/VPVNP/PrimedInputRAMOpcodes.lean:43:/-- Read an external word at the address held in a register into the destination register. -/
+OAI/Computability/VPVNP/PrimedInputRAMOpcodes.lean:45:/-- Write the source register's word to the external address held in the address register. -/
+OAI/Computability/VPVNP/PrimedInputRAMOpcodes.lean:52:cut lengths supplied by the three external header words. -/
+OAI/Computability/VPVNP/PrimedInputRAMOpcodes.lean:60:three cut lengths from external memory. -/
+OAI/Computability/VPVNP/PrimedInputRAMPortRun.lean:8:Every executed instruction produces a tick and leaves external memory untouched.
+OAI/Computability/VPVNP/PrimedInputRAMPortRun.lean:22:the specified final registers and preserves external memory. -/
+OAI/Computability/VPVNP/PrimedInputRAMRunEquiv.lean:53:/-- The external probes of each scheduled item, fixed independently of the bits
+OAI/Computability/VPVNP/PrimedInputRAMSchedule.lean:8:Private control is re-created at the beginning of each call. The external memory is read
+OAI/Computability/VPVNP/PrimedScheduleRAM.lean:10:actual external memory through all phases.
+OAI/Computability/VPVNP/PrimedScheduleRAM.lean:99:state, external memory, and branch lists. -/
+OAI/Computability/VPVNP/PrimedStackRAMBinaryVisit.lean:8:the external stack. All marks and all assembled input bits remain available.
+OAI/Computability/VPVNP/PrimedStackRAMChildren.lean:8:subtree. Both pushes use the same external depth word and two frame planes.
+OAI/Computability/VPVNP/PrimedStackRAMChildren.lean:62:/-- The abstract stack after the genuine two pushes, including the eight external probes. -/
+OAI/Computability/VPVNP/PrimedStackRAMCode.lean:48:/-- Continuation that takes the current register file and external memory and returns an
+OAI/Computability/VPVNP/PrimedStackRAMCode.lean:52:/-- Register, external-memory and event semantics of one line. -/
+OAI/Computability/VPVNP/PrimedStackRAMCode.lean:176:with the block semantics on registers, external memory and every event. -/
+OAI/Computability/VPVNP/PrimedStackRAMFrame.lean:8:The external stack instructions leave the full input rectangle, every mark
+OAI/Computability/VPVNP/PrimedStackRAMMemory.lean:52:/-- Read a typed parser location from external memory using the scratch layout based at `base`. -/
+OAI/Computability/VPVNP/RAMBuckets.lean:8:determined by its starting cost. A call costs one plus its number of external
+OAI/Computability/VPVNP/RAMChain.lean:4:# Successive calls with reset private memory and persistent external memory
+OAI/Computability/VPVNP/RAMChain.lean:54:/-- Concatenate all calls' events in execution order for replay against external memory. -/
+OAI/Computability/VPVNP/RAMChoicePrefix.lean:6:From fixed control and external memory, two successful streams of choices
+OAI/Computability/VPVNP/RAMExecution.lean:8:answers external reads from memory. A processor in Lemma 10.1 instead guesses
+OAI/Computability/VPVNP/RAMExecution.lean:43:/-- A recorded private tick, binary branch choice, external read or external write. Both kinds
+OAI/Computability/VPVNP/RAMExecution.lean:54:  /-- Chronological sequence of private ticks, branch choices and external probes during the
+OAI/Computability/VPVNP/RAMExecution.lean:67:/-- Set the addressed external word to the supplied value and preserve all other addresses. -/
+OAI/Computability/VPVNP/RAMExecution.lean:71:/-- Apply one event to external memory, storing the supplied value on a write and preserving
+OAI/Computability/VPVNP/RAMExecution.lean:80:/-- Every reported read equals the external word at its address after all preceding writes in
+OAI/Computability/VPVNP/RAMExecution.lean:113:/-- Local call execution. Each external read guesses an arbitrary word. -/
+OAI/Computability/VPVNP/RAMLocalRun.lean:8:exactly one word of guesses at a permitted external read. A write has no guessed
+OAI/Computability/VPVNP/RAMLocalRun.lean:29:/-- Charge one probe for each external read or write and zero for a private tick or branch. -/
+OAI/Computability/VPVNP/RAMMemory.lean:8:In Lemma 10.1, the guessed values of external reads are checked using only the
+OAI/Computability/VPVNP/RAMMemory.lean:20:/-- Memory transcript operation, distinguished as a header initialization, an external read or
+OAI/Computability/VPVNP/RAMMemory.lean:21:an external write. -/
+OAI/Computability/VPVNP/RAMProcessorBank.lean:94:external-action label, with private choice bits and fuel updated in the bank. -/
+OAI/Computability/VPVNP/RAMProcessorCallInvariant.lean:55:/-- Stack-step allowance for one segment of private instructions between external actions, as a
+OAI/Computability/VPVNP/RAMProcessorCallRun.lean:56:        change LocalProcessor.externalOrTerminal y.exit at hterminal
+OAI/Computability/VPVNP/RAMProcessorFlow.lean:7:an external read or write, or finish its call. A fragment's local rows can
+OAI/Computability/VPVNP/RAMProcessorGraphProbe.lean:6:At an external read the graph copies the old address, consumes a full guessed
+OAI/Computability/VPVNP/RAMProcessorGraphProbe.lean:33:/-- Snapshot after decoding an external write, with the next instruction selected and the write
+OAI/Computability/VPVNP/RAMProcessorLocal.lean:6:# Fuel-checked private instruction execution between external probes
+OAI/Computability/VPVNP/RAMProcessorLocal.lean:42:yield external actions or termination to the site controller. -/
+OAI/Computability/VPVNP/RAMProcessorLocalResult.lean:4:# Exact native result at the external-action boundary
+OAI/Computability/VPVNP/RAMProcessorLocalResult.lean:37:/-- Resume exactly one pending external or terminal action. -/
+OAI/Computability/VPVNP/RAMProcessorLocalScan.lean:4:# Complete private execution through the next external action
+OAI/Computability/VPVNP/RAMProcessorLocalScan.lean:30:  /-- Instruction fuel left after the scan. Fetching the instruction that requests an external
+OAI/Computability/VPVNP/RAMProcessorPhysicalClock.lean:24:log, and executing its private and external instruction segments. -/
+OAI/Computability/VPVNP/RAMProcessorProbeCredit.lean:6:Startup and every external probe enter the same precharge. A successful
+OAI/Computability/VPVNP/RAMProcessorProbeFailure.lean:4:# Rejection before or during an external read
+OAI/Computability/VPVNP/RAMProcessorProbeFields.lean:5:# Staging ports for external reads, writes, and call returns
+OAI/Computability/VPVNP/RAMProcessorProbeFields.lean:29:external probes. -/
+OAI/Computability/VPVNP/RAMProcessorProbeFields.lean:38:  /-- Remaining private bits from which an external read draws its guessed word. -/
+OAI/Computability/VPVNP/RAMProcessorProbePayload.lean:24:/-- Tag three marks an external write record. -/
+OAI/Computability/VPVNP/RAMProcessorProbePayload.lean:46:/-- Tag two marks an external read. Copy the old address before assigning
+OAI/Computability/VPVNP/RAMProcessorProbeReturn.lean:4:# Splicing a permitted external probe into a completed call
+OAI/Computability/VPVNP/RAMProcessorProbeStep.lean:25:/-- One external read or write with its successor instruction. A read also specifies the
+OAI/Computability/VPVNP/RAMProcessorProbeStep.lean:130:/-- One external action on the literal graph from the callback to the next
+OAI/Computability/VPVNP/RAMProcessorReadWord.lean:4:# Taking one external read guess on bit stacks
+OAI/Computability/VPVNP/RAMProcessorReportPrefix.lean:8:the report. Its prefix consumes no external probes, so it leaves the costs,
+OAI/Computability/VPVNP/RAMProcessorReportPrefix.lean:9:record timestamps, and emitted slots of the external continuation intact.
+OAI/Computability/VPVNP/RAMProcessorScanBounds.lean:6:A returned segment has no internal probe records. Every terminal or external
+OAI/Computability/VPVNP/RAMProcessorScanBounds.lean:21:/-- Callbacks that return control from the private scan to the site processor, namely external
+OAI/Computability/VPVNP/RAMProcessorScanBounds.lean:23:def externalOrTerminal : ISA.Callback p r → Prop
+OAI/Computability/VPVNP/RAMProcessorScanBounds.lean:30:    y.fuel ≤ f ∧ (y.exit ≠ .reject → y.fuel < f) ∧ externalOrTerminal y.exit ∧
+OAI/Computability/VPVNP/RAMProcessorScanBounds.lean:34:  | zero => simp [scan, eventRecords, externalOrTerminal]
+OAI/Computability/VPVNP/RAMProcessorState.lean:66:  /-- Cumulative cost charged so far, counting one unit per call and one per external probe. -/
+OAI/Computability/VPVNP/RAMProcessorState.lean:88:  /-- Unconsumed private choice bits for RAM branches and guessed external-read answers. -/
+OAI/Computability/VPVNP/RAMProgram.lean:8:destinations are bounded indices into the fixed machine. Private and external
+OAI/Computability/VPVNP/RAMProgram.lean:95:/-- Interpret one instruction as a local step, binary choice, external memory probe, return of
+OAI/Computability/VPVNP/RAMProgram.lean:127:/-- The value returned by an external read is available to every later
+OAI/Computability/VPVNP/RAMProgram.lean:144:/-- Two consecutive external reads can use the answer of the first as the
+OAI/Computability/VPVNP/RAMRecords.lean:8:In Lemma 10.1 each external read or write emits a five-word record, carrying
+OAI/Computability/VPVNP/RAMRecords.lean:25:/-- The number of external word probes made by the events. -/
+OAI/Computability/VPVNP/RAMRecords.lean:31:/-- Number of external read and write events in this call report. -/
+OAI/Computability/VPVNP/RAMRecords.lean:34:/-- Probe ordinals start at zero and advance only at external reads and writes. -/
+OAI/Computability/VPVNP/RAMRecords.lean:141:actual events, starting from any prescribed external memory. -/
+OAI/Computability/VPVNP/RAMSerialization.lean:49:  /-- Whether this serialized record describes initialization, an external read, or an external
+OAI/Computability/VPVNP/RAMSerialization.lean:58:  /-- Word-sized ordinal giving a probe’s position among the external accesses in its call. -/
+OAI/Computability/VPVNP/RAMSiteWork.lean:27:  /-- Total charge for loop control, instruction dispatch, external probes, and private guesses
+OAI/Computability/VPVNP/RAMTapeISADispatch.lean:10:The typed boundary states allow the caller to implement external accesses,
+OAI/Computability/VPVNP/RAMTapeISASemantics.lean:9:the next program counter. Binary choices and external reads and writes are
+OAI/Computability/VPVNP/RAMTapeISASemantics.lean:22:/-- Typed instruction exit carrying the next counter, a choice, an external access, a returned
+OAI/Computability/VPVNP/RAMTapeSiteGraphRun.lean:7:fresh registers and private memory, and observes the real external actions
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPorts.lean:53:def external : SiteProcessor.Port r k → Option SiteCutBank.Port
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPorts.lean:76:  (external r p).elim (native r expr p) (cut r expr)
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:37:private theorem external_origin (p : SiteProcessor.Port r k) :
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:38:    ∀ i, external r p = some i → origin r k i = some p := by
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:39:  have present {p : SiteProcessor.Port r k} {i : SiteCutBank.Port} (hi : external r p = some i)
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:40:      (h : origin r k i = some p) : ∀ j, external r p = some j → origin r k j = some p := by
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:43:  have absent {p : SiteProcessor.Port r k} (hp : external r p = none) :
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:44:      ∀ i, external r p = some i → origin r k i = some p := by simp [hp]
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:63:      exact absent (by simp [external, h₁, h₂])
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:70:  cases hp : external r p with
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:72:    cases hq : external r q with
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:76:    cases hq : external r q with
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:81:      exact Option.some.inj ((external_origin r p i hp).symm.trans (external_origin r q i hq))
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:86:  cases hp : external r p with
+OAI/Computability/VPVNP/RAMTapeSiteProcessorPortsInjective.lean:92:    simpa [hi] using external_origin r p i hp
+OAI/Computability/VPVNP/RAMVirtualParametersCode.lean:202:registers, the same branch bits, and the private and external memories it received. -/
+OAI/Computability/VPVNP/RefreshHistory.lean:9:arguments read the old half-wires and the two lists of external segments. The
+OAI/Computability/VPVNP/RefreshHistory.lean:11:remaining slot fields, including the external and padding wires, are recorded
+OAI/Computability/VPVNP/ShiftedResidue.lean:351:/-- For equal external energy, the Laurent powers of the two fields in a matrix-product
+P1Case1/Entropy.lean:8:Application of OpenAI's `paired_entropy_external_root` to a network that displays `xᵀ`:
+P1Case1/Entropy.lean:20:open OAI.Computability.MultitapeWeakETH (Word Network block paired_entropy_external_root bitRate
+P1Case1/Entropy.lean:362:    have bound := paired_entropy_external_root (K := K) realizable p root G.src G.dst G.width (Pin G)
+P1Case1/Table.lean:9:the inequality that OpenAI's `paired_entropy_external_root` gives for a network that displays `xᵀ` with
+P1ChkDir/C4Wired.lean:20:* `ProgC4 τ dims`: the target statement (a Prop, no `sorry`): one OpenAI `Task` on the tree `send (x, u, ρ)`, for
+P1ChkFinal/C10RcRefresh.lean:48:def externalEnd (D n slot : ℕ) (old : EndCode) : EndCode :=
+P1ChkFinal/C10RcRefresh.lean:63:    (externalEnd (2 ^ a) (laneCount z) s old.1, externalEnd (2 ^ a) (laneCount z) s old.2.1)
+P1ChkFinal/C10RcRefresh.lean:134:  rcases r with i | h | h <;> simp only [refreshEnds, externalEnd, localEnd] <;> fun_prop
+P1ChkFinal/C10RcRefreshProof.lean:35:  · simp only [refreshEnds, externalEnd, rowAt_root, laneCount_true, codeSlot, panel,
+P1ChkFinal/C7R.lean:44:    MotifAdmission.admit (Refresh.expanderMass (D := 2 ^ a) (2 ^ a₀)) (storedVec a dH D u ℓ Y key)
+P1ChkFinal/C7R.lean:74:    (h : MotifAdmission.admit (Refresh.expanderMass (D := 2 ^ a) (2 ^ a₀)) (storedVec a dH D u ℓ Y key)
+P1ChkFinal/ProgC12.lean:7:Lane P1-lean-checks (2026-11-25). The statement below is the text of the old `sorry` statement of
+P1ChkGreedy/Checks.lean:280:/-- C7 with OpenAI's integer admission test (`MotifAdmission.admit`, fixed rational masses `supplyMass`): what
+P1ChkGreedy/Checks.lean:286:        MotifAdmission.admit supplyMass v (MotifConversion.repetitions B (demandW X ⟨e, h⟩))
+P1ChkGreedy/Refresh.lean:11:An outer index is `Fin (2 ^ a) × Fin dH → ℕ`; admission is OpenAI's integer test `MotifAdmission.admit` with the fixed
+P1ChkGreedy/Refresh.lean:52:        MotifAdmission.admit (Refresh.expanderMass (D := 2 ^ a) (2 ^ a₀)) v
+P1Count/Bookkeeping.lean:27:STATUS (P1-lean-W2-count, 09:45Z wind-down): COMPLETE DRAFT, no `sorry`, NOT YET COMPILED (project p1-count
+P1Count/Chain.lean:26:STATUS (P1-lean-W2-count, 09:45Z wind-down): COMPLETE DRAFT, no `sorry`, NOT YET COMPILED (project p1-count
+P1Hier/W2.lean:12:are restored with no hypothesis and no `sorry`: `accU_machine`, `universal_verifier`,
+P1Int/P11.lean:9:Owner: P1-lean-integ (G3-chief, board 09:40:05Z and D6 of 10:49:43Z). The glue is sorry-free; every piece that
+P1Int/P11Count.lean:11:their totality and the cost bound, and `lemmaP_of_countHyp : CountHyp s → LemmaP s` is sorry-free.
+P1Net/ContractProofContent.lean:106:    (external_eq V B L I σ ha bset z ι ((laneEquiv h).symm j) (.cOut k δ))
+P1Net/ContractProofContent.lean:116:    (external_eq V B L I σ ha bset z ι ((laneEquiv h).symm j) (.cIn k δ))
+P1Net/ContractProofSites.lean:68:theorem run_path_external (hsk : skeleton V input B (I * 2 ^ h) = σ) (route : Routes bset)
+P1Net/ContractProofSites.lean:106:  · have H := run_path_external V B I σ ha bset input hsk route ι l c
+P1Net/ContractProofStateRouting.lean:138:    (external_eq V B L I σ ha bset z ι ((laneEquiv h).symm j) .stOut)
+P1Net/ContractProofStateRouting.lean:148:    (external_eq V B L I σ ha bset z ι ((laneEquiv h).symm j) .stIn)
+P1Net/ContractProofTables.lean:4:/-! Decoding the physical table path, for every ordering of its external slots. -/
+P1Net/ContractProofTables.lean:144:/-- The actual external word in slot 2 is the indicated string of the center data. -/
+P1Net/ContractProofTables.lean:145:theorem external_eq (ι : Fin I) (l : BitWord h) (c : Ext V.K) :
+P1Net/ContractProofUniqueness.lean:35:  have h1 := external_eq V B L I σ ha bset z ι l c
+P1Net/ContractProofUniqueness.lean:36:  have h2 := external_eq V B L I σ ha bset z' ι l c
+P1Net/Factors.lean:10:  tape), tuple width `Wt = |Ext K| * Wx` (the strings of all external half-edges of a table, in path order).
+P1Net/Factors.lean:160:/-- The string of an external half-edge of a table with local data `d` and `o`. -/
+P1Net/Factors.lean:167:/-- A table tuple: the strings of all external half-edges, in path order. -/
+P1Net/Factors.lean:171:/-- The segment of external string `c` in a tuple. -/
+P1Net/StateNet.lean:10:* `tabC`, `tabP c`: the small-interval table, as a centre and a path with one site per external string `c`
+P1Net/StateNet.lean:18:Half-edge slots (`Fin 4`): path sites `0` = previous, `1` = next, `2` = external; ports and chain ends `0` = routing,
+P1Net/StateNet.lean:35:/-- The external strings of one small-interval table. -/
+P1Net/StateNet.lean:276:/-- Where the external string `c` of a table attaches. -/
+P1P5/ConeBudget.lean:61:the Sol file UNCHANGED, sha256 8b53cbf2..defe, runner DONE 12:36:34Z); this statement was compiled with `sorry` (eval-p5-2). -/
+P1P5/LevelsPoly.lean:6:UNCHANGED, sha256 e0999980..f97f, runner DONE 12:20:54Z); the statement below is the one compiled with `sorry` in job eval-4. -/
+P1P7/Defs.lean:9:was `P1P7.Statement` with the three theorems as `sorry`; nothing else was changed.
+P1P7/RefreshLocal.lean:8:`degreeRefresh_external`, `degreeRefresh_internal`, `degreeRefresh_padding` (DegreeRefreshTopology.lean:132-150).
+P1P7/RefreshLocal.lean:55:  have e := degreeRefresh_external (splitSlots X) P.toSlotGraph hD hd p (0 : BitWord g)
+P1P7/SolRKernel.lean:92:      (actualWidth_external_bundle (hd := hd) (bitWordFinEquiv a) (splitWidths X)
+P1P7/SolRKernel.lean:127:  rw [degreeRefresh_external]
+P1P7/SolRLocal.lean:106:  rw [incidentPortSegments_external]
+P1P7/Statement.lean:15:statements below are character for character those of the earlier version of this file (where they were `sorry`):
+P1ProgDir/C4ProgLocalMate.lean:77:noncomputable def externalMateCode (K : Type) [Fintype K] [DecidableEq K] (q : ℕ × ℕ × ℕ) : MateCode :=
+P1ProgDir/C4ProgLocalMate.lean:86:@[fun_prop] theorem poly_externalMateCode (K : Type) [Fintype K] [DecidableEq K] : Poly (externalMateCode K) := by
+P1ProgDir/C4ProgLocalMate.lean:87:  unfold externalMateCode
+P1ProgDir/C4ProgLocalMate.lean:156:  bif eqb v.1 1 then externalMateCode K (h, v.2.1, s) else
+P1ProgDir/C4ProgLocalMate.lean:269:theorem externalMateCode_eq (h : ℕ) (e : Ext K) (s : Fin 4) :
+P1ProgDir/C4ProgLocalMate.lean:270:    externalMateCode K (h, (extIdx K e).val, s.val) =
+P1ProgDir/C4ProgLocalMate.lean:275:    · simp [externalMateCode, locMate, prevExt, ht, t, eqb_false_iff.mpr (show t ≠ 0 by omega),
+P1ProgDir/C4ProgLocalMate.lean:278:      simp [externalMateCode, locMate, prevExt, ht, eqb_iff.mpr ht', encodeMate, encodeLoc, t]
+P1ProgDir/C4ProgLocalMate.lean:280:    · simp [externalMateCode, locMate, nextExt, ht, ltb_iff.mpr ht, encodeMate, encodeLoc, t]
+P1ProgDir/C4ProgLocalMate.lean:281:    · simp [externalMateCode, locMate, nextExt, ht, ltb_false_iff.mpr (Nat.le_of_not_lt ht),
+P1ProgDir/C4ProgLocalMate.lean:283:  · simpa [externalMateCode, locMate, t, extCodeAt_eq] using attachCode_eq h e
+P1ProgDir/C4ProgLocalMate.lean:284:  · simp [externalMateCode, locMate, encodeMate]
+P1ProgDir/C4ProgLocalMate.lean:289:  | tabP ext => simpa [localMateCode, encodeLoc, eqb] using externalMateCode_eq h ext s
+P1SolFmt/Genuine.lean:55:  let externalCount := Fintype.card (P1Net.Ext V.K)
+P1SolFmt/Genuine.lean:57:    figure_initial_positions aM tapes externalCount ht
+P1SolFmt/Genuine.lean:59:    figure_tuple_width externalCount (Fintype.card V.Γ) (Fintype.card V.Q) tapes ht
+P1SolFmt/Parameters.lean:62:theorem figure_initial_positions (aM tapes external : ℕ) (ht : Figure r t) :
+P1SolFmt/Parameters.lean:65:      let localCount := 1 + (external + (tapes * 3 + (tapes * 3 +
+P1SolFmt/Parameters.lean:73:  have hLocal := (num 1).added ((num external).added
+P1SolFmt/Parameters.lean:77:theorem figure_tuple_width (external alphabet states tapes : ℕ) (ht : Figure r t) :
+P1SolFmt/Parameters.lean:79:      external * (Params.B (t x) * alphabet + (states + tapes * Params.B (t x)))) := by
+P1SolFmt/Parameters.lean:82:  exact (num external).multiplied

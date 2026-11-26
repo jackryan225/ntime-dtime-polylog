@@ -1,0 +1,31 @@
+C1Challenge/NonVacuity.lean:8:guard the fixed definitions against that kind of error. All of them are sorry-free.
+C1Challenge/Statement.lean:126:  sorry
+OAI/Computability/MultitapeWeakETH/Replay.lean:52:private def admit (tapes : List (List Bool)) : Option (Paths P fuel st m) :=
+OAI/Computability/MultitapeWeakETH/Replay.lean:57:    admit P fuel st m bs = some path ↔ bs = path.val := by
+OAI/Computability/MultitapeWeakETH/Replay.lean:59:  · unfold admit
+OAI/Computability/MultitapeWeakETH/Replay.lean:63:    rw [admit,dite_eq_left path.property]
+OAI/Computability/MultitapeWeakETH/Replay.lean:69:    let p ← admit P fuel st m bs
+OAI/Computability/MultitapeWeakETH/Replay.lean:92:    | none => simp [admit,run]
+OAI/Computability/MultitapeWeakETH/Replay.lean:102:      · simp [admit,run,halt]
+OAI/Computability/NearSquareRoot/SynchronizedPrimitive.lean:7:A matched stage uses disjoint pairs. Both the forward and adjoint pairs admit
+OAI/Computability/VPVNP/CompressorChoiceGridStage.lean:137:calls choose the original fixed grid point and admit exactly the binary
+OAI/Computability/VPVNP/CompressorRecordRefreshDeterminism.lean:82:/-- A fixed branch choice and initial incidence memory admit at most one complete
+OAI/Computability/VPVNP/ContractionValue.lean:95:/-- The two blocks of the center admit independent covectors, so the
+OAI/Computability/VPVNP/EvaluatorMatrixStep.lean:32:postprocessing times need only admit a common bound. -/
+OAI/Computability/VPVNP/ExponentTrace.lean:77:the local checks admit exactly one binary first-half cut assignment. -/
+OAI/Computability/VPVNP/GrassmannFrames.lean:66:/-- Two partial tuples of length less than the dimension admit a common new
+OAI/Computability/VPVNP/MotifAdmission.lean:152:def admit (q : I → ℚ) (v : I → ℕ) (u L : ℕ) (R : ℚ) : Bool :=
+OAI/Computability/VPVNP/MotifAdmission.lean:157:    admit q v u L R = true ↔
+OAI/Computability/VPVNP/MotifAdmission.lean:161:  rw [admit, decide_eq_true_eq, rational_cast R hR, ← mul_div_assoc, le_div_iff₀ hRden,
+OAI/Computability/VPVNP/MotifAdmission.lean:258:    (u L : ℕ) (R : ℚ) (hv : admit q v u L R = true) (i : I) :
+P1ChkDir/C4Wired.lean:20:* `ProgC4 τ dims`: the target statement (a Prop, no `sorry`): one OpenAI `Task` on the tree `send (x, u, ρ)`, for
+P1ChkFinal/ProgC12.lean:7:Lane P1-lean-checks (2026-11-25). The statement below is the text of the old `sorry` statement of
+P1Count/Bookkeeping.lean:27:STATUS (P1-lean-W2-count, 09:45Z wind-down): COMPLETE DRAFT, no `sorry`, NOT YET COMPILED (project p1-count
+P1Count/Chain.lean:26:STATUS (P1-lean-W2-count, 09:45Z wind-down): COMPLETE DRAFT, no `sorry`, NOT YET COMPILED (project p1-count
+P1Hier/W2.lean:12:are restored with no hypothesis and no `sorry`: `accU_machine`, `universal_verifier`,
+P1Int/P11.lean:9:Owner: P1-lean-integ (G3-chief, board 09:40:05Z and D6 of 10:49:43Z). The glue is sorry-free; every piece that
+P1Int/P11Count.lean:11:their totality and the cost bound, and `lemmaP_of_countHyp : CountHyp s → LemmaP s` is sorry-free.
+P1P5/ConeBudget.lean:61:the Sol file UNCHANGED, sha256 8b53cbf2..defe, runner DONE 12:36:34Z); this statement was compiled with `sorry` (eval-p5-2). -/
+P1P5/LevelsPoly.lean:6:UNCHANGED, sha256 e0999980..f97f, runner DONE 12:20:54Z); the statement below is the one compiled with `sorry` in job eval-4. -/
+P1P7/Defs.lean:9:was `P1P7.Statement` with the three theorems as `sorry`; nothing else was changed.
+P1P7/Statement.lean:15:statements below are character for character those of the earlier version of this file (where they were `sorry`):

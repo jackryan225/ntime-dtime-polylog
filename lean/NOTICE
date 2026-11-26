@@ -1,0 +1,22 @@
+This folder builds on the Lean library of openai/math (https://github.com/openai/math, folder lean/,
+commit 3344da59991ed94f9ba711217b29c1d760badfa6), licensed under the Apache License, Version 2.0
+(LICENSE-APACHE-2.0). That repository has no NOTICE file for the parts used here.
+
+Changes to OpenAI's files (Apache License 2.0, section 4(b)):
+- patches/field-uniform.patch changes OAI/Computability/MultitapeWeakETH/{Cloud, FieldLower, FoldedGeometry,
+  GraphGeometry, Main, Padding, Placement, Price}.lean and adds MainOver.lean: the port statement is made
+  uniform in the field (it was stated for characteristic 0).
+- patches/port-over.patch then changes OAI/Computability/MultitapeWeakETH/PortTemplates.lean in the same way.
+- Of these files, Cloud, GraphGeometry, Padding, Placement, PortTemplates and Price are used by the proof.
+  scripts/get-upstream.sh applies the patches to unchanged copies fetched from openai/math; this repository does
+  not contain the changed files.
+- Some of our Lean files contain definitions or proofs copied or adapted from openai/math, and say so in their
+  comments, for example: C1Challenge/Statement.lean (the machine structure, copied field for field from
+  OAI.DepthThreeLowerBound.FiniteMultiTapeMachine), P1Batch/Sort.lean, P1Batch/Moves.lean, P1Case1/Chain.lean,
+  P1Case1/CoTransDone.lean, P1Int/Bridge.lean, P1P7/KernelForm.lean, P1ProgDir/C4ProgLength.lean,
+  P1ProgDir/C4ProgNumerics.lean, P1Wrap/Bridge.lean, P1Wrap/MachineGlue.lean. Those parts remain under the
+  Apache License 2.0.
+
+The build also fetches 31 files of ZIB-IOL/lemmata (https://github.com/ZIB-IOL/lemmata, commit
+a2dd430f283febd755a6ee6932d0b0fdabfb330c, folder lean/), a dependency that openai/math pins, and applies
+openai/math's own patch lean/patches/lemmata-lean4341.patch to them. Those files are not in this repository.

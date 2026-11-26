@@ -1,0 +1,20 @@
+[anonymous]:thmDecl CliffordAlgebra.GradedAlgebra.lift_ι_eq: lean4lean took 1853
+checked 83903 declarations
+      137.00 real       134.69 user         0.89 sys
+          1412743168  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               86219  page reclaims
+                 190  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                   7  voluntary context switches
+               54153  involuntary context switches
+       1410702148831  instructions retired
+        549508712732  cycles elapsed
+          1333331528  peak memory footprint

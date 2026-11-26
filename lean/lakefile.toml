@@ -1,0 +1,128 @@
+# Lean 4 proof of the time separation theorem (release build).
+# Toolchain, Mathlib and lake-manifest.json are exactly those of the audited build.
+# OAI/ and Lemmata/ are NOT in this repository: scripts/get-upstream.sh fetches them at the audited commits,
+# applies the patches and checks every file against CLOSURE-SHA256SUMS.
+# The package name "p1" is kept so that lake-manifest.json stays byte-identical to the audited one.
+name = "p1"
+defaultTargets = ["Release"]
+
+[leanOptions]
+autoImplicit = false
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "d13f23b723b8a846827a245b89c10fc7d3f11612"
+
+# Release.lean: imports the four closed theorems and prints their axioms.
+[[lean_lib]]
+name = "Release"
+
+# Third-party sources, fetched by scripts/get-upstream.sh (openai/math@3344da5, ZIB-IOL/lemmata@a2dd430).
+[[lean_lib]]
+name = "OAI"
+
+[[lean_lib]]
+name = "Lemmata"
+
+# The Mathlib-only statement files.
+[[lean_lib]]
+name = "C1Challenge"
+
+# The proof.
+[[lean_lib]]
+name = "P1Batch"
+
+[[lean_lib]]
+name = "P1Benes"
+
+[[lean_lib]]
+name = "P1C10"
+
+[[lean_lib]]
+name = "P1C1U"
+
+[[lean_lib]]
+name = "P1Case1"
+
+[[lean_lib]]
+name = "P1ChkDir"
+
+[[lean_lib]]
+name = "P1ChkFinal"
+
+[[lean_lib]]
+name = "P1ChkGreedy"
+
+[[lean_lib]]
+name = "P1Count"
+
+[[lean_lib]]
+name = "P1Dispatch"
+
+[[lean_lib]]
+name = "P1Final"
+
+[[lean_lib]]
+name = "P1Hier"
+
+[[lean_lib]]
+name = "P1Int"
+
+[[lean_lib]]
+name = "P1NTime"
+
+[[lean_lib]]
+name = "P1Net"
+
+[[lean_lib]]
+name = "P1OaiReuse"
+
+[[lean_lib]]
+name = "P1P5"
+
+[[lean_lib]]
+name = "P1P7"
+
+[[lean_lib]]
+name = "P1ProgDir"
+
+[[lean_lib]]
+name = "P1ProgEng"
+
+[[lean_lib]]
+name = "P1SolC10F"
+
+[[lean_lib]]
+name = "P1SolC10K"
+
+[[lean_lib]]
+name = "P1SolC10P"
+
+[[lean_lib]]
+name = "P1SolC10SA"
+
+[[lean_lib]]
+name = "P1SolCone"
+
+[[lean_lib]]
+name = "P1SolF0R"
+
+[[lean_lib]]
+name = "P1SolFactor"
+
+[[lean_lib]]
+name = "P1SolFinal"
+
+[[lean_lib]]
+name = "P1SolFmt"
+
+[[lean_lib]]
+name = "P1SolGreedy"
+
+[[lean_lib]]
+name = "P1Wit"
+
+[[lean_lib]]
+name = "P1Wrap"
+

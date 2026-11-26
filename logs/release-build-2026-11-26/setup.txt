@@ -1,0 +1,10 @@
+1. openai/math @ 3344da59991ed94f9ba711217b29c1d760badfa6
+  <home>/pnp-remote/p1-release-upstream/openai-math is not a git checkout; its files are checked by sha256 below
+  copied 2290 files to OAI/
+  applied patches/field-uniform.patch and patches/port-over.patch (6 files of the closure changed)
+2. ZIB-IOL/lemmata @ a2dd430f283febd755a6ee6932d0b0fdabfb330c
+  <home>/pnp-remote/p1-release-upstream/lemmata is not a git checkout; its files are checked by sha256 below
+  copied 31 files to Lemmata/ and applied lean/patches/lemmata-lean4341.patch of openai/math
+3. sha256 of all source files of the proof
+  all 3067 files match CLOSURE-SHA256SUMS
+Done. Next: lake exe cache get && lake build

@@ -58,3 +58,22 @@ Each check was run blind: the model got the bare statement (and, where noted, th
 
 None for the theorem. Formalization in Lean 4 has started but is not part of this release. H4 and H1(d) now have two blind second checks each (C2 above). The compressor construction H9-H11 now has a blind check (27) and an
 independent read against OpenAI's Lean (28).
+
+
+## E. Machine checking (added 26 November 2026)
+
+Section D above says "None for the theorem". That was true for the paper proof of 25 November. Since then (all UTC, 25 November 2026 unless
+stated):
+
+| # | Check | By | Result |
+|---|---|---|---|
+| 29 | Lean 4 proof of `c1`, `c1_ntime`, `c1u`, `c1u_utime` (the statements of `LEAN-STATEMENT.md`) with no hypothesis | Claude agents, with parts written by GPT-6.2 Astra and GPT-6.2 Sol; every delivered file compiled and type-checked against our target | proved; axioms `propext`, `Classical.choice`, `Quot.sound` only |
+| 30 | fidelity of the statement of `c1` to the paper's main theorem | a Claude agent; blind: GPT-6.2 Astra, Gemini 4 Neon | the same conclusion; Lean is stronger (no H1 to H12); no difference makes it weaker |
+| 31 | fidelity of `c1_ntime` and of `c1u` | blind: GPT-6.2 Astra, Gemini 4 Neon (one call each per statement) | faithful up to harmless differences (listed in `LEAN-STATEMENT.md`) |
+| 32 | second kernel: leanchecker replay of every module of the build (746 of ours, 2,321 of OpenAI's library and its Lemmata dependency) | build machine | 0 failures |
+| 33 | third kernel: lean4lean on the export of each theorem | build machine | 83,903 / 84,109 / 84,016 / 84,028 declarations checked, exit 0 |
+| 34 | clean rebuild from an empty build folder, source scan, sha256 of every source file | build machine | passed (25 November); the release project passed again on 26 November (`LEAN-AUDIT.md`) |
+| 35 | errata found by the Lean work | Claude, GPT-6.2 Astra, Gemini 4 Neon | two (`ERRATA.md`); the theorem is not affected |
+
+Still not done: no human has read the Lean statement files, the proof or the paper. The equivalence of the Lean machine model
+with the paper's is argued in words, not in Lean.

@@ -1,0 +1,18 @@
+Licenses of the files in lean/
+
+1. Our own files (the Lean files in C1Challenge/ and P1*/, Release.lean, lakefile.toml, scripts/, upstream/,
+   CLOSURE-SHA256SUMS, README.md): Apache License, Version 2.0 (LICENSE-APACHE-2.0). The paper and the documents
+   outside lean/ stay under CC BY 4.0 (see ../LICENSE).
+
+2. Parts taken from openai/math: some of our Lean files contain definitions or proofs copied or adapted from
+   openai/math (commit 3344da59991ed94f9ba711217b29c1d760badfa6, folder lean/); their comments say so. Those parts
+   remain under the Apache License, Version 2.0 (LICENSE-APACHE-2.0). See NOTICE.
+
+3. patches/field-uniform.patch and patches/port-over.patch change files of openai/math. They are distributed under
+   the Apache License, Version 2.0 (LICENSE-APACHE-2.0). See NOTICE and patches/README.md.
+
+4. Not distributed here: OAI/ (from openai/math, Apache License 2.0) and Lemmata/ (from ZIB-IOL/lemmata; its
+   repository states no license). scripts/get-upstream.sh fetches them from their own repositories.
+
+lean-toolchain and lake-manifest.json are build settings (the toolchain and Mathlib commits); Mathlib is under the
+Apache License 2.0.

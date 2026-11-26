@@ -1,0 +1,52 @@
+=== start 2026-11-25T18:31:10Z on <host> in <home>/pnp-remote
+ 'sh' 'scripts/slot.sh' 'sh' 'scripts/c1u-audit.sh'
+=== slot 1 of 16 after 0 s wait
+# external roots: Mathlib
+closure:     3056 modules; not in the closure of P1Final.Closed:       19
+C1Challenge.C1U C1Challenge.C1UGuards C1Challenge.NTime C1Challenge.NTimeGuards P1C1U.CaseA P1C1U.CaseB P1C1U.CheckRows P1C1U.DisplayLower P1C1U.OuterChecker P1C1U.OuterCount P1C1U.Physical P1C1U.PhysicalRuns P1C1U.Resolve P1C1U.RowEncoding P1C1U.Transpose P1Final.C1UAssembly P1Final.C1UClosed P1Final.LemmaPClosed P1NTime.Paths 
+'P1Final.c1_ntime_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+batch 1: exit 0, replayed 4, peak 7.7 GB
+batch 2: exit 0, replayed 4, peak 15.9 GB
+batch 3: exit 0, replayed 4, peak 20.5 GB
+batch 4: exit 0, replayed 4, peak 13.3 GB
+batch 5: exit 0, replayed 3, peak 12.4 GB
+TOTAL: batches 5, failed 0, modules replayed 19
+--- lean4export P1Final.C1UClosed -- P1Final.c1u_closed
+       25.88 real        22.88 user         2.60 sys
+          7704199168  maximum resident set size
+export bytes 822700289
+--- lean4export: exit 0
+theorems in export: 64268 axioms in export: ['Classical.choice', 'Quot.sound', 'propext'] missing named theorems: []
+EXPORT-OK
+--- lean4lean --import cu.ndjson
+checked 84016 declarations
+      127.00 real       125.70 user         0.69 sys
+          1412825088  maximum resident set size
+--- lean4lean: exit 0
+sha256 of the       19 new closure files:
+a98d5f5b874df9673c9600aca81091a2b317d45cffcce4d71433b31fdb542492  C1Challenge/C1U.lean
+078b9eaf464e2dd8f6bffdc472ab50abcb53667ae437bffb4be0171624748524  C1Challenge/C1UGuards.lean
+04c548116c4fb1cc28bab24493cc23ce974af850a6b66512f1201ae13f5bac45  C1Challenge/NTime.lean
+c23ec4d6760dddecc2cd7a932f2638af913d3b365c4dee4de33b72e9854be8c6  C1Challenge/NTimeGuards.lean
+e0eeddcebd52da617276903ab26c007f7b9d904bef43176de09d9ee09c074570  P1C1U/CaseA.lean
+4180c73b6533588796de4a903c870a73e6c8508bbaabd46e2c9c556a1aa11f02  P1C1U/CaseB.lean
+3866282beaf8e82bd9c5529e9c1db98c516885d72ca89c68da1114f79216b39f  P1C1U/CheckRows.lean
+f4cf0c1cb797147c2408ec1e43a458a3ea20f21f4b7bee030adb9adb4c68c281  P1C1U/DisplayLower.lean
+768006c3aa28f38b80e2324f0fcff5f1f3dd0e3539d1f53160b5274f894c303b  P1C1U/OuterChecker.lean
+f1dbe3322802d071c10d6a98fef5770ea986492b16f169e6bf6ff358f8470fe8  P1C1U/OuterCount.lean
+c5b237f7866df2488cba901b4cb655fe75b6c2122d34cd89f97265f206b7be23  P1C1U/Physical.lean
+9d93c6728fbc1025a1ec4e99540b67e5153f37fd6e197e61b68b97f79ead9ace  P1C1U/PhysicalRuns.lean
+ababac72eae6a6eed4776849b837a67e865d2ad560dac107de490326f1bb0b7f  P1C1U/Resolve.lean
+3b80bb0320881f8fe0b74d2842ed82146984e6bfbf87f7fff42287421232665d  P1C1U/RowEncoding.lean
+a7f3fc122ca99ae7b23e2732a2226810e663d793e15a531c13abe4edb174dedd  P1C1U/Transpose.lean
+171bfd1b23169e119be9882a70305e3e4447744de2db5edade833e4661e701e8  P1Final/C1UAssembly.lean
+fdfc3e8e8a6aa9b2448c741ee99dfabac784e61a1c837e84c3b3d8ae5472bb48  P1Final/C1UClosed.lean
+656c04a0868825f722201d76c0ecd9a016ee90ba404915f93249bfe40196f80a  P1Final/LemmaPClosed.lean
+2ee0b3f39d7ad016fbbf6ac3ec9c484bfd4bb2e870ddd7dc905db24ff4b2c642  P1NTime/Paths.lean
+a98d5f5b874df9673c9600aca81091a2b317d45cffcce4d71433b31fdb542492  C1Challenge/C1U.lean
+078b9eaf464e2dd8f6bffdc472ab50abcb53667ae437bffb4be0171624748524  C1Challenge/C1UGuards.lean
+656c04a0868825f722201d76c0ecd9a016ee90ba404915f93249bfe40196f80a  P1Final/LemmaPClosed.lean
+171bfd1b23169e119be9882a70305e3e4447744de2db5edade833e4661e701e8  P1Final/C1UAssembly.lean
+fdfc3e8e8a6aa9b2448c741ee99dfabac784e61a1c837e84c3b3d8ae5472bb48  P1Final/C1UClosed.lean
+=== slot: ran 337 s, peak RSS of one process 20.48 GB
+=== exit 0 at 2026-11-25T18:36:47Z

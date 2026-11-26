@@ -1,0 +1,68 @@
+# G3-C1-leanplan, 2026-11-25. Source only, NOT built. Generated with `diff -ruN orig patched` from OAI commit 3344da5.
+# Apply AFTER research/g3/blind-noport/lean/field-uniform.patch, which defines `PortOver (k : Type) [Field k]`,
+# makes `PortZero` an abbrev of `PortOver (AlgebraicClosure ℚ)` and defines `PortTwo := PortOver (AlgebraicClosure (ZMod 2))`
+# in Price.lean (imported here). Only signatures change. The proof body of the old `wireExpanders_of_port` is kept verbatim
+# in `wireExpanders_of_port_over`: it uses `exists_geodesic_completion_of_wire_transport {k : Type*} [Field k]`
+# (VPVNP/GeodesicExtension.lean:54) and `SpectralPoint.fractionTransport` (VPVNP/WireCoupling.lean:192,
+# `variable {k J : Type*} [Field k]`), both field-generic. Old names stay as one-line specializations, so
+# TemplateArithmetic.lean:18 and SparseLeafProgram.lean:73 (the only other users) need no change.
+# Build risks: (a) the anonymous instance binders in `obtain ⟨X,_,_,embed,...⟩` are unchanged from the original;
+# (b) `.{0,0}` universe arguments stay right because `k : Type`; (c) `port : PortZero` against `PortOver k` relies on
+# the abbrev unfolding during unification (same mechanism the field-uniform patch already relies on).
+diff -ruN orig/OAI/Computability/MultitapeWeakETH/PortTemplates.lean patched/OAI/Computability/MultitapeWeakETH/PortTemplates.lean
+--- orig/OAI/Computability/MultitapeWeakETH/PortTemplates.lean	2026-11-25 02:47:33
++++ patched/OAI/Computability/MultitapeWeakETH/PortTemplates.lean	2026-11-25 02:47:33
+@@ -2,7 +2,7 @@
+ import OAI.Computability.VPVNP.IteratedCompression
+ import OAI.Computability.VPVNP.WireCATZero
+ 
+-/-! # Port supplies the fixed wire-compression templates in characteristic zero -/
++/-! # Port supplies the fixed wire-compression templates over any field (G3 patch; was: characteristic zero) -/
+ 
+ namespace OAI.Computability.MultitapeWeakETH
+ 
+@@ -41,8 +41,10 @@
+   exact ⟨H,connected,fun i j => eq ▸ mono i j⟩
+ 
+ /-- The manuscript's complete-geodesic Port hypothesis gives the dyadic
+-expander premise used by the verified VPVNP compression algorithm. -/
+-theorem wireExpanders_of_port (port : PortZero) : HasWireExpanders (AlgebraicClosure ℚ) := by
++expander premise used by the verified VPVNP compression algorithm.
++Over any coefficient field (G3 patch; was: the algebraic closure of ℚ only). -/
++theorem wireExpanders_of_port_over {k : Type} [Field k] (port : PortOver k) :
++    HasWireExpanders k := by
+   obtain ⟨D,γ,Dpos,γpos,graphs⟩ := port
+   refine ⟨D,γ*(2:ℝ)^D/D,by positivity,?_⟩
+   intro minimum
+@@ -82,13 +84,28 @@
+   field_simp
+   nlinarith only [old']
+ 
++/-- The characteristic-zero statement, now a specialization. -/
++theorem wireExpanders_of_port (port : PortZero) : HasWireExpanders (AlgebraicClosure ℚ) :=
++  wireExpanders_of_port_over port
++
++/-- Fixed templates with a solution in `k`, from Port over `k` (G3 patch). -/
++theorem templates_of_port_over {k : Type} [Field k] (port : PortOver k) :
++    ∃ (S : Compression.BlockSchedule k) (B : S.Templates),
++      0 < S.laneBits ∧ 2 ≤ B.growthConstant ∧ ∃ f : B.Entry → k, B.IsSolution f := by
++  obtain ⟨S,B,lanes,growth,solution,_⟩ :=
++    Compression.exists_iterated_compression.{0,0} (wireExpanders_of_port_over port)
++  exact ⟨S,B,lanes,growth,solution⟩
++
++/-- Characteristic two: Port over the algebraic closure of `ZMod 2` gives the expander premise there. -/
++theorem wireExpanders_of_portTwo (port : PortTwo) : HasWireExpanders (AlgebraicClosure (ZMod 2)) :=
++  wireExpanders_of_port_over port
++
+ /-- The finite template and the field assignment are fixed before seeing
+ the input formula, its sparsification parameters or its length. -/
+ theorem templates_of_port (port : PortZero) :
+     ∃ (S : Compression.BlockSchedule (AlgebraicClosure ℚ)) (B : S.Templates),
+-      0 < S.laneBits ∧ 2 ≤ B.growthConstant ∧ ∃ f : B.Entry → AlgebraicClosure ℚ, B.IsSolution f := by
+-  obtain ⟨S,B,lanes,growth,solution,_⟩ := Compression.exists_iterated_compression.{0,0} (wireExpanders_of_port port)
+-  exact ⟨S,B,lanes,growth,solution⟩
++      0 < S.laneBits ∧ 2 ≤ B.growthConstant ∧ ∃ f : B.Entry → AlgebraicClosure ℚ, B.IsSolution f :=
++  templates_of_port_over port
+ 
+ end
+ end OAI.Computability.MultitapeWeakETH

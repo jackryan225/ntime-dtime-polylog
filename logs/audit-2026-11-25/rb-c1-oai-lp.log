@@ -1,0 +1,16 @@
+=== start 2026-11-25T16:11:02Z on <host> in <home>/pnp-remote
+ 'sh' 'scripts/c1-oai-lowprio.sh'
+start 17:09:03Z:     2297 modules to replay
+18:09Z batches 25, replayed 200, failed 0
+18:50Z batches 50, replayed 400, failed 0
+19:23Z batches 75, replayed 600, failed 0
+19:51Z batches 100, replayed 800, failed 0
+20:16Z batches 125, replayed 1000, failed 0
+20:50Z batches 150, replayed 1200, failed 0
+21:14Z batches 175, replayed 1400, failed 0
+21:36Z batches 200, replayed 1600, failed 0
+22:08Z batches 225, replayed 1800, failed 0
+22:32Z batches 250, replayed 2000, failed 0
+22:55Z batches 275, replayed 2200, failed 0
+TOTAL 23:06:39Z: batches 288, replayed 2297, failed 0 (plus 24 modules of rb-c1-B, all exit 0)
+=== exit 0 at 2026-11-25T23:06:39Z

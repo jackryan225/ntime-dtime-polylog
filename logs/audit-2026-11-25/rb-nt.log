@@ -1,0 +1,39 @@
+=== start 2026-11-25T17:29:50Z on <host> in <home>/pnp-remote
+ 'sh' 'scripts/slot.sh' 'sh' 'scripts/ntime-audit.sh'
+=== slot 2 of 16 after 0 s wait
+# external roots: Mathlib
+closure:     3048 modules; not in the closure of P1Final.Closed:       11
+C1Challenge.NTime C1Challenge.NTimeGuards P1Final.NTimeClosed P1NTime.Composite P1NTime.Inclusion P1NTime.Length P1NTime.Paths P1NTime.PrepMoves P1NTime.Preparation P1NTime.Simulation P1NTime.TapeGeometry 
+'P1Final.c1_ntime_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
+batch 1: exit 0, replayed 4, peak 10.7 GB
+batch 2: exit 0, replayed 4, peak 11.8 GB
+batch 3: exit 0, replayed 3, peak 5.3 GB
+TOTAL: batches 3, failed 0, modules replayed 11
+--- lean4export P1Final.NTimeClosed -- P1Final.c1_ntime_closed
+       32.16 real        27.65 user         4.09 sys
+          7703003136  maximum resident set size
+export bytes 823468400
+--- lean4export: exit 0
+theorems in export: 64346 axioms in export: ['Classical.choice', 'Quot.sound', 'propext'] missing named theorems: []
+EXPORT-OK
+--- lean4lean --import nt.ndjson
+checked 84109 declarations
+      128.32 real       127.65 user         0.53 sys
+          1413955584  maximum resident set size
+--- lean4lean: exit 0
+sha256 of the       11 new closure files:
+04c548116c4fb1cc28bab24493cc23ce974af850a6b66512f1201ae13f5bac45  C1Challenge/NTime.lean
+c23ec4d6760dddecc2cd7a932f2638af913d3b365c4dee4de33b72e9854be8c6  C1Challenge/NTimeGuards.lean
+a9e1da059de9e8507a8119ef363f2b08b81fd1f1626ed29be55d40b24864d0e9  P1Final/NTimeClosed.lean
+73bb683986ad4daf84bf68a2fdd1e3a97944e138e3b58ce4d30c3c0c30426944  P1NTime/Composite.lean
+8b62872edbf5544672cf23d1d5bc1114504c3d7c1c78d769a87ed190499ab986  P1NTime/Inclusion.lean
+5ea6be0fb0aa41d5191300b20c9cfbcfa3ef110b48cdc73afbc8613aa4f2503d  P1NTime/Length.lean
+2ee0b3f39d7ad016fbbf6ac3ec9c484bfd4bb2e870ddd7dc905db24ff4b2c642  P1NTime/Paths.lean
+e19d36876868de592f3ed6a7998e01b6ba1c278aa1d4b1dfe23f39aed72bc803  P1NTime/PrepMoves.lean
+09722e3eec1633ce99a1aca20d84868f28c1737dce83649431149e5bb26f93c9  P1NTime/Preparation.lean
+6abf692a9ebd2d98b475c9cdef98462111fb9ef86d2cbb709c87630c5e166800  P1NTime/Simulation.lean
+cc9ac61514e47bd4a949803822a0a6d05579a8f2a05125c4ba4fd3be1d516eb1  P1NTime/TapeGeometry.lean
+04c548116c4fb1cc28bab24493cc23ce974af850a6b66512f1201ae13f5bac45  C1Challenge/NTime.lean
+c23ec4d6760dddecc2cd7a932f2638af913d3b365c4dee4de33b72e9854be8c6  C1Challenge/NTimeGuards.lean
+=== slot: ran 310 s, peak RSS of one process 11.79 GB
+=== exit 0 at 2026-11-25T17:35:00Z

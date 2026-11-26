@@ -273,3 +273,26 @@ of Lemma P in the abstract); these were corrected; a fourth check found six rema
 correction except three wording points (the small-length form of DTIME here, the list of inputs without Lean coverage in a remark
 of the paper, and this status text), which were then corrected without a further check. Three searches for earlier work found none (`NOVELTY.md`). Nothing is
 machine-checked. Details: `CHECKS.md`.
+
+
+## 9. Addendum of 26 November 2026: the theorem in Lean 4, with no assumption
+
+Sections 1 to 8 above are the text of 25 November 2026 and are not changed. Since then the conclusion of the theorem of
+Section 1 (both sentences) and the stronger form of Section 5 (both sentences) have been proved in Lean 4 **with no
+hypothesis**: H1 to H12 are not assumed. Where the paper uses an input, the Lean proof uses a theorem of OpenAI's Lean library
+(commit 3344da5, with two small patches of ours that make its port statement uniform in the field) or a lemma of our own;
+OpenAI's proofs are compiled and checked by the kernel as part of the build.
+
+- Lean theorems: `P1Final.c1_closed`, `P1Final.c1_ntime_closed`, `P1Final.c1u_closed`, `P1Final.c1u_utime_closed`. Their types
+  are, as Lean terms, those of the targets in the Mathlib-only statement files `lean/C1Challenge/` (`LEAN-STATEMENT.md`).
+  Axioms: `propext`, `Classical.choice`, `Quot.sound`.
+- The case split. The paper splits on "F_2 has ports" and joins this to characteristic 2 by H1(b). The Lean proof splits, by
+  excluded middle, on "the algebraic closure of F_2 has ports" (`PortTwo`) and uses each case only through that proposition.
+  So the Lean theorem does not need H1(b); sigma is not effective in Lean either.
+- The Lean statement uses floor(2 log2 n) guess bits exactly, the paper's class. The draft Lean statement named in Section 7
+  (last item, with c (floor(log2 n) + 1) guess bits) was replaced on 25 November: its time bound did not count the guess
+  prefix, which made it false (a Lean proof of that is in the development).
+- Not in Lean: the equivalence of the Lean machine model (two-way tapes, guess as an input prefix) with the model of Section 2
+  (argued in words, `LEAN-STATEMENT.md` section 4).
+- Two errata to the paper found by the Lean work; neither affects the theorem: `ERRATA.md`.
+- Audit (three kernels, clean rebuilds, checksums): `LEAN-AUDIT.md`. No human has read the Lean statement or the proof.

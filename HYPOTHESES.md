@@ -53,3 +53,17 @@ the paper follows the Lean greedy scans exactly); (2) H4 in characteristic 2 (au
 
 The full text of every hypothesis is in Section 4 of the paper; a self-contained description of the statement and of every
 hypothesis is in `STATEMENT.md`.
+
+
+## Addendum of 26 November 2026: H1 to H12 are no longer assumed
+
+The text above is that of 25 November 2026 and is not changed. The Lean 4 proof of the theorem (`LEAN-STATEMENT.md`) has no
+hypothesis: it does not assume any of H1 to H12. It does not state the inputs one by one either. Where the paper uses an input,
+the Lean proof uses a theorem of OpenAI's Lean library (commit 3344da5) or a lemma of our own. Taken from OpenAI's library:
+the machine model (copied field for field into the statement file), the port theorem and the wire expanders
+(`wireExpanders_of_portTwo`, through our two patches `field-uniform.patch` and `port-over.patch`, which make the port statement
+uniform in the field), the compressor with its shrinking and refresh substeps, the packing data and the motif blocks, the
+network kernel, the stack-program and code calculus, and the integer-multiplication program library. Where the table above
+says "paper only", the Lean proof now proves what it needs with our own lemmas, or does not need the input (H1(b) is not
+needed: the Lean case split is on ports over the algebraic closure of F_2). All of OpenAI's files in the build are compiled
+and kernel-checked with ours (`LEAN-AUDIT.md`).

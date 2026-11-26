@@ -1,0 +1,15 @@
+=== start 2026-11-25T15:53:51Z on <host> in <home>/pnp-remote
+ 'sh' 'scripts/c1-audit.sh' 'E'
+--- lean4export P1Final.Closed -- P1Final.c1_closed P1Final.openChecksRec_closed
+       30.67 real        25.50 user         3.81 sys
+          7704117248  maximum resident set size
+export bytes 821904377
+--- lean4export: exit 0
+theorems in export: 64224 axioms in export: ['Classical.choice', 'Quot.sound', 'propext'] missing named theorems: []
+EXPORT-OK
+--- lean4lean --import c1.ndjson
+checked 83903 declarations
+      137.00 real       134.69 user         0.89 sys
+          1412743168  maximum resident set size
+--- lean4lean: exit 0
+=== exit 0 at 2026-11-25T15:56:53Z
