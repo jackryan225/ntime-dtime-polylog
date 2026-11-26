@@ -15,8 +15,8 @@ $$
 So there is ONE language $L$, decided in linear time by a verifier that reads $\lfloor 2\log_2 n\rfloor$ guess bits, such that NO
 deterministic multitape Turing machine (with any fixed number of tapes) decides $L$ in time $O(n(\log n)^{\sigma})$. Consequently
 $\mathrm{NTIME}(n)\not\subseteq\mathrm{DTIME}(n(\log n)^{\sigma})$. The theorem does not assume Weak ETH or any other complexity
-hypothesis; its premises are the twelve inputs H1 to H12 (Section 3 below), which restate results of three OpenAI preprints of
-24 November 2026. It is a paper proof; it is not machine-checked. A stronger form is in Section 5 below (paper, Section 8).
+hypothesis; in the paper version of 25 November 2026, its premises are the twelve inputs H1 to H12 (Section 3 below), which restate results of three OpenAI preprints of
+24 November 2026. Since 26 November 2026, the main theorem and its stronger form have also been machine-checked unconditionally in Lean 4 (compiling OpenAI's Lean library inside the same kernel closure to discharge H1 to H12; see `README.md`, `LEAN-STATEMENT.md`, and `LEAN-AUDIT.md`). A stronger form is in Section 5 below (paper, Section 8).
 
 ## 2. Every definition
 

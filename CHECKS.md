@@ -2,8 +2,8 @@
 
 All on 25 November 2026 (UTC). "Blind" means that the checker received the bare statement (and the OpenAI sources), not our proof.
 Models: Claude (Anthropic: Claude Opus 5.5 agents), GPT-6.2 Astra and GPT-6.2 Sol (OpenAI), Gemini 4 Neon (Google).
-**Nothing below is a machine check of the theorem: the proof is a paper proof, not machine-checked.** No professional
-mathematician has refereed it.
+**Sections A to D below record the 25 November paper-proof checks (prior to formalization). Section E below records the 26 November Lean 4 machine check of all four theorems with standard axioms only (see also `LEAN-AUDIT.md`).** No professional
+mathematician has refereed the paper, the Lean statements, or the Lean proof.
 
 ## A. The main theorem
 
