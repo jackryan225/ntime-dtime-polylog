@@ -80,51 +80,40 @@ length bound for the energy prefixes; one sentence repairs it. The paper files a
 - `LEAN-STATEMENT.md`: the Lean statements, the definitions in words, and the blind fidelity reads.
 - `LEAN-AUDIT.md`: kernels, clean rebuilds, source scan, checksums. `logs/`: the build and audit logs.
 - `ERRATA.md`: the two errata to the paper.
-- `ntime-dtime-polylog.tex`, `ntime-dtime-polylog.pdf`: the paper (unchanged since 25 November 2026; 32 pages).
+- `ntime-dtime-polylog.tex`, `ntime-dtime-polylog.pdf`: the paper.
 - `STATEMENT.md`, `HYPOTHESES.md`, `CHECKS.md`, `NOVELTY.md`: as of 25 November 2026, each with a dated addendum at the end.
 - `SHA256SUMS`: sha256 of every file.
 
-## The paper (25 November 2026)
+## How the proof goes
 
-The first version of this repository (25 November 2026) was a conditional paper proof with twelve stated inputs H1 to H12; the
-Lean proof now needs none of them. The text below is the description of that paper proof, unchanged except for heading levels.
+The paper `ntime-dtime-polylog.pdf` gives the proof in words. The first version of this repository (25 November 2026)
+proved the theorem from twelve stated inputs H1 to H12. The Lean proof assumes none of them, so the theorem at the top
+of this page is unconditional.
 
-### The claim
+### The constant and the separating language
 
-Assuming twelve stated inputs taken from three OpenAI preprints of 24 November 2026 (two of them in a characteristic-2 form that we
-derived from their proofs), we give a paper proof, not machine-checked, that for some constant sigma > 0 that we cannot compute, a
-language decidable by multitape Turing machines in linear time with 2 log n nondeterministic bits is not decidable by any
-deterministic multitape Turing machine in time O(n (log n)^sigma).
-
-### The exact statement
-
-**Theorem.** Assume H1, ..., H12. There is sigma > 0 such that
-
-    NTIME[n; floor(2 log n)]  is not contained in  DTIME(n (log n)^sigma)
-
-for multitape Turing machines. Consequently NTIME(n) is not contained in DTIME(n (log n)^sigma).
-
-- NTIME[n; g]: languages A with a deterministic multitape verifier V and a constant c such that V, given x (|x| = n) on tape 1 and
-  any y in {0,1}^g(n) on tape 2, halts within c max(n, 1) steps, and x is in A iff V(x, y) = 1 for some y.
-- DTIME(f): languages decided by a deterministic multitape machine (any fixed number of tapes) in time O(f).
 - sigma = 1/4 if characteristic 2 has no ports, sigma = s/2 if it has ports, where s > 0 comes from constants that H8 asserts to
   exist. We do not know which case holds, so sigma is not effective.
 - The separating language is the complement of matrix transposition TRANS (if characteristic 2 has no ports), or the complement of a
   padded language A'' built from a language A that witnesses the parity time hierarchy at time n^2 (if it has ports).
 
-**Stronger form (Section 8 of the paper), from the same inputs and no others.** coNTIME[n; floor(2 log n)] is not contained in
-NTIME(n (log n)^sigma) intersected with parity-TIME(n (log n)^sigma); in particular it is not contained in UTIME(n (log n)^sigma)
-(unambiguous time). The complement-side form, NTIME[n; floor(2 log n)] not contained in UTIME(n (log n)^sigma), follows if
-characteristic 2 has ports and is open otherwise.
+**Stronger form (Section 8 of the paper).** coNTIME[n; floor(2 log n)] is not contained in NTIME(n (log n)^sigma) intersected
+with parity-TIME(n (log n)^sigma); in particular it is not contained in UTIME(n (log n)^sigma) (unambiguous time). The
+complement-side form, NTIME[n; floor(2 log n)] not contained in UTIME(n (log n)^sigma), follows if characteristic 2 has ports
+and is open otherwise.
 
 All definitions are written out in full in `STATEMENT.md`.
 
-### The inputs H1 to H12
+### The twelve inputs of the first version (no longer assumed)
+
+The Lean proof does not assume any of H1 to H12. Where the paper uses an input, the Lean proof uses a theorem of OpenAI's
+Lean library or a lemma of our own (`HYPOTHESES.md`, addendum of 26 November). The table records what each input was. Its last
+column is the state of OpenAI's Lean library as compared on 25 November, before our Lean proof existed.
 
 Sources: OpenAI preprints in `github.com/openai/math` (folder `preprints/`): **EG** *Euclidean geometry in the asymptotic spectrum of
 tensors*, **CL** *Circuit lower bounds for Hamiltonian cycle and the permanent*, **T** *The logarithmic exponent of integer
 multiplication on tapes*. Lean names are in OpenAI's Lean library in the same repository (folder `lean/`, commit 3344da5), compared
-at the level of statements, not built by us. Details and line numbers: `HYPOTHESES.md`. The two inputs in a characteristic-2 form
+at the level of statements on 25 November (the Lean proof now builds the parts of that library that it uses). Details and line numbers: `HYPOTHESES.md`. The two inputs in a characteristic-2 form
 derived by us from T's proofs are H4 and H5.
 
 | H | What it is | Source | OpenAI's Lean |
@@ -160,7 +149,6 @@ derived by us from T's proofs are H4 and H5.
 
 ### What is not claimed
 
-- Nothing unconditional: every statement assumes H1 to H12.
 - No explicit sigma.
 - No separation of NTIME from coNTIME, and nothing about adjacent levels of the alternation hierarchy or about space.
 - Nothing for random-access machines, multidimensional tapes or classes of nearly linear time defined by random-access machines
